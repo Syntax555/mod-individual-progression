@@ -3,8 +3,11 @@
 */
 
 #include "IndividualProgression.h"
-#include "naxxramas_40.h"
+
+#include "Corpse.h"
 #include "ReputationMgr.h"
+#include "StrictEarnedProgressionPolicy.h"
+#include "naxxramas_40.h"
 
 IndividualProgression* IndividualProgression::instance()
 {
@@ -25,6 +28,73 @@ uint8 IndividualProgression::GetPlayerProgressionFromQuests(Player* player) cons
             progressionLevel = i;
     }
     return progressionLevel;
+}
+
+bool IndividualProgression::IsStrictDefaultProgression() const
+{
+    return enabled && strictEarnedProgression && !disableDefaultProgression && customProgressionMap.empty();
+}
+
+uint8 IndividualProgression_GetEarnedEra(Player* player)
+{
+    if (!player || !sIndividualProgression->IsStrictDefaultProgression())
+        return 255;
+
+    uint8 stage = sIndividualProgression->GetPlayerProgressionFromQuests(player);
+    if (stage > PROGRESSION_WOTLK_TIER_5)
+        return 255;
+
+    int const limit = sIndividualProgression->progressionLimit;
+    if (limit > 0 && stage > limit)
+        stage = uint8(limit);
+
+    return stage >= PROGRESSION_TBC_TIER_5 ? 2 : stage >= PROGRESSION_PRE_TBC ? 1 : 0;
+}
+
+bool IndividualProgression::HasStrictEarnedMilestone(Player* player, uint8 stage) const
+{
+    if (!player || !player->IsInWorld())
+        return false;
+
+    switch (stage)
+    {
+        case PROGRESSION_PRE_AQ:
+            return player->GetQuestStatus(BANG_A_GONG) == QUEST_STATUS_REWARDED ||
+                   player->GetQuestStatus(SIMPLY_BANG_A_GONG) == QUEST_STATUS_REWARDED;
+        case PROGRESSION_AQ_WAR:
+            return player->GetQuestStatus(CHAOS_AND_DESTRUCTION) == QUEST_STATUS_REWARDED;
+        case PROGRESSION_PRE_TBC:
+            return player->GetQuestStatus(INTO_THE_BREACH) == QUEST_STATUS_REWARDED;
+        default:
+        {
+            uint32 const credit = StrictEarnedProgressionPolicy::BossCredit(stage);
+            return credit && player
+                                 ->GetPlayerSetting(StrictEarnedProgressionPolicy::SettingsSource,
+                                                    StrictEarnedProgressionPolicy::SettingsIndex)
+                                 .HasFlag(credit);
+        }
+    }
+}
+
+bool IndividualProgression::IsEligibleStrictKill(Player* player, Creature* killed)
+{
+    if (!player || !killed || !player->IsInWorld() || !killed->IsInWorld() || killed->IsAlive() ||
+        !killed->IsDamageEnoughForLootingAndReward() || killed->IsLootRewardDisabled() || !killed->isTappedBy(player) ||
+        !player->IsAtLootRewardDistance(killed))
+        return false;
+
+    // The core allows unlimited reward distance inside dungeons. Strict credit
+    // also requires presence near the boss, using a dead member's corpse.
+    WorldObject const* rewardPosition = player;
+    if (!player->IsAlive() && player->GetCorpse())
+        rewardPosition = player->GetCorpse();
+
+    // Use a strict three-dimensional center distance, without combat-reach
+    // radii, in the same map instance. Like the core's loot distance it has
+    // no phase test: Halion's raid fights in both the physical and the
+    // phased Twilight Realm.
+    return killed->IsInMap(rewardPosition) &&
+           killed->GetExactDist(rewardPosition) <= sWorld->getFloatConfig(CONFIG_GROUP_XP_DISTANCE);
 }
 
 bool IndividualProgression::hasPassedProgression(Player* player, ProgressionState state) const
@@ -55,6 +125,25 @@ void IndividualProgression::UpdateProgressionState(Player* player, ProgressionSt
         return;
 
     uint8 currentState = GetPlayerProgressionFromQuests(player);
+    if (IsStrictDefaultProgression())
+    {
+        if (newState != StrictEarnedProgressionPolicy::NextStage(currentState) ||
+            !HasStrictEarnedMilestone(player, newState))
+            return;
+
+        // Each previous marker must already have been earned. Stage 11 is not
+        // an implemented milestone and is not synthesized on the way to 12.
+        uint32 const questId = 66000 + newState;
+        Quest const* quest = sObjectMgr->GetQuestTemplate(questId);
+        if (!quest)
+            return;
+
+        player->AddQuest(quest, nullptr);
+        player->CompleteQuest(questId);
+        player->RewardQuest(quest, 0, player, false, false);
+        return;
+    }
+
     if (newState > currentState)
     {
         for (uint8 i = currentState; i <= newState; ++i)
@@ -152,6 +241,9 @@ uint8 IndividualProgression::GetAccountProgression(uint32 accountId)
 
 void IndividualProgression::UpdateRNDbotSpells(Player* player)
 {
+    if (enabled && strictEarnedProgression)
+        return;
+
     if (!player || !player->IsInWorld())
         return;
 
@@ -182,6 +274,10 @@ void IndividualProgression::UpdateRNDbotSpells(Player* player)
 void IndividualProgression::UpdateAccountReputation(uint32 factionId, uint32 accountId, Player* player)
 {
     if (!factionId || !accountId || !player || !player->IsInWorld())
+        return;
+
+    if (enabled && strictEarnedProgression &&
+        (!player->GetSession() || player->GetSession()->GetSecurity() < SEC_GAMEMASTER))
         return;
 
     Group* group = player->GetGroup();
@@ -227,6 +323,10 @@ void IndividualProgression::UpdateAccountReputation(uint32 factionId, uint32 acc
 void IndividualProgression::UpdateGroupAttunement(Player* player, std::string location)
 {
     if (!player || !player->IsInWorld() )
+        return;
+
+    if (enabled && strictEarnedProgression &&
+        (!player->GetSession() || player->GetSession()->GetSecurity() < SEC_GAMEMASTER))
         return;
 
     if (location.empty())
@@ -419,6 +519,9 @@ IndividualProgression::AccountMatch IndividualProgression::GetAccountMatch(uint3
 
 bool IndividualProgression::isExcludedAccount(Player* player)
 {
+    if (enabled && strictEarnedProgression)
+        return false;
+
     if (!player)
         return false;
 
@@ -427,6 +530,9 @@ bool IndividualProgression::isExcludedAccount(Player* player)
 
 bool IndividualProgression::isExcludedAccount(uint32 accountId)
 {
+    if (enabled && strictEarnedProgression)
+        return false;
+
     {
         std::shared_lock<std::shared_mutex> lock(_accountMatchLock);
         // An empty account filter excludes nobody and needs no database lookup.
@@ -439,6 +545,9 @@ bool IndividualProgression::isExcludedAccount(uint32 accountId)
 
 bool IndividualProgression::isBotAccount(Player* player)
 {
+    if (enabled && strictEarnedProgression)
+        return false;
+
     if (!player)
         return false;
 
@@ -447,6 +556,9 @@ bool IndividualProgression::isBotAccount(Player* player)
 
 bool IndividualProgression::isBotAccount(uint32 accountId)
 {
+    if (enabled && strictEarnedProgression)
+        return false;
+
     {
         std::shared_lock<std::shared_mutex> lock(_accountMatchLock);
         // An empty account filter excludes nobody and needs no database lookup.
@@ -479,6 +591,9 @@ bool IndividualProgression::isPlayerInDungeonOrRaid(Player* player)
 
 void IndividualProgression::SyncBotsProgressionToLeader(Group* group)
 {
+    if (enabled && strictEarnedProgression)
+        return;
+
     if (!group)
         return;
 
@@ -818,6 +933,34 @@ void IndividualProgression::checkIPProgression(Player* killer)
 
     uint8 currentState = GetPlayerProgressionFromQuests(killer);
 
+    if (IsStrictDefaultProgression())
+    {
+        // Credits remain recorded above a realm ceiling or when earned out of
+        // order. Advance only through the next satisfied milestone.
+        for (uint8 attempt = 0; attempt < StrictEarnedProgressionPolicy::LastStage; ++attempt)
+        {
+            uint8 const next = StrictEarnedProgressionPolicy::NextStage(currentState);
+            if (!next || !HasStrictEarnedMilestone(killer, next))
+                return;
+
+            UpdateProgressionState(killer, static_cast<ProgressionState>(next));
+            uint8 const updated = GetPlayerProgressionFromQuests(killer);
+            if (updated == currentState)
+                return;
+
+            currentState = updated;
+        }
+        return;
+    }
+
+    // A completed transition quest remains earned when the realm opens TBC.
+    // UpdateProgressionState still enforces the configured realm tier limit.
+    if (currentState == PROGRESSION_NAXX40 && killer->GetQuestStatus(INTO_THE_BREACH) == QUEST_STATUS_REWARDED)
+    {
+        UpdateProgressionState(killer, PROGRESSION_PRE_TBC);
+        currentState = GetPlayerProgressionFromQuests(killer);
+    }
+
     static const std::vector<std::pair<uint16, ProgressionState>> achievementMap =
     {
         { HALION_KILL,        PROGRESSION_WOTLK_TIER_5   },
@@ -886,6 +1029,28 @@ void IndividualProgression::checkKillProgression(Player* killer, Creature* kille
     if (disableDefaultProgression)
         return;
     */
+
+    if (IsStrictDefaultProgression())
+    {
+        uint8 const stage = StrictEarnedProgressionPolicy::BossStage(entry);
+        if (!stage || !IsEligibleStrictKill(killer, killed))
+            return;
+
+        uint32 const credit = StrictEarnedProgressionPolicy::BossCredit(stage);
+        uint32 const earned = killer
+                                  ->GetPlayerSetting(StrictEarnedProgressionPolicy::SettingsSource,
+                                                     StrictEarnedProgressionPolicy::SettingsIndex)
+                                  .value;
+        if (!(earned & credit))
+            killer->UpdatePlayerSetting(StrictEarnedProgressionPolicy::SettingsSource,
+                                        StrictEarnedProgressionPolicy::SettingsIndex, earned | credit);
+
+        if (entry == KELTHUZAD_40)
+            UpdateProgressionAchievements(killer, KEL_THUZAD_40_KILL);
+
+        checkIPProgression(killer);
+        return;
+    }
 
     static const std::unordered_map<uint32, ProgressionState> bossMap =
     {
@@ -1107,6 +1272,8 @@ private:
     {
         sIndividualProgression->customProgressionMap.clear();
         sIndividualProgression->enabled = sConfigMgr->GetOption<bool>("IndividualProgression.Enable", true);
+        sIndividualProgression->strictEarnedProgression =
+            sConfigMgr->GetOption<bool>("IndividualProgression.StrictEarnedProgression", false);
         sIndividualProgression->vanillaPowerAdjustment = sConfigMgr->GetOption<float>("IndividualProgression.VanillaPowerAdjustment", 1);
         sIndividualProgression->vanillaHealingAdjustment = sConfigMgr->GetOption<float>("IndividualProgression.VanillaHealingAdjustment", 1);
         sIndividualProgression->tbcPowerAdjustment = sConfigMgr->GetOption<float>("IndividualProgression.TBCPowerAdjustment", 1);

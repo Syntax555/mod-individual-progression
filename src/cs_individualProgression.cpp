@@ -121,6 +121,16 @@ public:
 
     static bool HandleSetBotIndividualProgressionCommand(ChatHandler* handler)
     {
+        if (!handler->GetSession())
+            return false;
+
+        if (sIndividualProgression->enabled && sIndividualProgression->strictEarnedProgression &&
+            handler->GetSession()->GetSecurity() < SEC_GAMEMASTER)
+        {
+            handler->SendSysMessage("This command is disabled during strict earned progression.");
+            return false;
+        }
+
         Player* player = handler->GetSession()->GetPlayer();
 
         if (!player)
@@ -144,7 +154,22 @@ public:
         for (GroupReference* itr = group->GetFirstMember(); itr; itr = itr->next())
         {
             Player* member = itr->GetSource();
-            if (!member || sIndividualProgression->isNormalAccount(member))
+            if (!member)
+                continue;
+
+            if (sIndividualProgression->strictEarnedProgression)
+            {
+                // This is an explicit, security-checked GM override. Account
+                // filters never provide an exemption in ordinary gameplay.
+                std::string accountName;
+                if (!AccountMgr::GetName(member->GetSession()->GetAccountId(), accountName) ||
+                    !((!sIndividualProgression->botAccountsRegex.empty() &&
+                       std::regex_match(accountName, std::regex(sIndividualProgression->botAccountsRegex))) ||
+                      (!sIndividualProgression->excludedAccountsRegex.empty() &&
+                       std::regex_match(accountName, std::regex(sIndividualProgression->excludedAccountsRegex)))))
+                    continue;
+            }
+            else if (sIndividualProgression->isNormalAccount(member))
                 continue;
 
             sIndividualProgression->ForceUpdateProgressionState(member, static_cast<ProgressionState>(currentState));
@@ -158,6 +183,16 @@ public:
 
     static bool HandleSetRepIndividualProgressionCommand(ChatHandler* handler)
     {
+        if (!handler->GetSession())
+            return false;
+
+        if (sIndividualProgression->enabled && sIndividualProgression->strictEarnedProgression &&
+            handler->GetSession()->GetSecurity() < SEC_GAMEMASTER)
+        {
+            handler->SendSysMessage("This command is disabled during strict earned progression.");
+            return false;
+        }
+
         Player* player = handler->GetSession()->GetPlayer();
         uint32 accountId = handler->GetSession()->GetAccountId();
         
@@ -405,6 +440,16 @@ public:
 
     static bool HandleAttuneIndividualProgressionCommand(ChatHandler* handler, std::string location)
     {
+        if (!handler->GetSession())
+            return false;
+
+        if (sIndividualProgression->enabled && sIndividualProgression->strictEarnedProgression &&
+            handler->GetSession()->GetSecurity() < SEC_GAMEMASTER)
+        {
+            handler->SendSysMessage("This command is disabled during strict earned progression.");
+            return false;
+        }
+
         Player* player = handler->GetSession()->GetPlayer();
 
         if (!player)

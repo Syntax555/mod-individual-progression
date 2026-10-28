@@ -435,5 +435,5 @@ INSERT INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry
 (1, 13285, 22529, 0, 0, 8, 0, 66006, 0, 0, 0, 0, 0, '', 'Savage Frond will only drop if the player has completed PROGRESSION_AQ'),
 (1, 14303, 22529, 0, 0, 8, 0, 66006, 0, 0, 0, 0, 0, '', 'Savage Frond will only drop if the player has completed PROGRESSION_AQ'),
 --
-(1, 19768, 34689, 0, 1, 8, 0, 66011, 0, 0, 0, 0, 0, '', 'Design: Chaotic Skyfire Diamond will only drop if the player has completed PROGRESSION_TBC_TIER_3'),
+(1, 19768, 34689, 0, 1, 8, 0, 66012, 0, 0, 0, 0, 0, '', 'Design: Chaotic Skyfire Diamond will only drop if the player has completed PROGRESSION_TBC_TIER_4'),
 (1, 19768, 34689, 0, 1, 7, 0, 755, 1, 0, 0, 0, 0, '',   'Design: Chaotic Skyfire Diamond will only drop if the player has the Jewelcrafting skill');

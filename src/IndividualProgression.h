@@ -23,6 +23,9 @@
 
 typedef std::unordered_map<uint32, uint32> questXpMapType;
 
+// 0: Vanilla, 1: TBC, 2: Wrath; 255: unavailable or unrestricted policy.
+uint8 IndividualProgression_GetEarnedEra(Player* player);
+
 enum ProgressionBossIDs
 {
     RAGNAROS             = 11502,
@@ -406,6 +409,11 @@ class IndividualProgression
 public:
     static IndividualProgression* instance();
 
+    bool strictEarnedProgression = false;
+    bool IsStrictDefaultProgression() const;
+    bool HasStrictEarnedMilestone(Player* player, uint8 stage) const;
+    static bool IsEligibleStrictKill(Player* player, Creature* killed);
+
     std::map<uint32, uint8> customProgressionMap;
     questXpMapType questXpMap;
     float vanillaPowerAdjustment, tbcPowerAdjustment, vanillaHealingAdjustment, tbcHealingAdjustment;
@@ -418,6 +426,9 @@ public:
     uint8 GetPlayerProgressionFromQuests(Player* player) const;
 
     bool hasPassedProgression(Player* player, ProgressionState state) const;
+    // The map entry gates of a teleport, without refusal text or other side
+    // effects, for decisions made before the character travels.
+    bool CanEnterMap(Player* player, uint32 mapId, float x, float y, float z) const;
     static bool isBeforeProgression(Player* player, ProgressionState state) ;
     void UpdateProgressionState(Player* player, ProgressionState newState) const;
     static void ForceUpdateProgressionState(Player* player, ProgressionState newState);

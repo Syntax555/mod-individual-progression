@@ -8,8 +8,7 @@ class IndividualPlayerProgression : public PlayerScript
 private:
     static bool IsTBCRaceStartingZone(uint32 mapid, float x, float y, float z)
     {
-        Map const *map = sMapMgr->FindMap(mapid, 0);
-        uint32 zoneId = map->GetZoneId(0, x, y, z);
+        uint32 zoneId = sMapMgr->GetZoneId(0, mapid, x, y, z);
         return (zoneId == AREA_AZUREMYST_ISLE || zoneId == AREA_BLOODMYST_ISLE || zoneId == AREA_GHOSTLANDS || zoneId == AREA_EVERSONG_WOODS ||
                 zoneId == AREA_THE_EXODAR || zoneId == AREA_SILVERMOON_CITY || zoneId == AREA_AMMEN_VALE || zoneId == AREA_VEILED_SEA);
     }
@@ -84,6 +83,29 @@ public:
 
         if (sIndividualProgression->isBotAccount(player))
             sIndividualProgression->UpdateRNDbotSpells(player);
+    }
+
+    bool OnPlayerCanLearnTalent(Player* player, TalentEntry const* talent, uint32 /*rank*/) override
+    {
+        if (!sIndividualProgression->IsStrictDefaultProgression())
+            return true;
+
+        if (!player || !talent)
+            return false;
+
+        if (player->IsGameMaster())
+            return true;
+
+        // These are Wrath talent rows, not replacement historical trees.
+        // The earned expansion controls depth for humans and bots alike.
+        uint8 const era = IndividualProgression_GetEarnedEra(player);
+        if (era == 0)
+            return talent->Row <= 6;
+
+        if (era == 1)
+            return talent->Row <= 8;
+
+        return era == 2;
     }
 
     void OnPlayerResurrect(Player* player, float /*restore_percent*/, bool& /*applySickness*/) override
@@ -581,6 +603,13 @@ public:
 
     bool OnPlayerBeforeTeleport(Player* player, uint32 mapid, float x, float y, float z, float /*orientation*/, uint32 /*options*/, Unit* /*target*/) override
     {
+        return CanEnterMap(player, mapid, x, y, z, player ? player->GetSession() : nullptr);
+    }
+
+    // The teleport hook's map gates. A null session checks entry without side
+    // effects: ChatHandler sends no refusal text and ship passengers stay put.
+    static bool CanEnterMap(Player* player, uint32 mapid, float x, float y, float z, WorldSession* session)
+    {
         if (!player)
             return false;
 
@@ -593,7 +622,7 @@ public:
 
         if (mapid == MAP_BLACKWING_LAIR && !sIndividualProgression->hasPassedProgression(player, PROGRESSION_MOLTEN_CORE))
         {
-            ChatHandler(player->GetSession()).PSendSysMessage("Progression Level Required = |cff00ffff{}|r", PROGRESSION_MOLTEN_CORE);
+            ChatHandler(session).PSendSysMessage("Progression Level Required = |cff00ffff{}|r", PROGRESSION_MOLTEN_CORE);
             return false;
         }
         if (mapid == MAP_ONYXIAS_LAIR)
@@ -620,18 +649,18 @@ public:
 
             if (PLAYER_PROGRESSION < REQUIRED_ZG_PROGRESSION)
             {
-                ChatHandler(player->GetSession()).PSendSysMessage("Progression Level Required = |cff00ffff{}|r", REQUIRED_ZG_PROGRESSION);
+                ChatHandler(session).PSendSysMessage("Progression Level Required = |cff00ffff{}|r", REQUIRED_ZG_PROGRESSION);
                 return false;
             }
         }
         if (mapid == MAP_AHN_QIRAJ_TEMPLE && !sIndividualProgression->hasPassedProgression(player, PROGRESSION_PRE_AQ))
         {
-            ChatHandler(player->GetSession()).PSendSysMessage("Progression Level Required = |cff00ffff{}|r", PROGRESSION_PRE_AQ);
+            ChatHandler(session).PSendSysMessage("Progression Level Required = |cff00ffff{}|r", PROGRESSION_PRE_AQ);
             return false;
         }
         if (mapid == MAP_RUINS_OF_AHN_QIRAJ && !sIndividualProgression->hasPassedProgression(player, PROGRESSION_PRE_AQ))
         {
-            ChatHandler(player->GetSession()).PSendSysMessage("Progression Level Required = |cff00ffff{}|r", PROGRESSION_PRE_AQ);
+            ChatHandler(session).PSendSysMessage("Progression Level Required = |cff00ffff{}|r", PROGRESSION_PRE_AQ);
             return false;
         }
         if (mapid == MAP_OUTLAND)
@@ -643,19 +672,18 @@ public:
 
                 if ((highestProgression < sIndividualProgression->tbcRacesProgressionLevel) && (player->getRace() != RACE_DRAENEI && player->getRace() != RACE_BLOODELF))
                 {
-                    ChatHandler(player->GetSession()).PSendSysMessage("Progression Level Required = |cff00ffff{}|r", sIndividualProgression->tbcRacesProgressionLevel);
+                    ChatHandler(session).PSendSysMessage("Progression Level Required = |cff00ffff{}|r", sIndividualProgression->tbcRacesProgressionLevel);
                     return false;
                 }
                 else
                     return IsTBCRaceStartingZone(mapid, x, y, z);
             }
 
-            Map const *map = sMapMgr->FindMap(mapid, 0);
-            uint32 zoneId = map->GetZoneId(0, x, y, z);
+            uint32 zoneId = sMapMgr->GetZoneId(0, mapid, x, y, z);
 
             if (!sIndividualProgression->hasPassedProgression(player, PROGRESSION_TBC_TIER_4) && zoneId == AREA_ISLE_OF_QUEL_DANAS)
             {
-                ChatHandler(player->GetSession()).PSendSysMessage("Progression Level Required = |cff00ffff{}|r", PROGRESSION_TBC_TIER_4);
+                ChatHandler(session).PSendSysMessage("Progression Level Required = |cff00ffff{}|r", PROGRESSION_TBC_TIER_4);
                 return false;
             }
         }
@@ -666,12 +694,15 @@ public:
 
             if (PLAYER_PROGRESSION < REQUIRED_ZA_PROGRESSION)
             {
-                ChatHandler(player->GetSession()).PSendSysMessage("Progression Level Required = |cff00ffff{}|r", REQUIRED_ZA_PROGRESSION);
+                ChatHandler(session).PSendSysMessage("Progression Level Required = |cff00ffff{}|r", REQUIRED_ZA_PROGRESSION);
                 return false;
             }
         }
         if (mapid == MAP_NORTHREND && !sIndividualProgression->hasPassedProgression(player, PROGRESSION_TBC_TIER_5))
         {
+            if (!session)
+                return false;
+
             const uint16 AREA_COLD_HEARTH_MANOR = 166;
             const uint16 AREA_DRYGULCH_RAVINE = 370;
             const uint16 AREA_STORMWIND_GREAT_SEA = 2364;
@@ -710,55 +741,55 @@ public:
                 break;
             }
 
-            ChatHandler(player->GetSession()).PSendSysMessage("Progression Level Required = |cff00ffff{}|r", PROGRESSION_TBC_TIER_5);
+            ChatHandler(session).PSendSysMessage("Progression Level Required = |cff00ffff{}|r", PROGRESSION_TBC_TIER_5);
             return false;
         }
         if (mapid == MAP_ULDUAR && !sIndividualProgression->hasPassedProgression(player, PROGRESSION_WOTLK_TIER_1))
         {
-            ChatHandler(player->GetSession()).PSendSysMessage("Progression Level Required = |cff00ffff{}|r", PROGRESSION_WOTLK_TIER_1);
+            ChatHandler(session).PSendSysMessage("Progression Level Required = |cff00ffff{}|r", PROGRESSION_WOTLK_TIER_1);
             return false;
         }
         if ((mapid == MAP_TRIAL_OF_THE_CHAMPION || mapid == MAP_TRIAL_OF_THE_CRUSADER) && !sIndividualProgression->hasPassedProgression(player, PROGRESSION_WOTLK_TIER_2))
         {
-            ChatHandler(player->GetSession()).PSendSysMessage("Progression Level Required = |cff00ffff{}|r", PROGRESSION_WOTLK_TIER_2);
+            ChatHandler(session).PSendSysMessage("Progression Level Required = |cff00ffff{}|r", PROGRESSION_WOTLK_TIER_2);
             return false;
         }
         // This will also restrict other Frozen Halls dungeons, because Forge of Souls must be completed first to access them
         if ((mapid == MAP_ICECROWN_CITADEL || mapid == MAP_THE_FORGE_OF_SOULS) && !sIndividualProgression->hasPassedProgression(player, PROGRESSION_WOTLK_TIER_3))
         {
-            ChatHandler(player->GetSession()).PSendSysMessage("Progression Level Required = |cff00ffff{}|r", PROGRESSION_WOTLK_TIER_3);
+            ChatHandler(session).PSendSysMessage("Progression Level Required = |cff00ffff{}|r", PROGRESSION_WOTLK_TIER_3);
             return false;
         }
         if (mapid == MAP_THE_RUBY_SANCTUM && !sIndividualProgression->hasPassedProgression(player, PROGRESSION_WOTLK_TIER_4))
         {
-            ChatHandler(player->GetSession()).PSendSysMessage("Progression Level Required = |cff00ffff{}|r", PROGRESSION_WOTLK_TIER_4);
+            ChatHandler(session).PSendSysMessage("Progression Level Required = |cff00ffff{}|r", PROGRESSION_WOTLK_TIER_4);
             return false;
         }
         if (mapid == MAP_MAGISTERS_TERRACE && !sIndividualProgression->hasPassedProgression(player, PROGRESSION_TBC_TIER_4))
         {
-            ChatHandler(player->GetSession()).PSendSysMessage("Progression Level Required = |cff00ffff{}|r", PROGRESSION_TBC_TIER_4);
+            ChatHandler(session).PSendSysMessage("Progression Level Required = |cff00ffff{}|r", PROGRESSION_TBC_TIER_4);
             return false;
         }
         if (mapid == MAP_THE_SUNWELL && !sIndividualProgression->hasPassedProgression(player, PROGRESSION_TBC_TIER_4))
         {
-            ChatHandler(player->GetSession()).PSendSysMessage("Progression Level Required = |cff00ffff{}|r", PROGRESSION_TBC_TIER_4);
+            ChatHandler(session).PSendSysMessage("Progression Level Required = |cff00ffff{}|r", PROGRESSION_TBC_TIER_4);
             return false;
         }
         if (mapid == MAP_TEMPEST_KEEP)
         {
             if (!sIndividualProgression->hasPassedProgression(player, PROGRESSION_TBC_TIER_1))
             {
-                ChatHandler(player->GetSession()).PSendSysMessage("Progression Level Required = |cff00ffff{}|r", PROGRESSION_TBC_TIER_1);
+                ChatHandler(session).PSendSysMessage("Progression Level Required = |cff00ffff{}|r", PROGRESSION_TBC_TIER_1);
                 return false;
             }
  			else if (!player->HasItemCount(ITEM_TEMPEST_KEY))
             {
-                ChatHandler(player->GetSession()).PSendSysMessage("You must possess the Tempest Key to enter The Eye.");
+                ChatHandler(session).PSendSysMessage("You must possess the Tempest Key to enter The Eye.");
                 return false;
             }
  			else if (player->GetQuestStatus(TRIAL_MAGTHERIDON) != QUEST_STATUS_REWARDED)
             {
-                ChatHandler(player->GetSession()).PSendSysMessage("You must complete the quest Trial of the Naaru: Magtheridon to enter The Eye.");
+                ChatHandler(session).PSendSysMessage("You must complete the quest Trial of the Naaru: Magtheridon to enter The Eye.");
                 return false;
             }
         }
@@ -766,12 +797,12 @@ public:
         {
             if (!sIndividualProgression->hasPassedProgression(player, PROGRESSION_TBC_TIER_1))
             {
-                ChatHandler(player->GetSession()).PSendSysMessage("Progression Level Required = |cff00ffff{}|r", PROGRESSION_TBC_TIER_1);
+                ChatHandler(session).PSendSysMessage("Progression Level Required = |cff00ffff{}|r", PROGRESSION_TBC_TIER_1);
                 return false;
             }
  			else if (player->GetQuestStatus(CUDGEL_OF_KARDESH) != QUEST_STATUS_REWARDED)
             {
-                ChatHandler(player->GetSession()).PSendSysMessage("You must complete the quest The Cudgel of Kar\'desh to enter Serpentshrine Reservoir.");
+                ChatHandler(session).PSendSysMessage("You must complete the quest The Cudgel of Kar\'desh to enter Serpentshrine Reservoir.");
                 return false;
             }
         }
@@ -779,12 +810,12 @@ public:
         {
             if (!sIndividualProgression->hasPassedProgression(player, PROGRESSION_TBC_TIER_2))
             {
-                ChatHandler(player->GetSession()).PSendSysMessage("Progression Level Required = |cff00ffff{}|r", PROGRESSION_TBC_TIER_2);
+                ChatHandler(session).PSendSysMessage("Progression Level Required = |cff00ffff{}|r", PROGRESSION_TBC_TIER_2);
                 return false;
             }
  			else if (player->GetQuestStatus(VIALS_OF_ETERNITY) != QUEST_STATUS_REWARDED)
             {
-                ChatHandler(player->GetSession()).PSendSysMessage("You must complete the quest The Vials of Eternity to enter the Battle of Mount Hyjal.");
+                ChatHandler(session).PSendSysMessage("You must complete the quest The Vials of Eternity to enter the Battle of Mount Hyjal.");
                 return false;
             }
         }
@@ -792,12 +823,12 @@ public:
         {
             if (!sIndividualProgression->hasPassedProgression(player, PROGRESSION_TBC_TIER_2))
             {
-                ChatHandler(player->GetSession()).PSendSysMessage("Progression Level Required = |cff00ffff{}|r", PROGRESSION_TBC_TIER_2);
+                ChatHandler(session).PSendSysMessage("Progression Level Required = |cff00ffff{}|r", PROGRESSION_TBC_TIER_2);
                 return false;
             }
  			else if (!player->HasItemCount(ITEM_MEDALLION_OF_KARABOR) && !player->HasItemCount(ITEM_BLESSED_MEDALLION_OF_KARABOR))
             {
-                ChatHandler(player->GetSession()).PSendSysMessage("You must possess the Medallion of Karabor to enter the Black Temple.");
+                ChatHandler(session).PSendSysMessage("You must possess the Medallion of Karabor to enter the Black Temple.");
                 return false;
             }
         }
@@ -864,7 +895,8 @@ public:
                  sIndividualProgression->UpdateProgressionState(player, PROGRESSION_AQ_WAR);
             break;
         case INTO_THE_BREACH:
-            if (!sIndividualProgression->disableDefaultProgression)
+            if (!sIndividualProgression->disableDefaultProgression &&
+                sIndividualProgression->hasPassedProgression(player, PROGRESSION_NAXX40))
                  sIndividualProgression->UpdateProgressionState(player, PROGRESSION_PRE_TBC);
             break;
         case QUEST_MORROWGRAIN:
@@ -878,6 +910,11 @@ public:
             }
             break;
         }
+
+        if (sIndividualProgression->IsStrictDefaultProgression() &&
+            (quest->GetQuestId() == BANG_A_GONG || quest->GetQuestId() == SIMPLY_BANG_A_GONG ||
+             quest->GetQuestId() == CHAOS_AND_DESTRUCTION || quest->GetQuestId() == INTO_THE_BREACH))
+            sIndividualProgression->checkIPProgression(player);
     }
 
     bool OnPlayerCanGroupInvite(Player* player, std::string& membername) override
@@ -1129,6 +1166,11 @@ public:
             }
         }
 
+        // Strict default tier credit uses the tapped recipient hook below,
+        // including kills finished by pets and totems.
+        if (sIndividualProgression->IsStrictDefaultProgression())
+            return;
+
         Group* group = killer->GetGroup();
         
         if (killed->GetCreatureTemplate()->rank > CREATURE_ELITE_NORMAL)
@@ -1182,6 +1224,24 @@ public:
                     sIndividualProgression->checkKillProgression(killer, killed);
             }
         }
+    }
+
+    void OnPlayerCreatureKillCredit(Player* player, Creature* killed) override
+    {
+        if (!sIndividualProgression->IsStrictDefaultProgression() || !player || !killed)
+            return;
+
+        // Credit the actual tapped party, not the party of the finishing blow.
+        if (Group* group = killed->GetLootRecipientGroup())
+        {
+            for (GroupReference* itr = group->GetFirstMember(); itr; itr = itr->next())
+            {
+                if (Player* member = itr->GetSource())
+                    sIndividualProgression->checkKillProgression(member, killed);
+            }
+        }
+        else
+            sIndividualProgression->checkKillProgression(player, killed);
     }
 
     bool OnPlayerUpdateFishingSkill(Player* player, int32 /*skill*/, int32 /*zone_skill*/, int32 chance, int32 roll) override
@@ -1326,6 +1386,12 @@ public:
     bool CanAccountCreateCharacter(uint32 accountId, uint8 charRace, uint8 charClass) override
     {
         if (!accountId || !charRace || !charClass)
+            return false;
+
+        // A hero-class character cannot start from level 1. Existing characters
+        // remain intact; disable the strict policy to create new Death Knights.
+        if (sIndividualProgression->enabled && sIndividualProgression->strictEarnedProgression &&
+            charClass == CLASS_DEATH_KNIGHT)
             return false;
 
         if ((!sIndividualProgression->enabled) ||
@@ -1500,6 +1566,11 @@ public:
     }
 
 };
+
+bool IndividualProgression::CanEnterMap(Player* player, uint32 mapId, float x, float y, float z) const
+{
+    return IndividualPlayerProgression::CanEnterMap(player, mapId, x, y, z, nullptr);
+}
 
 void AddSC_mod_individual_progression_player()
 {

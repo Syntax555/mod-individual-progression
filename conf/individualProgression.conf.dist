@@ -20,6 +20,23 @@
 #
 IndividualProgression.Enable = 1
 
+# IndividualProgression.StrictEarnedProgression
+#
+#        Description: Require each default progression milestone in order for
+#                     players and bots, without account exemptions or automatic
+#                     leader copying, attunement items or class spell grants.
+#                     Eligible boss kills are recorded in PlayerSettings; quest
+#                     transitions require ordinary rewarded quests. Existing
+#                     saved tiers are preserved. Stage 11 remains unused.
+#                     Requires EnablePlayerSettings = 1. Custom progression
+#                     retains its configured milestone policy. Explicit GM
+#                     commands remain administrative overrides.
+#
+#        Default:     0 - Disabled
+#                     1 - Enabled
+#
+IndividualProgression.StrictEarnedProgression = 0
+
 # IndividualProgression.EnforceGroupRules
 #
 #        Description: Enable this to only allow players to group with others in the same progression phase
