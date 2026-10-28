@@ -4,6 +4,7 @@
 
 // From SC
 void AddSC_mod_individual_progression();
+void AddSC_individual_progression_historical_class_quests();
 void AddSC_individual_progression_era_riding_prices();
 void AddSC_individual_progression_earned_battlegrounds();
 void AddSC_boss_onyxia_40();
@@ -59,6 +60,7 @@ void AddSC_serpentshrine_cavern_70();
 void Addmod_individual_progressionScripts()
 {
     AddSC_mod_individual_progression();
+    AddSC_individual_progression_historical_class_quests();
     AddSC_individual_progression_era_riding_prices();
     AddSC_individual_progression_earned_battlegrounds();
     AddSC_boss_onyxia_40();
