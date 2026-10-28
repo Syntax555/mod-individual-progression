@@ -110,6 +110,22 @@ IndividualProgression.BotOnlyAdjustments = 0
 #
 IndividualProgression.QuestXPFix = 1
 
+# IndividualProgression.EraExperience
+#
+#        Description: Apply the experience rules of each character's earned era
+#                     (Vanilla before tier 8, TBC before tier 13, then Wrath):
+#                     era quest values, battleground objective XP only in Wrath,
+#                     XP bonus effects only from their own era, no rested XP and
+#                     era quest money at the 60/70 era level cap, and no
+#                     Recruit-a-Friend bonuses. Requires StrictEarnedProgression = 1
+#                     and the default progression; historical quest values also
+#                     need QuestXPFix = 1.
+#
+#        Default:     1 - Enabled
+#                     0 - Disabled (shared rules for every era)
+#
+IndividualProgression.EraExperience = 1
+
 # IndividualProgression.RequireNaxxStrathEntrance
 #
 #        Description: If enabled, this will require players to first enter Naxx 40 through the original beta entrance in the back of Stratholme,

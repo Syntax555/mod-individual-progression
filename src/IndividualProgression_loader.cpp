@@ -7,6 +7,7 @@ void AddSC_mod_individual_progression();
 void AddSC_individual_progression_historical_class_quests();
 void AddSC_individual_progression_era_riding_prices();
 void AddSC_individual_progression_earned_battlegrounds();
+void AddSC_individual_progression_era_experience();
 void AddSC_boss_onyxia_40();
 void AddSC_instance_onyxias_lair_40();
 void AddSC_instance_blackrock_spire_50_59_B();
@@ -63,6 +64,8 @@ void Addmod_individual_progressionScripts()
     AddSC_individual_progression_historical_class_quests();
     AddSC_individual_progression_era_riding_prices();
     AddSC_individual_progression_earned_battlegrounds();
+    // Before the player script: era kill experience is filtered before its level cap hands it to the pet.
+    AddSC_individual_progression_era_experience();
     AddSC_boss_onyxia_40();
     AddSC_instance_onyxias_lair_40();
     AddSC_instance_blackrock_spire_50_59_B();

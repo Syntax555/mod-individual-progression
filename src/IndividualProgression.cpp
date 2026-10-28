@@ -1279,6 +1279,7 @@ private:
         sIndividualProgression->tbcPowerAdjustment = sConfigMgr->GetOption<float>("IndividualProgression.TBCPowerAdjustment", 1);
         sIndividualProgression->tbcHealingAdjustment = sConfigMgr->GetOption<float>("IndividualProgression.TBCHealingAdjustment", 1);
         sIndividualProgression->questXpFix = sConfigMgr->GetOption<bool>("IndividualProgression.QuestXPFix", true);
+        sIndividualProgression->eraExperience = sConfigMgr->GetOption<bool>("IndividualProgression.EraExperience", true);
         sIndividualProgression->requireNaxxStrath = sConfigMgr->GetOption<bool>("IndividualProgression.RequireNaxxStrathEntrance", false);
         sIndividualProgression->doableNaxx40Bosses_4H = sConfigMgr->GetOption<bool>("IndividualProgression.doableNaxx40Bosses_4H", false);
         sIndividualProgression->doableNaxx40Bosses_Gluth = sConfigMgr->GetOption<bool>("IndividualProgression.doableNaxx40Bosses_Gluth", false);
@@ -1353,6 +1354,33 @@ private:
                 } while (result->NextRow());
             }
             LOG_INFO("module", "Loaded {} quest XP values into cache", questXpAmount);
+        }
+
+        sIndividualProgression->questXpTbcMap.clear();
+        sIndividualProgression->questLevelTbcMap.clear();
+        sIndividualProgression->questLevelMap.clear();
+        if (sIndividualProgression->questXpFix && sIndividualProgression->EraExperienceActive())
+        {
+            QueryResult result = WorldDatabase.Query("SELECT entry, xpValue, questLevel FROM custom_quest_xp_tbc");
+            if (result)
+            {
+                do
+                {
+                    uint32 const entry = (*result)[0].Get<uint32>();
+                    sIndividualProgression->questXpTbcMap.insert({entry, (*result)[1].Get<uint32>()});
+                    sIndividualProgression->questLevelTbcMap.insert({entry, (*result)[2].Get<int32>()});
+                } while (result->NextRow());
+            }
+            result = WorldDatabase.Query("SELECT entry, questLevel FROM custom_quest_xp_level");
+            if (result)
+            {
+                do
+                {
+                    sIndividualProgression->questLevelMap.insert({(*result)[0].Get<uint32>(), (*result)[1].Get<int32>()});
+                } while (result->NextRow());
+            }
+            LOG_INFO("module", "Loaded {} TBC quest XP values and {} 1.12 quest levels into cache",
+                     sIndividualProgression->questXpTbcMap.size(), sIndividualProgression->questLevelMap.size());
         }
     }
 

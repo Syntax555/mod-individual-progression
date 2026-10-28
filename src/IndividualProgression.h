@@ -25,6 +25,8 @@ typedef std::unordered_map<uint32, uint32> questXpMapType;
 
 // 0: Vanilla, 1: TBC, 2: Wrath; 255: unavailable or unrestricted policy.
 uint8 IndividualProgression_GetEarnedEra(Player* player);
+// Copper for a quest completed at the character's era level cap; 0 elsewhere.
+uint32 IndividualProgression_EraCapQuestMoney(Player* player, Quest const* quest);
 
 enum ProgressionBossIDs
 {
@@ -411,11 +413,18 @@ public:
 
     bool strictEarnedProgression = false;
     bool IsStrictDefaultProgression() const;
+    // Experience follows each character's earned era; see EraExperience.cpp.
+    bool eraExperience = false;
+    bool EraExperienceActive() const { return eraExperience && IsStrictDefaultProgression(); }
     bool HasStrictEarnedMilestone(Player* player, uint8 stage) const;
     static bool IsEligibleStrictKill(Player* player, Creature* killed);
 
     std::map<uint32, uint8> customProgressionMap;
     questXpMapType questXpMap;
+    questXpMapType questXpTbcMap;
+    // Quest levels of the era values, which patch 2.3.0 lowered for many
+    // quests: 1.12 levels of questXpMap and 2.4.3 levels of questXpTbcMap.
+    std::unordered_map<uint32, int32> questLevelMap, questLevelTbcMap;
     float vanillaPowerAdjustment, tbcPowerAdjustment, vanillaHealingAdjustment, tbcHealingAdjustment;
     bool enabled, questXpFix, enforceGroupRules, EnableSetRepCommand, EnableAllSpellRanks, LimitedSetRepCommand, fishingFix, simpleConfigOverride, MaxMonsterSight, questMoneyAtLevelCap, repeatableVanillaQuestsXp, disableDefaultProgression, earlyDungeonSet2, earlyScourgeBosses, requireNaxxStrath, doableNaxx40Bosses_4H, doableNaxx40Bosses_Gluth, doableNaxx40Bosses_Patchwerk, doableNaxx40Bosses_Razuvious, DisableQuestMarkers, DisableRDF, VanillaPvpTitlesKeepPostVanilla, VanillaPvpTitlesEarnPostVanilla, VanillaPvpKeepAllEarnedTitles, BotAccountsEarnPvPTitles, BotOnlyAdjustments;
     int progressionLimit, startingProgression, tbcRacesProgressionLevel, tbcRacesStartingProgression, deathKnightProgressionLevel, deathKnightStartingProgression, RequiredZulGurubProgression, RequiredZulAmanProgression, tbcArenaSeason, wotlkArenaSeason, BotAccountsMaxLevel;

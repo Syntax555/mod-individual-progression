@@ -121,7 +121,8 @@ public:
         if (!sIndividualProgression->enabled || !quest || !xpValue || !player || !player->IsInWorld())
             return;
 
-        if (!sIndividualProgression->questXpFix)
+        // Era experience computes quest values per era instead of this ratio.
+        if (!sIndividualProgression->questXpFix || sIndividualProgression->EraExperienceActive())
             return;
 
         if (sIndividualProgression->questXpMap.count(quest->GetQuestId()))
@@ -867,7 +868,10 @@ public:
             else if (!sIndividualProgression->hasPassedProgression(player, PROGRESSION_TBC_TIER_5) && player->GetLevel() == 70)
                 XPValue = quest->XPValue(quest->GetQuestLevel() == -1 ? 70 : quest->GetQuestLevel());
 
-            moneyRew = (XPValue * (6 * COPPER)) * sWorld->getRate(RATE_REWARD_BONUS_MONEY);
+            if (sIndividualProgression->EraExperienceActive())
+                moneyRew = IndividualProgression_EraCapQuestMoney(player, quest) * sWorld->getRate(RATE_REWARD_BONUS_MONEY);
+            else
+                moneyRew = (XPValue * (6 * COPPER)) * sWorld->getRate(RATE_REWARD_BONUS_MONEY);
 
             if (moneyRew > 0)
             {
