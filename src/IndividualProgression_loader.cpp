@@ -4,6 +4,7 @@
 
 // From SC
 void AddSC_mod_individual_progression();
+void AddSC_individual_progression_era_riding_prices();
 void AddSC_boss_onyxia_40();
 void AddSC_instance_onyxias_lair_40();
 void AddSC_instance_blackrock_spire_50_59_B();
@@ -57,6 +58,7 @@ void AddSC_serpentshrine_cavern_70();
 void Addmod_individual_progressionScripts()
 {
     AddSC_mod_individual_progression();
+    AddSC_individual_progression_era_riding_prices();
     AddSC_boss_onyxia_40();
     AddSC_instance_onyxias_lair_40();
     AddSC_instance_blackrock_spire_50_59_B();
