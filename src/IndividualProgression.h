@@ -463,6 +463,7 @@ private:
     // excludedAccountsRegex and botAccountsRegex compiled once per config load, and what each
     // account name matched. The damage and healing hooks ask on map update threads.
     std::regex _excludedAccountsRegex, _botAccountsRegex;
+    bool _excludedAccountsEnabled = false, _botAccountsEnabled = false;
     std::unordered_map<uint32, AccountMatch> _accountMatchCache;
     std::shared_mutex _accountMatchLock;
 };

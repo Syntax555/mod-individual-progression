@@ -390,6 +390,8 @@ void IndividualProgression::LoadAccountRegexes()
     std::unique_lock<std::shared_mutex> lock(_accountMatchLock);
     _excludedAccountsRegex = std::move(excluded);
     _botAccountsRegex = std::move(bot);
+    _excludedAccountsEnabled = !excludedAccountsRegex.empty();
+    _botAccountsEnabled = !botAccountsRegex.empty();
     _accountMatchCache.clear();
 }
 
@@ -425,6 +427,13 @@ bool IndividualProgression::isExcludedAccount(Player* player)
 
 bool IndividualProgression::isExcludedAccount(uint32 accountId)
 {
+    {
+        std::shared_lock<std::shared_mutex> lock(_accountMatchLock);
+        // An empty account filter excludes nobody and needs no database lookup.
+        if (!_excludedAccountsEnabled)
+            return false;
+    }
+
     return GetAccountMatch(accountId).excluded;
 }
 
@@ -438,6 +447,13 @@ bool IndividualProgression::isBotAccount(Player* player)
 
 bool IndividualProgression::isBotAccount(uint32 accountId)
 {
+    {
+        std::shared_lock<std::shared_mutex> lock(_accountMatchLock);
+        // An empty account filter excludes nobody and needs no database lookup.
+        if (!_botAccountsEnabled)
+            return false;
+    }
+
     return GetAccountMatch(accountId).bot;
 }
 
