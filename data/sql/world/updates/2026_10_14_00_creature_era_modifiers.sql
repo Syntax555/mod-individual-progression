@@ -251,16 +251,19 @@ WHERE `entry` IN (
 
 UPDATE `creature_template` SET `DamageModifier` = 0.6
 WHERE `entry` IN (
-    19569, 21058, 21195, 22464
+    12379, 19569, 21058, 21195, 22464
 ) AND ROUND(`DamageModifier`, 6) = 1;
 
 UPDATE `creature_template` SET `DamageModifier` = 0.7
 WHERE `entry` IN (
-    18449, 18450, 18452, 18453
+    12380, 18449, 18450, 18452, 18453
 ) AND ROUND(`DamageModifier`, 6) = 1;
 
 UPDATE `creature_template` SET `DamageModifier` = 0.75
 WHERE `entry` = 21478 AND ROUND(`DamageModifier`, 6) = 1;
+
+UPDATE `creature_template` SET `DamageModifier` = 0.8
+WHERE `entry` = 12378 AND ROUND(`DamageModifier`, 6) = 1;
 
 UPDATE `creature_template` SET `DamageModifier` = 0.95
 WHERE `entry` IN (
@@ -276,9 +279,6 @@ UPDATE `creature_template` SET `DamageModifier` = 1.2
 WHERE `entry` IN (
     23383, 23435
 ) AND ROUND(`DamageModifier`, 6) = 1;
-
-UPDATE `creature_template` SET `DamageModifier` = 1.25
-WHERE `entry` = 12380 AND ROUND(`DamageModifier`, 6) = 1;
 
 UPDATE `creature_template` SET `DamageModifier` = 1.3
 WHERE `entry` IN (
@@ -322,9 +322,6 @@ WHERE `entry` IN (
     19344, 19417, 19546, 19669, 20101, 20137, 20415, 20512, 20934, 21006, 21133, 21254,
     21519, 22307, 22337, 22424, 22458
 ) AND ROUND(`DamageModifier`, 6) = 1;
-
-UPDATE `creature_template` SET `DamageModifier` = 2.15
-WHERE `entry` = 12378 AND ROUND(`DamageModifier`, 6) = 1;
 
 UPDATE `creature_template` SET `DamageModifier` = 2.2
 WHERE `entry` = 20669 AND ROUND(`DamageModifier`, 6) = 1;
