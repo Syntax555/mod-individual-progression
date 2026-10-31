@@ -16,6 +16,12 @@ private:
 public:
     IndividualPlayerProgression() : PlayerScript("IndividualProgression") { }
 
+    void OnPlayerFirstLogin(Player* player) override
+    {
+        if (sIndividualProgression->IsStrictDefaultProgression() && sIndividualProgression->isNormalAccount(player))
+            sIndividualProgression->GrantCreationStartingStage(player);
+    }
+
     void OnPlayerLogin(Player* player) override
     {
         if (!sIndividualProgression->enabled)
@@ -1007,37 +1013,20 @@ public:
         if (!accountId || !charRace || !charClass)
             return false;
 
-        // A hero-class character cannot start from level 1. Existing characters
-        // remain intact; disable the strict policy to create new Death Knights.
-        if (sIndividualProgression->enabled && sIndividualProgression->strictEarnedProgression &&
-            charClass == CLASS_DEATH_KNIGHT)
-            return false;
-
-        if ((!sIndividualProgression->enabled) ||
-            (charRace != RACE_DRAENEI && charRace != RACE_BLOODELF && charClass != CLASS_DEATH_KNIGHT) ||
-            (!sIndividualProgression->tbcRacesProgressionLevel && !sIndividualProgression->deathKnightProgressionLevel))
-        {
+        if (!sIndividualProgression->enabled)
             return true;
-        }
+
+        // Expansion races and Death Knights need an account that has earned their expansion with another character.
+        uint8 const raceUnlock = charRace == RACE_DRAENEI || charRace == RACE_BLOODELF ? sIndividualProgression->ExpansionRaceUnlockStage() : 0;
+        uint8 const classUnlock = charClass == CLASS_DEATH_KNIGHT ? sIndividualProgression->DeathKnightUnlockStage() : 0;
+        if (!raceUnlock && !classUnlock)
+            return true;
 
         // Check if the account is a bot or excluded from progression
         if (sIndividualProgression->isBotAccount(accountId) || sIndividualProgression->isExcludedAccount(accountId))
             return true;
 
-        uint8 highestProgression = sIndividualProgression->GetAccountProgression(accountId);
-        bool allowed = true;
-        
-        if ((charRace == RACE_DRAENEI || charRace == RACE_BLOODELF) && sIndividualProgression->tbcRacesProgressionLevel != 0)
-        {
-            if (highestProgression < sIndividualProgression->tbcRacesProgressionLevel)
-                allowed = false;
-        }
-        if (charClass == CLASS_DEATH_KNIGHT && sIndividualProgression->deathKnightProgressionLevel != 0)
-        {
-            if (highestProgression < sIndividualProgression->deathKnightProgressionLevel)
-                allowed = false;
-        }
-        return allowed;
+        return sIndividualProgression->GetAccountProgression(accountId) >= std::max(raceUnlock, classUnlock);
     }
 };
 

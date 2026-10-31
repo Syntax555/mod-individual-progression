@@ -36,6 +36,48 @@ bool IndividualProgression::IsStrictDefaultProgression() const
     return enabled && strictEarnedProgression && !disableDefaultProgression && customProgressionMap.empty();
 }
 
+// Strict progression never lets these characters predate their expansion, whatever the unlock settings.
+uint8 IndividualProgression::ExpansionRaceUnlockStage() const
+{
+    return enabled && strictEarnedProgression ? std::max<uint8>(tbcRacesProgressionLevel, PROGRESSION_PRE_TBC)
+                                              : tbcRacesProgressionLevel;
+}
+
+uint8 IndividualProgression::DeathKnightUnlockStage() const
+{
+    return enabled && strictEarnedProgression ? std::max<uint8>(deathKnightProgressionLevel, PROGRESSION_TBC_TIER_5)
+                                              : deathKnightProgressionLevel;
+}
+
+// A new expansion-race or Death Knight character begins in its own expansion once the
+// account has earned that stage with another character; every other tier stays earned.
+void IndividualProgression::GrantCreationStartingStage(Player* player)
+{
+    if (!player || !player->GetSession())
+        return;
+
+    bool const deathKnight = player->getClass() == CLASS_DEATH_KNIGHT;
+    bool const expansionRace = player->getRace() == RACE_DRAENEI || player->getRace() == RACE_BLOODELF;
+    uint8 const start = deathKnight ? deathKnightStartingProgression : expansionRace ? tbcRacesStartingProgression : 0;
+    uint8 const unlock = deathKnight ? DeathKnightUnlockStage() : ExpansionRaceUnlockStage();
+    if (!start || (progressionLimit && start > progressionLimit) ||
+        GetAccountProgression(player->GetSession()->GetAccountId()) < std::max(start, unlock))
+        return;
+
+    for (uint8 stage = StrictEarnedProgressionPolicy::NextStage(GetPlayerProgressionFromQuests(player));
+         stage && stage <= start; stage = StrictEarnedProgressionPolicy::NextStage(stage))
+    {
+        uint32 const questId = 66000 + stage;
+        Quest const* quest = sObjectMgr->GetQuestTemplate(questId);
+        if (!quest)
+            return;
+
+        player->AddQuest(quest, nullptr);
+        player->CompleteQuest(questId);
+        player->RewardQuest(quest, 0, player, false, false);
+    }
+}
+
 uint8 IndividualProgression_GetEarnedEra(Player* player)
 {
     if (!player || !sIndividualProgression->IsStrictDefaultProgression())

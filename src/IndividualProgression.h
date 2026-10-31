@@ -414,6 +414,10 @@ public:
 
     bool strictEarnedProgression = false;
     bool IsStrictDefaultProgression() const;
+    // Account stage a new expansion-race or Death Knight character requires.
+    uint8 ExpansionRaceUnlockStage() const;
+    uint8 DeathKnightUnlockStage() const;
+    void GrantCreationStartingStage(Player* player);
     // Experience follows each character's earned era; see EraExperience.cpp.
     bool eraExperience = false;
     bool EraExperienceActive() const { return eraExperience && IsStrictDefaultProgression(); }
