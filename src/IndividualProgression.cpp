@@ -8,6 +8,7 @@
 #include "ReputationMgr.h"
 #include "StrictEarnedProgressionPolicy.h"
 #include "naxxramas_40.h"
+#include "PetDefines.h"
 
 IndividualProgression* IndividualProgression::instance()
 {
@@ -166,7 +167,7 @@ void IndividualProgression::ForceUpdateProgressionState(Player* player, Progress
     if (!player || !player->IsInWorld())
         return;
 
-    if (!newState)
+    if (!newState && newState != 0)
         return;
 
     // remove all hidden progression quests first
@@ -237,38 +238,6 @@ uint8 IndividualProgression::GetAccountProgression(uint32 accountId)
         } while (result->NextRow());
     }
     return progressionLevel;
-}
-
-void IndividualProgression::UpdateRNDbotSpells(Player* player)
-{
-    if (enabled && strictEarnedProgression)
-        return;
-
-    if (!player || !player->IsInWorld())
-        return;
-
-    if (!sIndividualProgression->isBotAccount(player))
-        return;
-
-    switch (player->getClass())
-    {
-    case CLASS_WARLOCK:
-        if (player->GetLevel() >= 40 && !player->HasSpell(7584)) // Summon Felsteed
-            player->learnSpell(7584, false);
-        break;
-    case CLASS_PALADIN:
-        if (player->GetLevel() >= 40 && !player->HasSpell(13819)) // Summon Warhorse
-            player->learnSpell(13819, false);
-        break;
-    case CLASS_DRUID:
-        if (player->GetLevel() >= 10 && !player->HasSpell(18960)) // Teleport: Moonglade
-            player->learnSpell(18960, false);
-        if (player->GetLevel() >= 16 && !player->HasSpell(1066)) // Aquatic Form
-            player->learnSpell(1066, false);
-        break;
-    default:
-        return;
-    }
 }
 
 void IndividualProgression::UpdateAccountReputation(uint32 factionId, uint32 accountId, Player* player)
@@ -543,7 +512,7 @@ bool IndividualProgression::isExcludedAccount(uint32 accountId)
     return GetAccountMatch(accountId).excluded;
 }
 
-bool IndividualProgression::isBotAccount(Player* player)
+bool IndividualProgression::isBotAccount(const Player* player)
 {
     if (enabled && strictEarnedProgression)
         return false;
@@ -827,6 +796,16 @@ void IndividualProgression::checkIPPhasing(Player* player, uint32 newArea)
             if (player->GetQuestStatus(QUEST_MANA_CELLS) == QUEST_STATUS_REWARDED)
             {
                 player->CastSpell(player, IPP_PHASE_III, false);
+            }
+            break;
+        case AREA_THRONE_OF_KILJAEDEN:
+            if (isBeforeProgression(player, PROGRESSION_TBC_TIER_4))
+            {
+                player->CastSpell(player, IPP_PHASE, false);
+            }
+            else if (hasPassedProgression(player, PROGRESSION_TBC_TIER_4))
+            {
+                player->CastSpell(player, IPP_PHASE_II, false);
             }
             break;
         case AREA_FOREST_SONG:
@@ -1287,6 +1266,8 @@ private:
         sIndividualProgression->doableNaxx40Bosses_Razuvious = sConfigMgr->GetOption<bool>("IndividualProgression.doableNaxx40Bosses_Razuvious", false);
         sIndividualProgression->enforceGroupRules = sConfigMgr->GetOption<bool>("IndividualProgression.EnforceGroupRules", false);
         sIndividualProgression->fishingFix = sConfigMgr->GetOption<bool>("IndividualProgression.FishingFix", true);
+        sIndividualProgression->VanillaHunterPets = sConfigMgr->GetOption<bool>("IndividualProgression.VanillaHunterPets", true);
+        sIndividualProgression->WarlockDemonTrainers = sConfigMgr->GetOption<bool>("IndividualProgression.WarlockDemonTrainers", true);
         sIndividualProgression->simpleConfigOverride = sConfigMgr->GetOption<bool>("IndividualProgression.SimpleConfigOverride", true);
         sIndividualProgression->progressionLimit = sConfigMgr->GetOption<uint8>("IndividualProgression.ProgressionLimit", 0);
         sIndividualProgression->startingProgression = sConfigMgr->GetOption<uint8>("IndividualProgression.StartingProgression", 0);
@@ -1398,7 +1379,6 @@ public:
         if (sIndividualProgression->simpleConfigOverride)
         {
             sWorld->setIntConfig(CONFIG_WATER_BREATH_TIMER, 60000);
-            sWorld->setBoolConfig(CONFIG_PLAYER_SETTINGS_ENABLED, true);
             sWorld->setBoolConfig(CONFIG_LOW_LEVEL_REGEN_BOOST, false);
             sWorld->setBoolConfig(CONFIG_DBC_ENFORCE_ITEM_ATTRIBUTES, false);
         }

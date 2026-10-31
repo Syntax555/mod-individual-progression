@@ -55,12 +55,14 @@ Read [AGENTS.md](AGENTS.md) and the assembly's
 Make validated changes on `master`, then update the assembly pin. Preserve
 progression guards, characters, databases, configuration and pinned history.
 
-Imported from [ZhengPeiRu21/mod-individual-progression at `4933d455d2f6`](https://github.com/ZhengPeiRu21/mod-individual-progression/commit/4933d455d2f611eed50c74c68c78832df4ed37a3).
-The [original README](https://github.com/ZhengPeiRu21/mod-individual-progression/blob/4933d455d2f611eed50c74c68c78832df4ed37a3/README.md)
+Imported from [Grimfeather/mod-individual-progression at `18999da65adc`](https://github.com/Grimfeather/mod-individual-progression/commit/18999da65adcbb70c7f4b962afb3600534481ef6),
+which continues [ZhengPeiRu21/mod-individual-progression](https://github.com/ZhengPeiRu21/mod-individual-progression)
+and requires the matching core changes supplied by the assembly's core fork.
+The [original README](https://github.com/Grimfeather/mod-individual-progression/blob/18999da65adcbb70c7f4b962afb3600534481ef6/README.md)
 and [upstream wiki](https://github.com/ZhengPeiRu21/mod-individual-progression/wiki)
 remain general references; use the assembly guides for its installed policy.
 
-Credits include ZhengPeiRu21 and contributors, AzerothCore, TrinityCore,
+Credits include Grimfeather, ZhengPeiRu21 and contributors, AzerothCore, TrinityCore,
 MaNGOS, mod-war-effort, mod-pvp-titles, vMangos, cMangos and Sogladev's Naxx 40
 scripts and data. Preserve the repository's [MIT license](LICENSE), individual
 AGPL source notices and all other upstream file licenses.

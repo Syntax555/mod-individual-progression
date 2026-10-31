@@ -54,7 +54,7 @@ INSERT INTO `smart_scripts` (`entryorguid`, `source_type`, `id`, `link`, `event_
 (1891, 0, 3, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 30, 60, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,               'Pyrewood Watcher - Outside 30 Range - Start Combat Movement'),
 (1891, 0, 4, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 5, 30, 21, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                'Pyrewood Watcher - Within 5-30 Range - Stop Combat Movement'),
 (1891, 0, 5, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 0, 5, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                 'Pyrewood Watcher - Within 0-5 Range - Start Combat Movement'),
-(1891, 0, 6, 0, 9, 0, 100, 0, 0, 0, 2000, 4000, 5, 30, 11, 6660, 64, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,            'Pyrewood Watcher - Within 5-30 Range - Cast Shoot'),
+(1891, 0, 6, 0, 9, 0, 100, 0, 0, 0, 2000, 4000, 5, 30, 11, 6660, 512, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,           'Pyrewood Watcher - Within 5-30 Range - Cast Shoot'),
 (1891, 0, 7, 0, 2, 0, 100, 1, 0, 15, 0, 0, 0, 0, 25, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,                      'Pyrewood Watcher - Between 0-15% Health - Flee For Assist (No Repeat)'),
 (1894, 0, 0, 2, 1, 0, 100, 512, 5000, 5000, 5000, 5000, 0, 0, 36, 1893, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,      'Pyrewood Sentry - Out of Combat - Update Entry'),
 (1894, 0, 1, 2, 1, 0, 100, 512, 5000, 5000, 5000, 5000, 0, 0, 36, 1894, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,      'Pyrewood Sentry - Out of Combat - Update Entry'),
@@ -190,3 +190,20 @@ INSERT INTO `smart_scripts` (`entryorguid`, `source_type`, `id`, `link`, `event_
 (2066, 0, 1, 0, 7, 0, 100, 0, 0, 0, 0, 0, 0, 0, 41, 1500, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 'Councilman Higarth   - On Evade - Despawn In 1500 ms'),
 (2067, 0, 1, 0, 7, 0, 100, 0, 0, 0, 0, 0, 0, 0, 41, 1500, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 'Councilman Brunswick - On Evade - Despawn In 1500 ms'),
 (2068, 0, 1, 0, 7, 0, 100, 0, 0, 0, 0, 0, 0, 0, 41, 1500, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 'Lord Mayor Morrison  - On Evade - Despawn In 1500 ms');
+
+-- Script end event for quest Wild Hearts (ported from CMaNGOS TBC)
+UPDATE `creature_template` SET `AIName` = "SmartAI" WHERE `entry` = 1937;
+DELETE FROM `smart_scripts` WHERE `source_type` = 0 AND `entryorguid` = 1937;
+DELETE FROM `smart_scripts` WHERE `source_type` = 9 AND `entryorguid` = 193700;
+INSERT INTO `smart_scripts` (`entryorguid`, `source_type`, `id`, `link`,
+`event_type`, `event_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `event_param5`, `event_param6`,
+`action_type`, `action_param1`, `action_param2`, `action_param3`, `action_param4`, `action_param5`, `action_param6`,
+`target_type`, `target_param1`, `target_param2`, `target_param3`, `target_param4`, `target_x`, `target_y`, `target_z`, `target_o`, `comment`) VALUES
+--
+(1937, 0, 0, 0, 20, 0, 100, 0, 429, 0, 0, 0, 0, 0, 80, 193700, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,    "Apothecary Renferrel - On Quest 'Wild Hearts' Turned In - Run Script 193700"),
+--
+(193700, 9, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 48, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,          "Script9 - Apothecary Renferrel - Set Active"),
+(193700, 9, 1, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,           "Script9 - Apothecary Renferrel - Say Text 0"),
+(193700, 9, 2, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 17, 69, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,         "Script9 - Apothecary Renferrel - Set EmoteState 69"),
+(193700, 9, 3, 0, 0, 0, 100, 0, 5000, 5000, 0, 0, 0, 0, 17, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,    "Script9 - Apothecary Renferrel - Set EmoteState 0"),
+(193700, 9, 4, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 48, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,          "Script9 - Apothecary Renferrel - Set Inactive");

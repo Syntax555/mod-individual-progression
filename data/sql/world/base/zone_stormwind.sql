@@ -299,6 +299,14 @@ INSERT INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry
 --
 (23, 12783, 35906, 0, 0, 8, 0, 66008, 0, 0, 0, 0, 0, '', 'Lieutenant Karter will not sell Reins of the Black War Elekk until the player has completed PROGRESSION_PRE_TBC');
 
+-- Quest: Where Kings Walk (13188)
+-- King Wrynn is only in the throne room from PROGRESSION_TBC_TIER_5 (zz_ipp_aware_npcs.sql), and the Dungeon Finder stays
+-- locked for Death Knights until 13188 or 13189 is rewarded. Bolvar stands in for him, as in quest_missing_diplomat.sql.
+DELETE FROM `creature_questender` WHERE `quest` = 13188;
+INSERT INTO `creature_questender` (`id`, `quest`) VALUES
+(1748, 13188),  -- Bolvar ends the quest while King Wrynn is away
+(29611, 13188); -- King Wrynn ends it in person when he is back
+
 -- Quest: Alicia's Poem (11451)
 DELETE FROM `conditions` WHERE `SourceTypeOrReferenceId` = 19 AND `SourceEntry` = 11451;
 INSERT INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`,
@@ -314,6 +322,9 @@ DELETE FROM `creature` WHERE `id` IN
 
 /* NPC Rebecca Laughlin - Remove non-Vanilla Tabards */
 DELETE FROM `npc_vendor` WHERE `entry`= 5193 AND `item` IN (15197, 15199, 19031, 19505, 24004, 31773, 31775, 31776, 31777, 31778, 31779, 31780, 31781, 31804, 32445, 32828, 35221);
+
+-- give Thomas Miller his loaf of bread back
+UPDATE `creature_addon` SET `bytes2` = 1 WHERE `guid` = 79723;
 
 -- Summon Felsteed (Warlock)
 DELETE FROM `quest_offer_reward` WHERE `ID` = 4488;

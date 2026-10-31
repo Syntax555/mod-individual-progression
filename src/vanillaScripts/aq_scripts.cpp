@@ -424,9 +424,8 @@ public:
         QuestStatus bangStatus = player->GetQuestStatus(QUEST_BANG_A_GONG);
         bool gongRung = (bangStatus == QUEST_STATUS_REWARDED) || (player->GetQuestStatus(SIMPLY_BANG_A_GONG) == QUEST_STATUS_REWARDED);
 
-        // A player who rang the gong with 'Simply Bang a Gong!' and later finished the Scepter chain
-        // can still hand in the real 'Bang a Gong!' for the mount and the Scarab Lord title.
-        // It needs the Scepter in the bags, which CanTakeQuest doesn't check.
+        // A player who rang the gong with 'Simply Bang a Gong!' and later finished the Scepter chain can still hand in the real 'Bang a Gong!' for the mount and the Scarab Lord title.
+        // It needs the Scepter in the bags, which CanTakeQuest doesn't check. This can only be done during the AQ War, not after.
         bool canBangAGong = false;
         if (bangStatus == QUEST_STATUS_NONE && player->HasItemCount(ITEM_SCEPTER_OF_THE_SHIFTING_SANDS))
             if (Quest const* bangQuest = sObjectMgr->GetQuestTemplate(QUEST_BANG_A_GONG))

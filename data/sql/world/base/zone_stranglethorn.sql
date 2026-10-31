@@ -72,14 +72,14 @@ INSERT INTO `smart_scripts` (`entryorguid`, `source_type`, `id`, `link`, `event_
 (694, 0, 0, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 30, 60, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                 'Bloodscalp Axe Thrower - Outside 30 Range - Start Combat Movement'),
 (694, 0, 1, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 5, 30, 21, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                  'Bloodscalp Axe Thrower - Within 5-30 Range - Stop Combat Movement'),
 (694, 0, 2, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 0, 5, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                   'Bloodscalp Axe Thrower - Within 0-5 Range - Start Combat Movement'),
-(694, 0, 3, 0, 9, 0, 100, 0, 0, 0, 3500, 4000, 5, 30, 11, 10277, 64, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,             'Bloodscalp Axe Thrower - Within 5-30 Range - Cast Throw'),
+(694, 0, 3, 0, 9, 0, 100, 0, 0, 0, 3500, 4000, 5, 30, 11, 10277, 512, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,            'Bloodscalp Axe Thrower - Within 5-30 Range - Cast Throw'),
 (694, 0, 4, 5, 2, 0, 100, 1, 0, 30, 0, 0, 0, 0, 11, 8599, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                     'Bloodscalp Axe Thrower - Between 0-30% Health - Cast Enrage (No Repeat)'),
 (694, 0, 5, 0, 61, 0, 100, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                         'Bloodscalp Axe Thrower - On Enrage - Say Line 0'),
 (694, 0, 6, 0, 2, 0, 100, 1, 0, 15, 0, 0, 0, 0, 25, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,                        'Bloodscalp Axe Thrower - Between 0-15% Health - Flee For Assist (No Repeat)'),
 (696, 0, 0, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 30, 60, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                 'Skullsplitter Axe Thrower - Outside 30 Range - Start Combat Movement'),
 (696, 0, 1, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 5, 30, 21, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                  'Skullsplitter Axe Thrower - Within 5-30 Range - Stop Combat Movement'),
 (696, 0, 2, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 0, 5, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                   'Skullsplitter Axe Thrower - Within 0-5 Range - Start Combat Movement'),
-(696, 0, 3, 0, 9, 0, 100, 0, 0, 0, 2200, 3800, 5, 30, 11, 10277, 64, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,             'Skullsplitter Axe Thrower - Within 5-30 Range - Cast Throw'),
+(696, 0, 3, 0, 9, 0, 100, 0, 0, 0, 2200, 3800, 5, 30, 11, 10277, 512, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,            'Skullsplitter Axe Thrower - Within 5-30 Range - Cast Throw'),
 (696, 0, 4, 0, 0, 0, 100, 0, 5000, 7000, 23000, 26000, 0, 0, 11, 3148, 2, 0, 0, 0, 0, 21, 5, 0, 0, 0, 0, 0, 0, 0,       'Skullsplitter Axe Thrower - Within 0-5 Range - Cast Head Crack'),
 (696, 0, 5, 0, 2, 0, 100, 1, 0, 15, 0, 0, 0, 0, 25, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,                        'Skullsplitter Axe Thrower - Between 0-15% Health - Flee For Assist (No Repeat)'),
 (697, 0, 0, 0, 1, 0, 100, 1, 1000, 1000, 0, 0, 0, 0, 11, 8788, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                'Bloodscalp Shaman - Out of Combat - Cast Lightning Shield (No Repeat)'),
@@ -87,14 +87,14 @@ INSERT INTO `smart_scripts` (`entryorguid`, `source_type`, `id`, `link`, `event_
 (697, 0, 2, 0, 106, 0, 100, 0, 13200, 29600, 24800, 37300, 0, 0, 11, 11969, 2, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,   'Bloodscalp Shaman - In Combat - Cast Fire Nova'),
 (697, 0, 3, 4, 2, 0, 100, 1, 0, 30, 0, 0, 0, 0, 11, 8599, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                     'Bloodscalp Shaman - Between 0-30% Health - Cast Enrage (No Repeat)'),
 (697, 0, 4, 0, 61, 0, 100, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                         'Bloodscalp Shaman - On Enrage - Say Line 0'),
-(699, 0, 0, 0, 9, 0, 100, 0, 0, 0, 2000, 4000, 5, 30, 11, 10277, 64, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,             'Bloodscalp Beastmaster - Within 5-30 Range - Cast Throw'),
+(699, 0, 0, 0, 9, 0, 100, 0, 0, 0, 2000, 4000, 5, 30, 11, 10277, 512, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,            'Bloodscalp Beastmaster - Within 5-30 Range - Cast Throw'),
 (699, 0, 1, 2, 2, 0, 100, 1, 0, 30, 0, 0, 0, 0, 11, 8599, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                     'Bloodscalp Beastmaster - Between 0-30% Health - Cast Enrage (No Repeat)'),
 (699, 0, 2, 0, 61, 0, 100, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                         'Bloodscalp Beastmaster - On Enrage - Say Line 0'),
 (699, 0, 3, 0, 2, 0, 100, 1, 0, 15, 0, 0, 0, 0, 25, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,                        'Bloodscalp Beastmaster - Between 0-15% Health - Flee For Assist (No Repeat)'),
 (701, 0, 0, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 30, 60, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                 'Bloodscalp Mystic - Outside 30 Range - Start Combat Movement'),
 (701, 0, 1, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 5, 30, 21, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                  'Bloodscalp Mystic - Within 5-30 Range - Stop Combat Movement'),
 (701, 0, 2, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 0, 5, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                   'Bloodscalp Mystic - Within 0-5 Range - Start Combat Movement'),
-(701, 0, 3, 0, 9, 0, 100, 0, 0, 0, 2000, 4000, 5, 30, 11, 10277, 64, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,             'Bloodscalp Mystic - Within 5-30 Range - Cast Throw'),
+(701, 0, 3, 0, 9, 0, 100, 0, 0, 0, 2000, 4000, 5, 30, 11, 10277, 512, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,            'Bloodscalp Mystic - Within 5-30 Range - Cast Throw'),
 (701, 0, 4, 0, 0, 0, 100, 0, 3000, 4000, 25000, 30000, 0, 0, 11, 4979, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,        'Bloodscalp Mystic - In Combat - Cast Quick Flame Ward'),
 (701, 0, 5, 0, 14, 0, 100, 0, 500, 40, 60000, 60000, 0, 0, 11, 11986, 1, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0,         'Bloodscalp Mystic - Friendly missing 500 Health - Cast Healing Wave'),
 (701, 0, 6, 7, 2, 0, 100, 1, 0, 30, 0, 0, 0, 0, 11, 8599, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                     'Bloodscalp Mystic - Between 0-30% Health - Cast Enrage (No Repeat)'),
@@ -128,7 +128,7 @@ INSERT INTO `smart_scripts` (`entryorguid`, `source_type`, `id`, `link`, `event_
 (781, 0, 0, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 30, 60, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                 'Skullsplitter Headhunter - Outside 30 Range - Start Combat Movement'),
 (781, 0, 1, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 5, 30, 21, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                  'Skullsplitter Headhunter - Within 5-30 Range - Stop Combat Movement'),
 (781, 0, 2, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 0, 5, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                   'Skullsplitter Headhunter - Within 0-5 Range - Start Combat Movement'),
-(781, 0, 3, 0, 9, 0, 100, 0, 0, 0, 2200, 3800, 5, 30, 11, 10277, 64, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,             'Skullsplitter Headhunter - Within 5-30 Range - Cast Throw'),
+(781, 0, 3, 0, 9, 0, 100, 0, 0, 0, 2200, 3800, 5, 30, 11, 10277, 512, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,            'Skullsplitter Headhunter - Within 5-30 Range - Cast Throw'),
 (781, 0, 4, 0, 0, 0, 100, 0, 1000, 10000, 18000, 29000, 0, 0, 11, 6533, 32, 0, 0, 0, 0, 21, 20, 0, 0, 0, 0, 0, 0, 0,    'Skullsplitter Headhunter - Within 0-20 Range - Cast Net'),
 (781, 0, 5, 0, 0, 0, 100, 0, 5000, 7000, 23000, 26000, 0, 0, 11, 3148, 2, 0, 0, 0, 0, 21, 5, 0, 0, 0, 0, 0, 0, 0,       'Skullsplitter Headhunter - Within 0-5 Range - Cast Head Crack'),
 (781, 0, 6, 0, 2, 0, 100, 1, 0, 15, 0, 0, 0, 0, 25, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,                        'Skullsplitter Headhunter - Between 0-15% Health - Flee For Assist (No Repeat)'),
@@ -158,7 +158,7 @@ INSERT INTO `smart_scripts` (`entryorguid`, `source_type`, `id`, `link`, `event_
 (879, 0, 0, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 30, 60, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                 'Saltscale Hunter - Outside 30 Range - Start Combat Movement'),
 (879, 0, 1, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 5, 30, 21, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                  'Saltscale Hunter - Within 5-30 Range - Stop Combat Movement'),
 (879, 0, 2, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 0, 5, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                   'Saltscale Hunter - Within 0-5 Range - Start Combat Movement'),
-(879, 0, 3, 0, 9, 0, 100, 0, 0, 0, 2000, 4000, 5, 30, 11, 10277, 64, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,             'Saltscale Hunter - Within 5-30 Range - Cast Throw'),
+(879, 0, 3, 0, 9, 0, 100, 0, 0, 0, 2000, 4000, 5, 30, 11, 10277, 512, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,            'Saltscale Hunter - Within 5-30 Range - Cast Throw'),
 (879, 0, 4, 0, 2, 0, 100, 1, 0, 15, 0, 0, 0, 0, 25, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,                        'Saltscale Hunter - Between 0-15% Health - Flee For Assist (No Repeat)'),
 --
 (921, 0, 0, 0, 9, 0, 100, 0, 5200, 7500, 5900, 9800, 0, 5, 11, 40505, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,         'Venture Co. Lumberjack - Within 0-5 Range - Cast Cleave'),
@@ -187,7 +187,7 @@ INSERT INTO `smart_scripts` (`entryorguid`, `source_type`, `id`, `link`, `event_
 (979, 0, 0, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 30, 60, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                 'Kurzen Shadow Hunter - Outside 30 Range - Start Combat Movement'),
 (979, 0, 1, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 5, 30, 21, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                  'Kurzen Shadow Hunter - Within 5-30 Range - Stop Combat Movement'),
 (979, 0, 2, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 0, 5, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                   'Kurzen Shadow Hunter - Within 0-5 Range - Start Combat Movement'),
-(979, 0, 3, 0, 9, 0, 100, 0, 0, 0, 2300, 3900, 5, 30, 11, 6660, 64, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,              'Kurzen Shadow Hunter - Within 5-30 Range - Cast Shoot'),
+(979, 0, 3, 0, 9, 0, 100, 0, 0, 0, 2300, 3900, 5, 30, 11, 6660, 512, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,             'Kurzen Shadow Hunter - Within 5-30 Range - Cast Shoot'),
 (979, 0, 4, 0, 0, 0, 100, 0, 9000, 14000, 9000, 14000, 0, 0, 11, 8806, 32, 0, 0, 0, 0, 28, 30, 1, 1, 5, 0, 0, 0, 0,     'Kurzen Shadow Hunter - In Combat - Cast Poisoned Shot'),
 (979, 0, 5, 0, 2, 0, 100, 1, 0, 15, 0, 0, 0, 0, 25, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,                        'Kurzen Shadow Hunter - Between 0-15% Health - Flee For Assist (No Repeat)'),
 --
@@ -215,7 +215,7 @@ INSERT INTO `smart_scripts` (`entryorguid`, `source_type`, `id`, `link`, `event_
 (1097, 0, 0, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 30, 60, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                'Venture Co. Mechanic - Outside 30 Range - Start Combat Movement'),
 (1097, 0, 1, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 5, 30, 21, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                 'Venture Co. Mechanic - Within 5-30 Range - Stop Combat Movement'),
 (1097, 0, 2, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 0, 5, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                  'Venture Co. Mechanic - Within 0-5 Range - Start Combat Movement'),
-(1097, 0, 3, 0, 9, 0, 100, 0, 0, 0, 2200, 3800, 5, 30, 11, 6660, 64, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,             'Venture Co. Mechanic - Within 5-30 Range - Cast Shoot'),
+(1097, 0, 3, 0, 9, 0, 100, 0, 0, 0, 2200, 3800, 5, 30, 11, 6660, 512, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,            'Venture Co. Mechanic - Within 5-30 Range - Cast Shoot'),
 (1097, 0, 4, 0, 0, 0, 100, 0, 6500, 10000, 6500, 10000, 0, 0, 11, 14443, 0, 0, 0, 0, 0, 28, 30, 1, 1, 5, 0, 0, 0, 0,    'Venture Co. Mechanic - In Combat - Cast Multi-Shot'),
 (1097, 0, 5, 0, 2, 0, 100, 1, 0, 15, 0, 0, 0, 0, 25, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,                       'Venture Co. Mechanic - Between 0-15% Health - Flee For Assist (No Repeat)'),
 (1488, 0, 0, 0, 0, 0, 100, 513, 6000, 35000, 0, 0, 0, 0, 11, 7102, 0, 0, 0, 0, 0, 5, 5, 0, 0, 0, 0, 0, 0, 0,            'Zanzil Zombie - Within 0-5 Range  - Cast Contagion of Rot (No Repeat)'),
@@ -275,7 +275,7 @@ INSERT INTO `smart_scripts` (`entryorguid`, `source_type`, `id`, `link`, `event_
 (2548, 0, 0, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 30, 60, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                'Captain Keelhaul - Outside 30 Range - Start Combat Movement'),
 (2548, 0, 1, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 5, 30, 21, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                 'Captain Keelhaul - Within 5-30 Range - Stop Combat Movement'),
 (2548, 0, 2, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 0, 5, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                  'Captain Keelhaul - Within 0-5 Range - Start Combat Movement'),
-(2548, 0, 3, 0, 9, 0, 100, 0, 0, 0, 2200, 3900, 5, 30, 11, 6660, 64, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,             'Captain Keelhaul - Within 5-30 Range - Cast Shoot'),
+(2548, 0, 3, 0, 9, 0, 100, 0, 0, 0, 2200, 3900, 5, 30, 11, 6660, 512, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,            'Captain Keelhaul - Within 5-30 Range - Cast Shoot'),
 (2548, 0, 4, 0, 9, 0, 100, 0, 0, 0, 15000, 35000, 5, 30, 11, 7896, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,            'Captain Keelhaul - Within 5-30 Range - Cast Exploding Shot'),
 (2548, 0, 5, 0, 106, 0, 100, 0, 1200, 3200, 17200, 25200, 0, 10, 11, 13730, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,   'Captain Keelhaul - Within 0-10 Range - Cast Demoralizing Shout'),
 (2548, 0, 6, 0, 2, 0, 100, 1, 0, 15, 0, 0, 0, 0, 25, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,                       'Captain Keelhaul - Between 0-15% Health - Flee For Assist (No Repeat)'),
@@ -293,7 +293,7 @@ INSERT INTO `smart_scripts` (`entryorguid`, `source_type`, `id`, `link`, `event_
 (4458, 0, 0, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 30, 60, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                'Murkgill Hunter - Outside 30 Range - Start Combat Movement'),
 (4458, 0, 1, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 5, 30, 21, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                 'Murkgill Hunter - Within 5-30 Range - Stop Combat Movement'),
 (4458, 0, 2, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 0, 5, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                  'Murkgill Hunter - Within 0-5 Range - Start Combat Movement'),
-(4458, 0, 3, 0, 9, 0, 100, 0, 0, 0, 2000, 4000, 5, 30, 11, 10277, 64, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,            'Murkgill Hunter - Within 5-30 Range - Cast Throw'),
+(4458, 0, 3, 0, 9, 0, 100, 0, 0, 0, 2000, 4000, 5, 30, 11, 10277, 512, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,           'Murkgill Hunter - Within 5-30 Range - Cast Throw'),
 (4458, 0, 4, 0, 2, 0, 100, 1, 0, 15, 0, 0, 0, 0, 25, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,                       'Murkgill Hunter - Between 0-15% Health - Flee For Assist'),
 (4459, 0, 0, 0, 0, 0, 100, 0, 0, 0, 2400, 3800, 0, 0, 11, 9532, 64, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,              'Murkgill Oracle - In Combat - Cast Lightning Bolt'),
 (4459, 0, 1, 0, 14, 0, 100, 0, 700, 40, 25000, 35000, 0, 0, 11, 11986, 1, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0,        'Murkgill Oracle - Friendly missing 700 Health - Cast Healing Wave'),
@@ -380,3 +380,54 @@ INSERT INTO `creature_text` (`CreatureID`, `GroupID`, `ID`, `Text`, `Type`, `Lan
 (723, 0, 0, 'I\'ll crush you!',                                  12, 0, 100, 0, 0, 0, 1925, 0, 'Mosh Ogg Butcher'),
 (723, 0, 1, 'Me smash! You die!',                                12, 0, 100, 0, 0, 0, 1926, 0, 'Mosh Ogg Butcher'),
 (723, 0, 2, 'Raaaaaaaaaaaaaaaaaaaaaaaaaaaaaar!!! Me smash $R!',  12, 0, 100, 0, 0, 0, 1927, 0, 'Mosh Ogg Butcher');
+
+-- Script end event for quest Headhunting (ported from CMaNGOS TBC)
+UPDATE `creature_template` SET `AIName` = "SmartAI" WHERE `entry` = 2497;
+
+DELETE FROM `smart_scripts` WHERE `entryorguid` = 2497 AND `source_type` = 0;
+DELETE FROM `smart_scripts` WHERE `entryorguid` = 249700 AND `source_type` = 9;
+INSERT INTO `smart_scripts` (`entryorguid`, `source_type`, `id`, `link`,
+`event_type`, `event_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `event_param5`, `event_param6`,
+`action_type`, `action_param1`, `action_param2`, `action_param3`, `action_param4`, `action_param5`, `action_param6`,
+`target_type`, `target_param1`, `target_param2`, `target_param3`, `target_param4`, `target_x`, `target_y`, `target_z`, `target_o`, `comment`) VALUES
+--
+(2497, 0, 0, 0, 20, 0, 100, 0, 582, 0, 0, 0, 0, 0, 80, 249700, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,     "Nimboya - On Quest 'Headhunting' Turned In - Run Script 249700"),
+--
+(249700, 9, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 48, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,           "Script9 - Nimboya - Set Active"),
+(249700, 9, 1, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 83, 3, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,           "Script9 - Nimboya - Remove NpcFlags Gossip + Questgiver"),
+(249700, 9, 2, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 66, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0.64577,     "Script9 - Nimboya - Change Orientation"),
+(249700, 9, 3, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,            "Script9 - Nimboya - Say Text 0"),
+(249700, 9, 4, 0, 0, 0, 100, 0, 1000, 1000, 0, 0, 0, 0, 241, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,    "Script9 - Nimboya - Spawn GameObject Group 0"),
+(249700, 9, 5, 0, 0, 0, 100, 0, 6000, 6000, 0, 0, 0, 0, 241, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,    "Script9 - Nimboya - Spawn GameObject Group 1"),
+(249700, 9, 6, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,            "Script9 - Nimboya - Say Text 1"),
+(249700, 9, 7, 0, 0, 0, 100, 0, 5000, 5000, 0, 0, 0, 0, 241, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,    "Script9 - Nimboya - Spawn GameObject Group 2"),
+(249700, 9, 8, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 66, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0,           "Script9 - Nimboya - Face Player"),
+(249700, 9, 9, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 1, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,            "Script9 - Nimboya - Say Text 2"),
+(249700, 9, 10, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 82, 3, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,          "Script9 - Nimboya - Add NpcFlags Gossip + Questgiver"),
+(249700, 9, 11, 0, 0, 0, 100, 0, 6000, 6000, 0, 0, 0, 0, 66, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,    "Script9 - Nimboya - Reset Orientation"),
+(249700, 9, 12, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 48, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,          "Script9 - Nimboya - Set Inactive");
+
+DELETE FROM `gameobject_summon_groups` WHERE `summonerId` = 2497;
+INSERT INTO `gameobject_summon_groups` (`summonerId`, `summonerType`, `groupId`, `entry`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `respawnTime`, `Comment`) VALUES
+--
+(2497, 0, 0, 2371, -12345.9, 170.536, 3.004, 4.433, 0, 0, -0.8, 0.6, 60,      "Headhunting - Headhunter Skull"),
+(2497, 0, 0, 2371, -12346.5, 171.066, 3.004, 3.194, 0, 0, -1, 0.026, 60,      "Headhunting - Headhunter Skull"),
+(2497, 0, 0, 2371, -12346.2, 171.264, 3.004, 3.072, 0, 0, 1, 0.0349, 60,      "Headhunting - Headhunter Skull"),
+(2497, 0, 0, 2371, -12346.2, 170.538, 3.004, 1.78, 0, 0, 0.777, 0.62932, 60,  "Headhunting - Headhunter Skull"),
+(2497, 0, 0, 2371, -12346.2, 170.538, 3.004, 1.78, 0, 0, 0.777, 0.62932, 60,  "Headhunting - Headhunter Skull"),
+(2497, 0, 0, 2371, -12346.1, 170.729, 3.004, 0, 0, 0, 0, 1, 60,               "Headhunting - Headhunter Skull"),
+(2497, 0, 0, 2371, -12345.8, 169.787, 2.978, 0, 0, 0, 0, 1, 60,               "Headhunting - Headhunter Skull"),
+--
+(2497, 0, 1, 2371, -12346.0, 170.976, 3.004, 5.585, 0, 0, -0.34200, 0.94, 60, "Headhunting - Headhunter Skull"),
+(2497, 0, 1, 2371, -12346.1, 170.280, 3.004, 2.077, 0, 0, 0.861629, 1, 60,    "Headhunting - Headhunter Skull"),
+(2497, 0, 1, 2371, -12346.4, 170.878, 3.004, 0.087, 0, 0, 0.043619, 1, 60,    "Headhunting - Headhunter Skull"),
+(2497, 0, 1, 2371, -12347.2, 170.736, 3.022, 5.812, 0, 0, -0.23344, 0.97, 60, "Headhunting - Headhunter Skull"),
+(2497, 0, 1, 2371, -12345.8, 170.661, 3.079, 0.942, 0, 0, 0.453990, 0.89, 60, "Headhunting - Headhunter Skull"),
+(2497, 0, 1, 2371, -12346.6, 170.625, 3.215, 4.974, 0, 0, -0.60876, 0.79, 60, "Headhunting - Headhunter Skull"),
+--
+(2497, 0, 2, 2371, -12346.8, 169.937, 3.017, 3.910, 0, 0, -0.927, 0.3746, 60, "Headhunting - Headhunter Skull"),
+(2497, 0, 2, 2371, -12346.1, 171.328, 3.215, 2.164, 0, 0, 0.883, 0.46947, 60, "Headhunting - Headhunter Skull"),
+(2497, 0, 2, 2371, -12346.0, 171.047, 3.193, 0.122, 0, 0, 0.061, 0.99813, 60, "Headhunting - Headhunter Skull"),
+(2497, 0, 2, 2371, -12345.7, 170.559, 3.215, 3.019, 0, 0, 0.998, 0.06105, 60, "Headhunting - Headhunter Skull"),
+(2497, 0, 2, 2371, -12346.2, 171.381, 3.533, 3.840, 0, 0, -0.94, 0.34202, 60, "Headhunting - Headhunter Skull"),
+(2497, 0, 2, 2371, -12346.5, 170.109, 3.005, 2.251, 0, 0, 0.900, 0.43051, 60, "Headhunting - Headhunter Skull");

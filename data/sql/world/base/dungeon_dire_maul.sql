@@ -214,6 +214,12 @@ INSERT INTO `smart_scripts` (`entryorguid`, `source_type`, `id`, `link`, `event_
 (1432502, 9, 6, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 11, 8599, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                 'Script9 - Captain Kromcrush - Cast Enrage'),
 (1432502, 9, 7, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 67, 1, 2500, 2500, 0, 0, 100, 1, 0, 0, 0, 0, 0, 0, 0, 0,            'Script9 - Captain Kromcrush - Create Timed Event');
 
+DELETE FROM `conditions` WHERE `SourceTypeOrReferenceId` = 22 AND `SourceEntry` = 14325;
+INSERT INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, 
+`ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`) VALUES
+(22, 12, 14325, 0, 0, 13, 1, 3, 3, 0, 0, 0, 0, '', 'Run action if GetData(3) == 3'),
+(22, 13, 14325, 0, 0, 13, 1, 3, 3, 0, 0, 0, 0, '', 'Run action if GetData(3) == 3');
+
 -- fix 3 Gordok Mastiff patrols
 DELETE FROM `creature` WHERE `guid` IN 
 (248093, 248094, 248095, 248096, 248097, 248098, 248099, 248100, 248101, 248106, 248107, 248108, 248131, 248132, 
@@ -419,7 +425,7 @@ INSERT INTO `smart_scripts` (`entryorguid`, `source_type`, `id`, `link`, `event_
 (11488, 0, 0, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 30, 60, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,              'Illyanna Ravenoak - Outside 30 Range - Start Combat Movement'),
 (11488, 0, 1, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 5, 30, 21, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,               'Illyanna Ravenoak - Within 5-30 Range - Stop Combat Movement'),
 (11488, 0, 2, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 0, 5, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                'Illyanna Ravenoak - Within 0-5 Range - Start Combat Movement'),
-(11488, 0, 3, 0, 9, 0, 100, 0, 0, 0, 2000, 4000, 5, 30, 11, 16100, 64, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,          'Illyanna Ravenoak - Within 5-30 Range - Cast Shoot'),
+(11488, 0, 3, 0, 9, 0, 100, 0, 0, 0, 2000, 4000, 5, 30, 11, 16100, 512, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,         'Illyanna Ravenoak - Within 5-30 Range - Cast Shoot'),
 (11488, 0, 4, 0, 0, 0, 100, 0, 30000, 35000, 60000, 65000, 0, 0, 11, 22908, 0, 0, 0, 0, 0, 5, 30, 0, 0, 0, 0, 0, 0, 0, 'Illyanna Ravenoak - Within 0-30 Range - Cast Volley'),
 (11488, 0, 5, 0, 9, 0, 100, 0, 0, 0, 6000, 9000, 0, 30, 11, 20735, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,           'Illyanna Ravenoak - Within 0-30 Range - Cast Multi-Shot'),
 (11488, 0, 6, 0, 0, 0, 100, 0, 5000, 7000, 16000, 20000, 0, 0, 11, 22914, 0, 0, 0, 0, 0, 5, 30, 0, 0, 0, 0, 0, 0, 0,   'Illyanna Ravenoak - Within 0-30 Range - Cast Concussive Shot'),
@@ -1376,7 +1382,7 @@ INSERT INTO `smart_scripts` (`entryorguid`, `source_type`, `id`, `link`, `event_
 (11454, 0, 0, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 30, 60, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,               'Wildspawn Betrayer - Outside 30 Range - Start Combat Movement'),
 (11454, 0, 1, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 5, 30, 21, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                'Wildspawn Betrayer - Within 5-30 Range - Stop Combat Movement'),
 (11454, 0, 2, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 0, 5, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                 'Wildspawn Betrayer - Within 0-5 Range - Start Combat Movement'),
-(11454, 0, 3, 0, 9, 0, 100, 0, 0, 0, 2000, 4000, 5, 30, 11, 16100, 64, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,           'Wildspawn Betrayer - Within 5-30 Range - Cast Shoot'),
+(11454, 0, 3, 0, 9, 0, 100, 0, 0, 0, 2000, 4000, 5, 30, 11, 16100, 512, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,          'Wildspawn Betrayer - Within 5-30 Range - Cast Shoot'),
 (11454, 0, 4, 0, 0, 0, 100, 0, 5000, 10000, 10000, 14000, 0, 0, 11, 7896, 0, 0, 0, 0, 0, 28, 30, 1, 1, 5, 0, 0, 0, 0,   'Wildspawn Betrayer - Within 5-30 Range - Cast Exploding Shot'),
 (11454, 0, 5, 0, 9, 0, 100, 0, 0, 0, 7000, 12000, 5, 30, 11, 18649, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,           'Wildspawn Betrayer - Within 5-30 Range - Shadow Shot'),
 (11454, 0, 6, 0, 9, 0, 100, 0, 0, 0, 8000, 11000, 0, 5, 11, 11428, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,            'Wildspawn Betrayer - Within 0-5 Range - Cast Knockdown'),

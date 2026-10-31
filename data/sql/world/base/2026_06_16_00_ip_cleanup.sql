@@ -28,48 +28,97 @@ DELETE FROM `creature` WHERE `guid` = 88156 AND `id` IN (20278); -- Vixton Pinch
 
 /* the following edits are temporary */
 
+-- clean up mistake in zone_desolace
+DELETE FROM `smart_scripts` WHERE `source_type` = 0 AND `entryorguid` = 1162505;
+
+-- undo SAI for Doomguard Commander - AC handles this correctly now
+DELETE FROM `smart_scripts` WHERE `source_type` = 0 AND `entryorguid` = 12396;
+INSERT INTO `smart_scripts` (`entryorguid`, `source_type`, `id`, `link`,
+`event_type`, `event_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `event_param5`, `event_param6`,
+`action_type`, `action_param1`, `action_param2`, `action_param3`, `action_param4`, `action_param5`, `action_param6`,
+`target_type`, `target_param1`, `target_param2`, `target_param3`, `target_param4`, `target_x`, `target_y`, `target_z`, `target_o`, `comment`) VALUES
+--
+(12396, 0, 0, 0, 0, 0, 100, 0, 5000, 8000, 18000, 24000, 0, 0, 11, 16005, 0, 0, 0, 0, 0, 5, 30, 0, 0, 0, 0, 0, 0, 0,    'Doomguard Commander - In Combat - Cast Rain of Fire'),
+(12396, 0, 1, 0, 0, 0, 100, 0, 12000, 15000, 20000, 25000, 0, 0, 11, 16727, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,   'Doomguard Commander - In Combat - Cast War Stomp'),
+(12396, 0, 2, 0, 0, 0, 100, 0, 2000, 4000, 25000, 32000, 0, 0, 11, 20812, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,     'Doomguard Commander - In Combat - Cast Cripple'),
+(12396, 0, 3, 0, 0, 0, 100, 0, 7000, 14000, 17000, 22000, 0, 0, 11, 15090, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,    'Doomguard Commander - In Combat - Cast Dispel Magic'),
+(12396, 0, 4, 0, 8, 0, 100, 1, 23019, 0, 0, 0, 0, 0, 80, 1239600, 2, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,             'Doomguard Commander - On Spellhit \'Crystal Prison Dummy DND\' - Run Script (No Repeat)');
+
+-- rank 2 was rank 1 during TBC, undo mistake thinking it didn't exist durint TBC
+UPDATE `trainer_spell` SET `ReqLevel` = 62 WHERE `TrainerId` = 7 AND `SpellId` = 34120;  -- Steady Shot (Rank 2), level 72 -> 62
+
+-- undo forced phasing of Ysuria in Theramore
+UPDATE `creature` SET `ScriptName` = '' WHERE `id` = 27703;
+
+-- restore Midnight script, now properly overriding the script
+UPDATE `creature_template` SET `ScriptName` = 'boss_midnight' WHERE `entry` = 16151;
+UPDATE `creature_template` SET `ScriptName` = '' WHERE `entry` = 605;
+
+-- restore AC's Ironhand Guardians
+DELETE FROM `creature_template` WHERE `entry` IN (108982);
+DELETE FROM `creature_template_model` WHERE `CreatureID` = 108982; -- 00_cleanup
+UPDATE `creature_template` SET `ScriptName` = 'brd_ironhand_guardian' WHERE `entry` = 8982; -- 00_cleanup
+DELETE FROM `smart_scripts` WHERE `source_type` = 0 AND `entryorguid` IN (108982); -- 00_cleanup
+
+DELETE FROM `creature` WHERE `id` IN (8982, 108982); -- 00_cleanup
+INSERT INTO `creature` (`guid`, `id`, `map`, `zoneId`, `areaId`, `spawnMask`, `phaseMask`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, 
+`wander_distance`, `currentwaypoint`, `curhealth`, `curmana`, `MovementType`, `npcflag`, `unit_flags`, `dynamicflags`, `ScriptName`, `VerifiedBuild`, `CreateObject`, `Comment`) VALUES 
+--
+(47323, 8982, 230, 0, 0, 1, 1, 0, 1407.29, -587.299, -91.9711, 3.15905, 7200, 0, 0, 126, 0, 0, 0, 0, 0, '', 0, 0, NULL),
+(47442, 8982, 230, 0, 0, 1, 1, 0, 1353.43, -587.317, -91.9711, 0.15708, 7200, 0, 0, 126, 0, 0, 0, 0, 0, '', 0, 0, NULL),
+(47466, 8982, 230, 0, 0, 1, 1, 0, 1406.88, -632.438, -91.9711, 3.14159, 7200, 0, 0, 126, 0, 0, 0, 0, 0, '', 0, 0, NULL),
+(47472, 8982, 230, 0, 0, 1, 1, 0, 1353.92, -632.75, -91.9711, 0.122173, 7200, 0, 0, 126, 0, 0, 0, 0, 0, '', 0, 0, NULL),
+(47473, 8982, 230, 0, 0, 1, 1, 0, 1407.67, -677.718, -91.9711, 3.14159, 7200, 0, 0, 126, 0, 0, 0, 0, 0, '', 0, 0, NULL),
+(47474, 8982, 230, 0, 0, 1, 1, 0, 1353.16, -677.38, -91.9711, 0, 7200, 0, 0, 126, 0, 0, 0, 0, 0, '', 0, 0, NULL);
+
+-- remove AV conditons that aren't used anymore
+DELETE FROM `conditions` WHERE `SourceTypeOrReferenceId` = 29 AND `ConditionTypeOrReference` = 29 AND `SourceEntry` IN 
+(110982, 111603, 111604, 113089, 113097, 113316, 113087, 113096, 113317, 110987, 111600, 111602, 113081, 113099, 113397, 113080, 113098, 113396, 113358, 113359); -- 00_cleanup
+
 -- remove pvp progression requirements to show pvp gear. added rank requirements back
 DELETE FROM `conditions` WHERE `SourceTypeOrReferenceId` = 23 AND `ConditionTypeOrReference` = 8 AND `Comment` = "Vanilla PvP Ranked Gear (IPP)";
 
--- remove vanilla AV landmines, default is no landmines
-SET @OGUID := 657000;
-DELETE FROM `gameobject` WHERE `guid` BETWEEN @OGUID+101 AND @OGUID+499;
+-- BRD Detention Block: older versions of dungeon_blackrock_depths.sql replaced the patrols that AC 2026_09_24_09 sets up
+-- (positions, paths 459170..910840 instead of guid * 100, formations); put AC's version back
+UPDATE `creature` SET `position_x` = 505.312, `position_y` = -124.581, `position_z` = -62.091, `orientation` = 3.3517, `currentwaypoint` = 0, `VerifiedBuild` = 69110 WHERE `guid` = 47825 AND `id` = 8890;
+UPDATE `creature` SET `position_x` = 424.321, `position_y` = -79.389, `position_z` = -64.193, `orientation` = 2.8469, `currentwaypoint` = 0, `VerifiedBuild` = 69110 WHERE `guid` = 91084 AND `id` = 8890;
+UPDATE `creature` SET `position_x` = 524.359, `position_y` = -73.163, `position_z` = -62.163, `orientation` = 5.3016, `currentwaypoint` = 0, `VerifiedBuild` = 69110 WHERE `guid` = 47832 AND `id` = 8921;
+UPDATE `creature` SET `position_x` = 502.454, `position_y` = -73.061, `position_z` = -63.079, `orientation` = 1.3006, `currentwaypoint` = 0, `VerifiedBuild` = 69110 WHERE `guid` = 45917 AND `id` = 8921;
+UPDATE `creature` SET `position_x` = 485.841, `position_y` = -104.503, `position_z` = -62.635, `orientation` = 3.8515, `currentwaypoint` = 0, `VerifiedBuild` = 69110 WHERE `guid` = 45924 AND `id` = 8921;
+UPDATE `creature` SET `position_x` = 422.511, `position_y` = -79.066, `position_z` = -63.935, `orientation` = 2.8346, `currentwaypoint` = 0, `VerifiedBuild` = 69110 WHERE `guid` = 90688 AND `id` = 8921;
+UPDATE `creature` SET `position_x` = 410.003, `position_y` = -183.575, `position_z` = -63.584, `orientation` = 3.8935, `currentwaypoint` = 0, `VerifiedBuild` = 69110 WHERE `guid` = 90855 AND `id` = 8921;
 
--- undo changes made to wotlk naxx creatures - 00_cleanup.sql
-UPDATE `creature_template` SET `CreatureImmunitiesId` = -420 WHERE `entry` IN (16168, 16446);
-UPDATE `creature_template` SET `CreatureImmunitiesId` = -417 WHERE `entry` IN (16243);
-UPDATE `creature_template` SET `CreatureImmunitiesId` = -416 WHERE `entry` IN (15976, 15978, 15979);
-UPDATE `creature_template` SET `CreatureImmunitiesId` = -415 WHERE `entry` IN (16573);
-UPDATE `creature_template` SET `CreatureImmunitiesId` = -414 WHERE `entry` IN (15980, 15981, 16506);
-UPDATE `creature_template` SET `CreatureImmunitiesId` = -413 WHERE `entry` IN (15974, 15975, 16505);
-UPDATE `creature_template` SET `CreatureImmunitiesId` = -412 WHERE `entry` IN (16126);
-UPDATE `creature_template` SET `CreatureImmunitiesId` = -411 WHERE `entry` IN (16441);
-UPDATE `creature_template` SET `CreatureImmunitiesId` = -410 WHERE `entry` IN (15928, 15929, 15930, 15931, 15932, 15936, 15952, 15953, 15954, 15956, 15989, 15990, 16011, 16060, 16061, 16063, 16064, 16065);
-UPDATE `creature_template` SET `CreatureImmunitiesId` = -406 WHERE `entry` IN (16062);
-UPDATE `creature_template` SET `CreatureImmunitiesId` = -405 WHERE `entry` IN (16017, 16018, 16029);
-UPDATE `creature_template` SET `CreatureImmunitiesId` = -404 WHERE `entry` IN (16194, 16215, 16216);
-UPDATE `creature_template` SET `CreatureImmunitiesId` = -403 WHERE `entry` IN (16021, 16165, 16368);
-UPDATE `creature_template` SET `CreatureImmunitiesId` = -402 WHERE `entry` IN (16428, 16429);
-UPDATE `creature_template` SET `CreatureImmunitiesId` = -401 WHERE `entry` IN (16034);
-UPDATE `creature_template` SET `CreatureImmunitiesId` = -399 WHERE `entry` IN (16037);
-UPDATE `creature_template` SET `CreatureImmunitiesId` = -398 WHERE `entry` IN (16036, 16056, 16057, 16236, 16297, 16698, 17055);
-UPDATE `creature_template` SET `CreatureImmunitiesId` = -397 WHERE `entry` IN (16984);
-UPDATE `creature_template` SET `CreatureImmunitiesId` = -396 WHERE `entry` IN (16447);
-UPDATE `creature_template` SET `CreatureImmunitiesId` = -395 WHERE `entry` IN (16290);
-UPDATE `creature_template` SET `CreatureImmunitiesId` = -394 WHERE `entry` IN (16375);
-UPDATE `creature_template` SET `CreatureImmunitiesId` = -393 WHERE `entry` IN (16024);
-UPDATE `creature_template` SET `CreatureImmunitiesId` = -392 WHERE `entry` IN (16020);
-UPDATE `creature_template` SET `CreatureImmunitiesId` = -391 WHERE `entry` IN (16167);
-UPDATE `creature_template` SET `CreatureImmunitiesId` = -390 WHERE `entry` IN (16164);
-UPDATE `creature_template` SET `CreatureImmunitiesId` = -389 WHERE `entry` IN (16022, 16981);
-UPDATE `creature_template` SET `CreatureImmunitiesId` = -388 WHERE `entry` IN (16150);
-UPDATE `creature_template` SET `CreatureImmunitiesId` = -387 WHERE `entry` IN (16244, 16360, 16427, 16983);
-UPDATE `creature_template` SET `CreatureImmunitiesId` = -385 WHERE `entry` IN (16156);
-UPDATE `creature_template` SET `CreatureImmunitiesId` = -384 WHERE `entry` IN (16149);
-UPDATE `creature_template` SET `CreatureImmunitiesId` = -383 WHERE `entry` IN (16124);
-UPDATE `creature_template` SET `CreatureImmunitiesId` = -382 WHERE `entry` IN (16127);
-UPDATE `creature_template` SET `CreatureImmunitiesId` = -375 WHERE `entry` IN (30183, 16486);
-UPDATE `creature_template` SET `CreatureImmunitiesId` = -303 WHERE `entry` IN (16193);
-UPDATE `creature_template` SET `CreatureImmunitiesId` = -286 WHERE `entry` IN (16028);
-UPDATE `creature_template` SET `CreatureImmunitiesId` = -93  WHERE `entry` IN (23561, 23562, 23563, 25463, 25465, 28357, 28658, 28890, 28919, 29112, 29113, 31099);
-UPDATE `creature_template` SET `CreatureImmunitiesId` =  0   WHERE `entry` IN (16082, 16137, 16286, 16363, 16385, 16400, 16419, 20350, 20423, 23876, 28619);
+DELETE FROM `creature_addon` WHERE `guid` IN (45917, 45924, 47825, 47832, 90688, 90855, 91084);
+INSERT INTO `creature_addon` (`guid`, `path_id`, `mount`, `bytes1`, `bytes2`, `emote`, `visibilityDistanceType`, `auras`) VALUES
+(45917, 4591700, 0, 0, 1, 0, 0, '8279'),
+(45924, 4592400, 0, 0, 1, 0, 0, '8279'),
+(47825, 4782500, 0, 0, 1, 0, 0, NULL),
+(47832, 4783200, 0, 0, 1, 0, 0, '8279'),
+(90688, 9068800, 0, 0, 1, 0, 0, '8279'),
+(90855, 9085500, 0, 0, 1, 0, 0, '8279'),
+(91084, 9108400, 0, 0, 1, 0, 0, NULL);
+
+DELETE FROM `creature_formations` WHERE `leaderGUID` IN (45917, 45924, 47825, 47832, 90688, 90855, 91084);
+DELETE FROM `creature_formations` WHERE `memberGUID` IN (45915, 45916, 45917, 45924, 45925, 45926, 47825, 47826, 47827, 47830, 47831, 47832, 90686, 90687, 90688, 90855, 90856, 90857, 91084, 91085, 91086);
+INSERT INTO `creature_formations` (`leaderGUID`, `memberGUID`, `dist`, `angle`, `groupAI`, `point_1`, `point_2`) VALUES
+(45917, 45917, 0, 0, 515, 0, 0),
+(45917, 45915, 2, 90, 515, 0, 0),
+(45917, 45916, 2, 180, 515, 0, 0),
+(45924, 45924, 0, 0, 515, 0, 0),
+(45924, 45925, 6, 180, 515, 0, 0),
+(45924, 45926, 4, 180, 515, 0, 0),
+(47825, 47825, 0, 0, 515, 0, 0),
+(47825, 47826, 2, 90, 515, 0, 0),
+(47825, 47827, 2, 180, 515, 0, 0),
+(47832, 47832, 0, 0, 515, 0, 0),
+(47832, 47830, 2, 90, 515, 0, 0),
+(47832, 47831, 2, 180, 515, 0, 0),
+(90688, 90688, 0, 0, 515, 0, 0),
+(90688, 90686, 2, 90, 515, 0, 0),
+(90688, 90687, 2, 180, 515, 0, 0),
+(90855, 90855, 0, 0, 515, 0, 0),
+(90855, 90856, 2, 90, 515, 0, 0),
+(90855, 90857, 2, 180, 515, 0, 0),
+(91084, 91084, 0, 0, 515, 0, 0),
+(91084, 91085, 2, 90, 515, 0, 0),
+(91084, 91086, 2, 180, 515, 0, 0);

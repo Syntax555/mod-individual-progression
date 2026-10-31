@@ -45,7 +45,7 @@ INSERT INTO `smart_scripts` (`entryorguid`, `source_type`, `id`, `link`, `event_
 (3258, 0, 0, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 30, 60, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,               'Bristleback Hunter - Outside 30 Range - Start Combat Movement'),
 (3258, 0, 1, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 5, 30, 21, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                'Bristleback Hunter - Within 5-30 Range - Stop Combat Movement'),
 (3258, 0, 2, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 0, 5, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                 'Bristleback Hunter - Within 0-5 Range - Start Combat Movement'),
-(3258, 0, 3, 0, 9, 0, 100, 0, 0, 0, 2000, 4000, 5, 30, 11, 6660, 64, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,            'Bristleback Hunter - Within 5-30 Range - Cast Shoot'),
+(3258, 0, 3, 0, 9, 0, 100, 0, 0, 0, 2000, 4000, 5, 30, 11, 6660, 512, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,           'Bristleback Hunter - Within 5-30 Range - Cast Shoot'),
 (3258, 0, 4, 0, 0, 0, 100, 0, 9000, 14000, 9000, 14000, 0, 0, 11, 8806, 32, 0, 0, 0, 0, 28, 30, 1, 1, 5, 0, 0, 0, 0,   'Bristleback Hunter - Within 5-30 Range - Cast Poisoned Shot'),
 (3258, 0, 5, 0, 2, 0, 100, 1, 0, 15, 0, 0, 0, 0, 25, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,                      'Bristleback Hunter - Between 0-15% Health - Flee For Assist (No Repeat)'),
 (3260, 0, 0, 0, 9, 0, 100, 0, 0, 0, 10000, 16000, 0, 8, 11, 12748, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,           'Bristleback Water Seeker - Within 0-8 Range - Cast Frost Nova'),
@@ -61,7 +61,7 @@ INSERT INTO `smart_scripts` (`entryorguid`, `source_type`, `id`, `link`, `event_
 (3265, 0, 0, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 30, 60, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,               'Razormane Hunter - Outside 30 Range - Start Combat Movement'),
 (3265, 0, 1, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 5, 30, 21, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                'Razormane Hunter - Within 5-30 Range - Stop Combat Movement'),
 (3265, 0, 2, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 0, 5, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                 'Razormane Hunter - Within 0-5 Range - Start Combat Movement'),
-(3265, 0, 3, 0, 9, 0, 100, 0, 0, 0, 2000, 4000, 5, 30, 11, 6660, 64, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,            'Razormane Hunter - Within 5-30 Range - Cast Shoot'),
+(3265, 0, 3, 0, 9, 0, 100, 0, 0, 0, 2000, 4000, 5, 30, 11, 6660, 512, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,           'Razormane Hunter - Within 5-30 Range - Cast Shoot'),
 (3265, 0, 4, 0, 1, 0, 100, 1, 1000, 1000, 0, 0, 0, 0, 11, 6479, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,              'Razormane Hunter - Out of Combat - Cast Summon Razormane Wolf'),
 (3265, 0, 5, 0, 2, 0, 100, 1, 0, 15, 0, 0, 0, 0, 25, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,                      'Razormane Hunter - Between 0-15% Health - Flee For Assist (No Repeat)'),
 (3266, 0, 0, 0, 4, 0, 100, 0, 0, 0, 0, 0, 0, 0, 11, 7165, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                    'Razormane Defender - On Aggro - Cast Battle Stance'),
@@ -88,7 +88,7 @@ INSERT INTO `smart_scripts` (`entryorguid`, `source_type`, `id`, `link`, `event_
 (3272, 0, 0, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 30, 60, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,               'Kolkar Wrangler - Outside 30 Range - Start Combat Movement'),
 (3272, 0, 1, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 5, 30, 21, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                'Kolkar Wrangler - Within 5-30 Range - Stop Combat Movement'),
 (3272, 0, 2, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 0, 5, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                 'Kolkar Wrangler - Within 0-5 Range - Start Combat Movement'),
-(3272, 0, 3, 0, 9, 0, 100, 0, 0, 0, 2000, 4000, 5, 30, 11, 6660, 64, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,            'Kolkar Wrangler - Within 5-30 Range - Cast Shoot'),
+(3272, 0, 3, 0, 9, 0, 100, 0, 0, 0, 2000, 4000, 5, 30, 11, 6660, 512, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,           'Kolkar Wrangler - Within 5-30 Range - Cast Shoot'),
 (3272, 0, 4, 0, 0, 0, 100, 0, 4000, 6000, 25000, 35000, 0, 0, 11, 12024, 32, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,    'Kolkar Wrangler - In Combat - Cast Net'),
 (3272, 0, 5, 0, 2, 0, 100, 1, 0, 15, 0, 0, 0, 0, 25, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,                      'Kolkar Wrangler - Between 0-15% Health - Flee For Assist (No Repeat)'),
 (3273, 0, 0, 0, 9, 0, 100, 1, 0, 0, 0, 0, 0, 30, 11, 6535, 64, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,                  'Kolkar Stormer - Within 0-30 Range - Cast Lightning Cloud (No Repeat)'),
@@ -126,7 +126,7 @@ INSERT INTO `smart_scripts` (`entryorguid`, `source_type`, `id`, `link`, `event_
 (3282, 0, 0, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 30, 60, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,               'Venture Co. Mercenary - Outside 30 Range - Start Combat Movement'),
 (3282, 0, 1, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 5, 30, 21, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                'Venture Co. Mercenary - Within 5-30 Range - Stop Combat Movement'),
 (3282, 0, 2, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 0, 5, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                 'Venture Co. Mercenary - Within 0-5 Range - Start Combat Movement'),
-(3282, 0, 3, 0, 9, 0, 100, 0, 0, 0, 2000, 4000, 5, 30, 11, 6660, 64, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,            'Venture Co. Mercenary - Within 5-30 Range - Cast Shoot'),
+(3282, 0, 3, 0, 9, 0, 100, 0, 0, 0, 2000, 4000, 5, 30, 11, 6660, 512, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,           'Venture Co. Mercenary - Within 5-30 Range - Cast Shoot'),
 (3282, 0, 4, 0, 2, 0, 100, 1, 0, 15, 0, 0, 0, 0, 25, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,                      'Venture Co. Mercenary - Between 0-15% Health - Flee For Assist (No Repeat)'),
 (3283, 0, 0, 0, 0, 0, 100, 0, 7000, 12000, 20000, 35000, 0, 0, 11, 9128, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,     'Venture Co. Enforcer - In Combat - Cast Battle Shout'),
 (3283, 0, 1, 0, 0, 0, 100, 0, 12000, 22000, 20000, 33000, 0, 0, 11, 6713, 32, 0, 0, 0, 0, 21, 5, 0, 0, 0, 0, 0, 0, 0,  'Venture Co. Enforcer - Within 0-5 Range - Cast Disarm'),
@@ -161,7 +161,7 @@ INSERT INTO `smart_scripts` (`entryorguid`, `source_type`, `id`, `link`, `event_
 (3382, 0, 0, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 30, 60, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,               'Southsea Cannoneer - Outside 30 Range - Start Combat Movement'),
 (3382, 0, 1, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 5, 30, 21, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                'Southsea Cannoneer - Within 5-30 Range - Stop Combat Movement'),
 (3382, 0, 2, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 0, 5, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                 'Southsea Cannoneer - Within 0-5 Range - Start Combat Movement'),
-(3382, 0, 3, 0, 9, 0, 100, 0, 0, 0, 2000, 4000, 5, 30, 11, 6660, 64, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,            'Southsea Cannoneer - Within 5-30 Range - Cast Shoot'),
+(3382, 0, 3, 0, 9, 0, 100, 0, 0, 0, 2000, 4000, 5, 30, 11, 6660, 512, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,           'Southsea Cannoneer - Within 5-30 Range - Cast Shoot'),
 (3382, 0, 4, 0, 2, 0, 100, 1, 0, 15, 0, 0, 0, 0, 25, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,                      'Southsea Cannoneer - Between 0-15% Health - Flee For Assist (No Repeat)'),
 (3384, 0, 0, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 30, 60, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,               'Southsea Privateer - Outside 30 Range - Start Combat Movement'),
 (3384, 0, 1, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 5, 30, 21, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                'Southsea Privateer - Within 5-30 Range - Stop Combat Movement'),
@@ -185,7 +185,7 @@ INSERT INTO `smart_scripts` (`entryorguid`, `source_type`, `id`, `link`, `event_
 (3394, 0, 0, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 30, 60, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,               'Barak Kodobane - Outside 30 Range - Start Combat Movement'),
 (3394, 0, 1, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 5, 30, 21, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                'Barak Kodobane - Within 5-30 Range - Stop Combat Movement'),
 (3394, 0, 2, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 0, 5, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                 'Barak Kodobane - Within 0-5 Range - Start Combat Movement'),
-(3394, 0, 3, 0, 9, 0, 100, 0, 0, 0, 2000, 4000, 5, 30, 11, 6660, 64, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,            'Barak Kodobane - Within 5-30 Range - Cast Shoot'),
+(3394, 0, 3, 0, 9, 0, 100, 0, 0, 0, 2000, 4000, 5, 30, 11, 6660, 512, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,           'Barak Kodobane - Within 5-30 Range - Cast Shoot'),
 (3394, 0, 4, 0, 0, 0, 100, 0, 2000, 5000, 25000, 35000, 0, 0, 11, 6533, 32, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,     'Barak Kodobane - In Combat - Cast Net'),
 (3394, 0, 5, 0, 2, 0, 100, 1, 0, 15, 0, 0, 0, 0, 25, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,                      'Barak Kodobane - Between 0-15% Health - Flee For Assist (No Repeat)'),
 (3398, 0, 0, 0, 11, 0, 100, 0, 0, 0, 0, 0, 0, 0, 11, 10022, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                  'Gesharahan - On Respawn - Cast Deadly Poison Proc'),
@@ -213,7 +213,7 @@ INSERT INTO `smart_scripts` (`entryorguid`, `source_type`, `id`, `link`, `event_
 (3456, 0, 0, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 30, 60, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,               'Razormane Pathfinder - Outside 30 Range - Start Combat Movement'),
 (3456, 0, 1, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 5, 30, 21, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                'Razormane Pathfinder - Within 5-30 Range - Stop Combat Movement'),
 (3456, 0, 2, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 0, 5, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                 'Razormane Pathfinder - Within 0-5 Range - Start Combat Movement'),
-(3456, 0, 3, 0, 9, 0, 100, 0, 0, 0, 2000, 4000, 5, 30, 11, 6660, 64, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,            'Razormane Pathfinder - Within 5-30 Range - Cast Shoot'),
+(3456, 0, 3, 0, 9, 0, 100, 0, 0, 0, 2000, 4000, 5, 30, 11, 6660, 512, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,           'Razormane Pathfinder - Within 5-30 Range - Cast Shoot'),
 (3456, 0, 4, 0, 11, 0, 100, 0, 0, 0, 0, 0, 0, 0, 11, 8876, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                   'Razormane Pathfinder - On Respawn - Cast Thrash Proc'),
 (3456, 0, 5, 0, 2, 0, 100, 1, 0, 15, 0, 0, 0, 0, 25, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                      'Razormane Pathfinder - Between 0-15% Health - Flee For Assist (No Repeat)'),
 (3457, 0, 0, 0, 1, 0, 100, 1, 1000, 1000, 0, 0, 0, 0, 11, 22766, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,             'Razormane Stalker - Out of Combat - Cast Sneak  (No Repeat)'),
@@ -261,7 +261,7 @@ INSERT INTO `smart_scripts` (`entryorguid`, `source_type`, `id`, `link`, `event_
 (5847, 0, 0, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 30, 60, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,               'Heggin Stonewhisker - Outside 30 Range - Start Combat Movement'),
 (5847, 0, 1, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 5, 30, 21, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                'Heggin Stonewhisker - Within 5-30 Range - Stop Combat Movement'),
 (5847, 0, 2, 0, 9, 0, 100, 0, 0, 0, 4000, 4000, 0, 5, 21, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                 'Heggin Stonewhisker - Within 0-5 Range - Start Combat Movement'),
-(5847, 0, 3, 0, 9, 0, 100, 0, 0, 0, 2000, 4000, 5, 30, 11, 6660, 64, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,            'Heggin Stonewhisker - Within 5-30 Range - Cast Shoot'),
+(5847, 0, 3, 0, 9, 0, 100, 0, 0, 0, 2000, 4000, 5, 30, 11, 6660, 512, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,           'Heggin Stonewhisker - Within 5-30 Range - Cast Shoot'),
 (5847, 0, 4, 0, 0, 0, 100, 0, 6000, 12000, 9000, 14000, 0, 0, 11, 6979, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,      'Heggin Stonewhisker - Within 0-30 Range - Cast Fire Shot'),
 (5847, 0, 5, 0, 2, 0, 100, 1, 0, 15, 0, 0, 0, 0, 25, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,                      'Heggin Stonewhisker - Between 0-15% Health - Flee For Assist (No Repeat)'),
 (5848, 0, 0, 0, 4, 0, 100, 0, 0, 0, 0, 0, 0, 0, 11, 5242, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                    'Malgin Barleybrew - On Aggro - Cast Battle Shout'),
@@ -1203,3 +1203,75 @@ INSERT INTO `waypoint_data` (`id`, `point`, `position_x`, `position_y`, `positio
 (205660, 25, -1243.66, -2177.42, 91.668, 5.17525, 0, 1, 0, 100, 0),
 (205660, 26, -1237.85, -2190.07, 91.9052, 5.19095, 0, 1, 0, 100, 0),
 (205660, 27, -1225, -2248.77, 92.332, 5.20273, 0, 1, 0, 100, 0);
+
+-- Script end event for quest Fungal Spores (ported from CMaNGOS TBC)
+UPDATE `creature_template` SET `AIName` = "SmartAI" WHERE `entry` = 3390;
+
+DELETE FROM `smart_scripts` WHERE `entryorguid` = 3390 AND `source_type` = 0;
+DELETE FROM `smart_scripts` WHERE `entryorguid` = 339000 AND `source_type` = 9;
+INSERT INTO `smart_scripts` (`entryorguid`, `source_type`, `id`, `link`,
+`event_type`, `event_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `event_param5`, `event_param6`,
+`action_type`, `action_param1`, `action_param2`, `action_param3`, `action_param4`, `action_param5`, `action_param6`,
+`target_type`, `target_param1`, `target_param2`, `target_param3`, `target_param4`, `target_x`, `target_y`, `target_z`, `target_o`, `comment`) VALUES
+--
+(3390, 0, 0, 0, 20, 0, 100, 0, 848, 0, 0, 0, 0, 0, 80, 339000, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,         "Apothecary Helbrim - On Quest 'Fungal Spores' Turned In - Run Script 339000"),
+--
+(339000, 9, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 48, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,               "Script9 - Apothecary Helbrim - Set Active"),
+(339000, 9, 1, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 83, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,               "Script9 - Apothecary Helbrim - Remove NpcFlags Questgiver"),
+(339000, 9, 2, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 66, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 4.356,           "Script9 - Apothecary Helbrim - Change Orientation"),
+(339000, 9, 3, 0, 0, 0, 100, 0, 1000, 1000, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,          "Script9 - Apothecary Helbrim - Say Text 0"),
+(339000, 9, 4, 0, 0, 0, 100, 0, 1000, 1000, 0, 0, 0, 0, 93, 0, 0, 0, 0, 0, 0, 20, 4166, 30, 0, 0, 0, 0, 0, 0,    "Script9 - Apothecary Helbrim - Send Go Custom Anim"),
+(339000, 9, 5, 0, 0, 0, 100, 0, 5000, 5000, 0, 0, 0, 0, 66, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,         "Script9 - Apothecary Helbrim - Reset Orientation"),
+(339000, 9, 6, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                "Script9 - Apothecary Helbrim - Say Text 1"),
+(339000, 9, 7, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 82, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,               "Script9 - Apothecary Helbrim - Add NpcFlags Questgiver"),
+(339000, 9, 8, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 48, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,               "Script9 - Apothecary Helbrim - Set Inactive");
+
+DELETE FROM `creature_text` WHERE `CreatureID` = 3390 AND `GroupID` = 1 AND `ID` = 1;
+INSERT INTO `creature_text` (`CreatureID`, `GroupID`, `ID`, `Text`, `Type`, `Language`, `Probability`, `Emote`, `Duration`, `Sound`, `BroadcastTextId`, `TextRange`, `comment`) VALUES
+(3390, 1, 1, "Thank you for the spores, $n.  They are now prepared for transport.", 12, 0, 100, 1, 0, 0, 1078, 0, "Apothecary Helbrim");
+
+-- Script end event for quest Brutal Armor (ported from CMaNGOS TBC)
+UPDATE `creature_template` SET `AIName` = "SmartAI" WHERE `entry` = 5878;
+
+DELETE FROM `smart_scripts` WHERE `source_type` = 0 AND `entryorguid` = 5878;
+DELETE FROM `smart_scripts` WHERE `source_type` = 9 AND `entryorguid` IN (587800, 587801, 587802);
+INSERT INTO `smart_scripts` (`entryorguid`, `source_type`, `id`, `link`,
+`event_type`, `event_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `event_param5`, `event_param6`,
+`action_type`, `action_param1`, `action_param2`, `action_param3`, `action_param4`, `action_param5`, `action_param6`,
+`target_type`, `target_param1`, `target_param2`, `target_param3`, `target_param4`, `target_x`, `target_y`, `target_z`, `target_o`, `comment`) VALUES
+--
+(5878, 0, 0, 0, 20, 0, 100, 0, 1838, 0, 0, 0, 0, 0, 80, 587800, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,          "Thun'grim Firegaze - On Quest 'Brutal Armor' Turned In - Run Script 587800"),
+(5878, 0, 1, 0, 108, 0, 100, 0, 3, 209530, 0, 0, 0, 0, 80, 587801, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,       "Thun'grim Firegaze - On Waypoint 3 Reached (Path 209530) - Run Script 587801"),
+(5878, 0, 2, 0, 108, 0, 100, 0, 3, 209531, 0, 0, 0, 0, 80, 587802, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,       "Thun'grim Firegaze - On Waypoint 3 Reached (Path 209531) - Run Script 587802"),
+--
+(587800, 9, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 48, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                 "Script9 - Thun'grim Firegaze - Set Active"),
+(587800, 9, 1, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 83, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                 "Script9 - Thun'grim Firegaze - Remove NpcFlags Questgiver"),
+(587800, 9, 2, 0, 0, 0, 100, 0, 1000, 1000, 0, 0, 0, 0, 232, 209530, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,     "Script9 - Thun'grim Firegaze - Start Waypoint Path 209530"),
+--
+(587801, 9, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 66, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 2.92829,           "Script9 - Thun'grim Firegaze - Set Orientation"),
+(587801, 9, 1, 0, 0, 0, 100, 0, 1000, 1000, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,            "Script9 - Thun'grim Firegaze - Say Text 0"),
+(587801, 9, 2, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 17, 69, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                "Script9 - Thun'grim Firegaze - Set EmoteState 69"),
+(587801, 9, 3, 0, 0, 0, 100, 0, 15000, 15000, 0, 0, 0, 0, 17, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,         "Script9 - Thun'grim Firegaze - Set EmoteState 0"),
+(587801, 9, 4, 0, 0, 0, 100, 0, 1000, 1000, 0, 0, 0, 0, 66, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 4.30012,     "Script9 - Thun'grim Firegaze - Change Orientation"),
+(587801, 9, 5, 0, 0, 0, 100, 0, 1000, 1000, 0, 0, 0, 0, 17, 233, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,         "Script9 - Thun'grim Firegaze - Set EmoteState 233"),
+(587801, 9, 6, 0, 0, 0, 100, 0, 20000, 20000, 0, 0, 0, 0, 17, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,         "Script9 - Thun'grim Firegaze - Set EmoteState 0"),
+(587801, 9, 7, 0, 0, 0, 100, 0, 1000, 1000, 0, 0, 0, 0, 232, 209531, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,     "Script9 - Thun'grim Firegaze - Start Waypoint Path 209531"),
+--
+(587802, 9, 0, 0, 0, 0, 100, 0, 1000, 1000, 0, 0, 0, 0, 66, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0.820305,    "Script9 - Thun'grim Firegaze - Reset Orientation"),
+(587802, 9, 1, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                  "Script9 - Thun'grim Firegaze - Say Text 1"),
+(587802, 9, 2, 0, 0, 0, 100, 0, 1000, 1000, 0, 0, 0, 0, 82, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,           "Script9 - Thun'grim Firegaze - Add NpcFlags Questgiver"),
+(587802, 9, 3, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 48, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                 "Script9 - Thun'grim Firegaze - Set Inactive");
+
+DELETE FROM `waypoint_data` WHERE `id` IN (209530, 209531);
+INSERT INTO `waypoint_data` (`id`, `point`, `position_x`, `position_y`, `position_z`, `orientation`, `velocity`, `delay`, `smoothTransition`, `move_type`, `action`, `action_chance`, `wpguid`) VALUES
+(209530, 1, -423.713, -3167.24, 212.779, 0, 0, 0, 0, 0, 0, 100, 0),
+(209530, 2, -423.211, -3164.23, 212.864, 0, 0, 0, 0, 0, 0, 100, 0),
+(209530, 3, -425.1, -3162.25, 212.697, 2.92829, 0, 0, 0, 0, 0, 100, 0),
+--
+(209531, 1, -423.211, -3164.23, 212.864, 0, 0, 0, 0, 1, 0, 100, 0),
+(209531, 2, -423.713, -3167.24, 212.779, 0, 0, 0, 0, 1, 0, 100, 0),
+(209531, 3, -437.62, -3176.26, 211.385, 0, 0, 0, 0, 1, 0, 100, 0);
+
+DELETE FROM `quest_greeting` WHERE `ID` = 5878;
+INSERT INTO `quest_greeting` (`ID`, `Greeting`) VALUES
+(5878, "My vision has darkened, but there are many kinds of sight...");

@@ -104,7 +104,7 @@ static std::string BuildWarEffortText(WarEffortStatus const& status)
         std::string text = "Your part in the war effort is done, $N: every kind of supply delivered and your signets handed in.";
 
         if (!status.sentOn)
-            text += "$B$BTravel to Silithus and report to Baristolth of the Shifting Sands in Cenarion Hold.";
+            text += "$B$BYour help is needed in Silithus, travel there and find out what tomorrow brings.";
 
         return text;
     }
