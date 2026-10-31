@@ -1,30 +1,376 @@
--- Later-expansion world content stays out of reach until the character earns its
--- expansion: TBC content needs the rewarded TBC marker (66008), Wrath content the
--- Wrath marker (66013). Generated from the CMaNGOS world databases (classic-db
--- ec4f596, tbc-db ebe51a8, wotlk-db 78e8dc0): an entry absent from Classic arrived
--- with TBC, an entry absent from TBC too arrived with Wrath.
+-- World content of later expansions and patches stays out of reach until the character
+-- earns the milestone of its tier: TBC content needs the rewarded marker of tier 8 (66008),
+-- Wrath content tier 13 (66013), and each patch the tier of its raid. Generated from the
+-- CMaNGOS world databases (classic-db ec4f596, tbc-db ebe51a8, wotlk-db 78e8dc0): an entry
+-- absent from Classic arrived with TBC, an entry absent from TBC too arrived with Wrath.
+-- VMaNGOS (core 9b7fb4d, world dump of 14 June 2021) dates Vanilla content to its patch:
+-- 1.6 opens with tier 1, 1.7, 1.8 and 1.10 with tier 3, 1.9 with tier 4, 1.11 and 1.12
+-- with tier 6. ChromieCraft's progression brackets (9235693) date TBC and Wrath phases:
+-- 2.1 with tier 10, 2.3 and 2.4 with 12, 3.1 with 14, 3.2 with 15, 3.3 with 16, 3.3.5 with 17.
 --
--- Creature and gameobject spawns on the old-world continents, and Wrath's in
--- Outland, get visibility conditions, which keep their AI and scripts. Quests and vendor items reachable before their expansion get
--- availability conditions on every existing alternative. Left alone: spawns of
--- modules and awareness scripts, invisible helpers, creatures that would attack
--- unseen, objects with collision or mechanics, objects of earlier quests, entries the
--- earlier database places at the same spot under another number, and quests or items
--- the earlier database knows by the same name.
+-- Spawns on the old-world continents, and a later tier's in Outland or Northrend, get
+-- visibility conditions, which keep their AI and scripts. Quests and vendor items
+-- reachable before their tier get availability conditions on every existing alternative.
+-- Left alone: spawns of modules and awareness scripts, invisible helpers, spirit healers,
+-- creatures that would attack unseen, objects with collision or mechanics, objects of
+-- earlier quests, entries the earlier database places at the same spot under another
+-- number, quests or items the earlier database knows by the same name, and for Vanilla
+-- patches Classic battlegrounds, holidays and Individual Progression's own placements.
 DELETE FROM `conditions` WHERE `SourceTypeOrReferenceId` IN (19, 23, 30) AND `Comment` LIKE 'Era content: %';
 
--- TBC creatures on the old-world continents.
+-- Vanilla creatures opening at tier 1.
+INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
+SELECT 30, 0, `id`, `guid`, 0, 8, 0, 66001, 0, 0, 0, 0, 0, '', 'Era content: Vanilla creature'
+FROM `creature` WHERE `id` IN (
+    10378, 14850, 14857, 14872, 14873, 14874, 14875, 14876, 14892, 14894, 14908, 14909, 14912, 14921
+) AND `guid` IN (
+    280, 281, 282, 283, 284, 285, 286, 287, 366, 391, 2368, 13093, 13166, 13178, 13179, 13180, 13578, 13586,
+    13587, 13588, 13589, 13964, 13980, 15033, 200615
+);
+
+-- Vanilla gameobjects opening at tier 1.
+INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
+SELECT 30, 1, `id`, `guid`, 0, 8, 0, 66001, 0, 0, 0, 0, 0, '', 'Era content: Vanilla gameobject'
+FROM `gameobject` WHERE `id` IN (
+    179984, 180025, 180038, 180056
+) AND `guid` IN (
+    991, 18622, 27057, 151265, 151266, 151267, 151268
+);
+
+-- Vanilla quests opening at tier 1; every existing alternative keeps its own conditions.
+INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
+SELECT DISTINCT 19, 0, q.`ID`, 0, COALESCE(c.`ElseGroup`, 0), 8, 0, 66001, 0, 0, 0, 0, 0, '', 'Era content: Vanilla quest'
+FROM `quest_template` q
+LEFT JOIN `conditions` c ON c.`SourceTypeOrReferenceId` = 19 AND c.`SourceGroup` = 0 AND c.`SourceEntry` = q.`ID` AND c.`SourceId` = 0
+WHERE q.`ID` IN (
+    7761, 7781, 7782, 7783, 7784, 7785, 7786, 7787
+);
+
+-- Vanilla items opening at tier 1, sold by vendors that are visible earlier.
+INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
+SELECT DISTINCT 23, v.`entry`, v.`item`, 0, 0, 8, 0, 66001, 0, 0, 0, 0, 0, '', 'Era content: Vanilla vendor item'
+FROM `npc_vendor` v
+WHERE (v.`entry` = 10856 AND v.`item` IN (19203, 19205, 19216, 19217, 19328, 19329, 19442, 19446, 19447))
+   OR (v.`entry` = 10857 AND v.`item` IN (19203, 19205, 19216, 19217, 19328, 19329, 19442, 19446, 19447))
+   OR (v.`entry` = 11536 AND v.`item` IN (19203, 19205, 19216, 19217, 19328, 19329, 19442, 19446, 19447))
+   OR (v.`entry` = 11557 AND v.`item` IN (19202, 19204, 19215, 19218, 19326, 19327, 19445));
+
+-- Vanilla creatures opening at tier 3.
+INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
+SELECT 30, 0, `id`, `guid`, 0, 8, 0, 66003, 0, 0, 0, 0, 0, '', 'Era content: Vanilla creature'
+FROM `creature` WHERE `id` IN (
+    5814, 7951, 14911, 14961, 14962, 14963, 14964, 14994, 15076, 15080, 15124, 15125, 15131, 15165, 15169,
+    15170, 15171, 15172, 15174, 15175, 15177, 15178, 15179, 15182, 15184, 15185, 15186, 15315, 15545, 16014,
+    16015, 16033, 16090, 16094, 16096, 16117, 16123
+) AND `guid` IN (
+    313, 314, 385, 436, 609, 690, 723, 1792, 6492, 6493, 7944, 7947, 10349, 11264, 11270, 14400, 14809, 16397,
+    16572, 16573, 22788, 23273, 32334, 32656, 39068, 42208, 42751, 42752, 42753, 42754, 42755, 42756, 42758,
+    42759, 42760, 42764, 42770, 42771, 42773, 42774, 42775, 42778, 42779, 42780, 42781, 42784, 42785, 42885,
+    42886, 42891, 42892, 42895, 42896, 42897, 42898, 42899, 42900, 42901, 42902, 42903, 43206, 43207, 43208,
+    43209, 43213, 43214, 43215, 43216, 43217, 43218, 43219, 43220, 54194, 54195, 54196, 54197, 54198, 54199,
+    54209, 54254, 54255, 54256, 54809, 54859, 55363, 56312, 56313, 56318, 92035, 94490
+);
+
+-- Vanilla gameobjects opening at tier 3.
+INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
+SELECT 30, 1, `id`, `guid`, 0, 8, 0, 66003, 0, 0, 0, 0, 0, '', 'Era content: Vanilla gameobject'
+FROM `gameobject` WHERE `id` IN (
+    165658, 177281, 180204, 180205, 180216, 180367, 180375, 180417, 180435, 180436, 180438, 180439, 180440,
+    180441, 180442, 180451, 180453, 180454, 180455, 180456, 180461, 180466, 180473, 180474, 180475, 180476,
+    180477, 180478, 180479, 180480, 180501, 180503, 180504, 180505, 180518, 180529, 180534, 180539, 180544,
+    180549, 180554, 180559, 180564, 181053, 181062, 181063, 181064, 181065, 181066, 181067, 181098
+) AND `guid` IN (
+    4528, 4529, 4530, 4531, 4532, 4533, 4534, 4535, 4536, 4537, 4601, 4602, 4603, 4604, 4605, 4606, 4607,
+    4608, 4609, 4610, 4617, 4618, 4619, 4624, 4625, 4626, 4627, 4628, 4629, 4630, 4631, 4632, 4633, 4634,
+    4635, 4636, 4637, 4638, 4639, 4640, 4641, 4642, 4643, 4645, 5586, 6171, 6186, 6200, 6271, 6293, 6381,
+    6767, 6768, 6769, 9115, 9118, 9122, 10089, 18001, 18002, 18003, 20808, 20809, 20810, 20811, 20812, 20813,
+    49271, 49285, 49286, 49287, 49288, 49289, 49290, 49291, 49292, 49293, 49294, 49295, 49296, 49297, 49310,
+    49311, 49314, 49316, 49317, 49321, 49332, 49333, 49334, 49335, 49378, 49396, 49414, 49415, 49416, 49417,
+    49418, 49419, 49420, 49421, 49422, 49423, 49424, 49425, 49429, 49430, 49431, 49432, 49433, 49450, 49452,
+    49460, 49461, 49462, 49463, 49464, 49465, 49466, 49838, 50207, 50214, 50215, 50230, 50231, 50237, 50257,
+    99865, 99897, 99898, 99899, 99997, 205495, 205496, 205497, 205498, 205499, 205500, 205501, 205502, 205503,
+    205504, 205505, 205506, 205507, 205508, 205509, 205510, 205631, 205632, 205633, 205634, 205635, 205636,
+    205637, 205638, 205639, 205640, 205641, 205642, 205643, 205644, 205645, 205646, 205647, 205648, 205649,
+    205650, 205651, 205652, 205654, 205655, 205656, 205657, 205658, 205659, 205660, 205661, 205662, 205663,
+    205664, 205665, 205666, 205667, 206215, 206216, 206217, 206218, 206219, 206220, 206221, 206222, 206223,
+    206224, 206225, 206226, 206227, 206228, 206229, 206230, 206231, 206232, 206233, 206234, 206235, 206236,
+    206237, 206238, 206239, 206240, 206241, 206242, 206243, 206244, 206245, 206246, 206247, 206338, 206339,
+    206340, 206341, 206342, 206343, 206344, 206345, 206346, 206347, 206348, 206349, 206350, 206351, 206352,
+    206353, 206354, 206355, 206356, 206357, 206358, 206359, 206360, 206361, 206362, 206363, 206364, 206365,
+    206366, 206367, 206416, 206417, 206418, 206419, 206420, 206421, 206422, 206423, 206424, 206425, 206426,
+    206427, 206428, 206429, 206430, 206431, 206432, 206433, 206434, 206435, 206436, 206437, 206438, 206439
+);
+
+-- Vanilla quests opening at tier 3; every existing alternative keeps its own conditions.
+INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
+SELECT DISTINCT 19, 0, q.`ID`, 0, COALESCE(c.`ElseGroup`, 0), 8, 0, 66003, 0, 0, 0, 0, 0, '', 'Era content: Vanilla quest'
+FROM `quest_template` q
+LEFT JOIN `conditions` c ON c.`SourceTypeOrReferenceId` = 19 AND c.`SourceGroup` = 0 AND c.`SourceEntry` = q.`ID` AND c.`SourceId` = 0
+WHERE q.`ID` IN (
+    8151, 8153, 8183, 8184, 8185, 8186, 8187, 8188, 8189, 8190, 8191, 8192, 8196, 8227, 8231, 8232, 8233,
+    8234, 8235, 8236, 8241, 8242, 8243, 8246, 8249, 8250, 8251, 8252, 8253, 8254, 8255, 8256, 8257, 8258,
+    8273, 8307, 8308, 8309, 8310, 8313, 8314, 8317, 8365, 8366, 8410, 8412, 8413, 8414, 8415, 8416, 8417,
+    8418, 8419, 8420, 8421, 8422, 8423, 8424, 8425, 8446, 8447, 8921, 8924, 8925, 8928, 8945, 8946, 8947,
+    8948, 8949, 8950, 8951, 8952, 8953, 8954, 8955, 8956, 8957, 8958, 8959, 8961, 8962, 8963, 8964, 8965,
+    8966, 8967, 8968, 8969, 8970, 8977, 8978, 8985, 8986, 8987, 8988, 8989, 8990, 8991, 8992, 8994, 8995,
+    8997, 8998, 9015, 9016, 9017, 9018, 9019, 9020, 9021, 9022, 9051, 9052, 9053, 9063
+);
+
+-- Vanilla items opening at tier 3, sold by vendors that are visible earlier.
+INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
+SELECT DISTINCT 23, v.`entry`, v.`item`, 0, 0, 8, 0, 66003, 0, 0, 0, 0, 0, '', 'Era content: Vanilla vendor item'
+FROM `npc_vendor` v
+WHERE (v.`entry` = 777 AND v.`item` IN (20576))
+   OR (v.`entry` = 1318 AND v.`item` IN (22307))
+   OR (v.`entry` = 3012 AND v.`item` IN (22307))
+   OR (v.`entry` = 3346 AND v.`item` IN (22307))
+   OR (v.`entry` = 3405 AND v.`item` IN (22250))
+   OR (v.`entry` = 3548 AND v.`item` IN (22250))
+   OR (v.`entry` = 4216 AND v.`item` IN (22250))
+   OR (v.`entry` = 4228 AND v.`item` IN (22307))
+   OR (v.`entry` = 4615 AND v.`item` IN (22250))
+   OR (v.`entry` = 4617 AND v.`item` IN (22307))
+   OR (v.`entry` = 4879 AND v.`item` IN (20075))
+   OR (v.`entry` = 4899 AND v.`item` IN (22250))
+   OR (v.`entry` = 5138 AND v.`item` IN (22250))
+   OR (v.`entry` = 5158 AND v.`item` IN (22307))
+   OR (v.`entry` = 5503 AND v.`item` IN (22250))
+   OR (v.`entry` = 5757 AND v.`item` IN (22307))
+   OR (v.`entry` = 5758 AND v.`item` IN (22307))
+   OR (v.`entry` = 10856 AND v.`item` IN (22014))
+   OR (v.`entry` = 10857 AND v.`item` IN (22014))
+   OR (v.`entry` = 11118 AND v.`item` IN (22324))
+   OR (v.`entry` = 11536 AND v.`item` IN (22014))
+   OR (v.`entry` = 11557 AND v.`item` IN (20253, 20254, 22392))
+   OR (v.`entry` = 12919 AND v.`item` IN (19974))
+   OR (v.`entry` = 14921 AND v.`item` IN (19764, 19765, 19766, 19769, 19770, 19771, 19772, 19773, 19776, 19777, 19778, 19779, 19780, 19781, 20000, 20001, 20011, 20012, 20013, 20014));
+
+-- Vanilla creatures opening at tier 4.
+INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
+SELECT 30, 0, `id`, `guid`, 0, 8, 0, 66004, 0, 0, 0, 0, 0, '', 'Era content: Vanilla creature'
+FROM `creature` WHERE `id` IN (
+    8669, 8670, 8672, 8674, 8719, 8721, 8722, 8723, 9857, 9858, 15184, 15395, 15481, 15520, 15526, 15541,
+    15552, 15553, 15609, 15610, 15611, 15659, 15675, 15676, 15677, 15678, 15679, 15681, 15682, 15683, 15684,
+    15686, 15722, 15801, 16069, 16076
+) AND `guid` IN (
+    568, 569, 570, 6497, 6498, 18612, 18614, 23283, 24708, 26769, 32058, 32059, 32060, 32061, 32062, 32063,
+    32064, 32065, 35867, 39108, 40530, 42203, 42766, 42767, 42769, 42772, 42776, 42777, 42868, 42884, 43044,
+    43201, 43211, 43212, 46164, 46165, 46166, 46190, 46240, 46243, 49214, 79705, 79706, 79707
+);
+
+-- Vanilla gameobjects opening at tier 4.
+INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
+SELECT 30, 1, `id`, `guid`, 0, 8, 0, 66004, 0, 0, 0, 0, 0, '', 'Era content: Vanilla gameobject'
+FROM `gameobject` WHERE `id` IN (
+    180582, 180651, 180655, 180656, 180657, 180658, 180659, 180661, 180662, 180663, 180664, 180665, 180666,
+    180669, 180673, 180682, 180683, 180684, 180685, 180750, 180751, 180752, 180753, 180788, 180866, 180867,
+    180900, 180901, 180902, 180913, 180914, 180915
+) AND `guid` IN (
+    96, 479, 485, 502, 536, 543, 553, 554, 559, 581, 618, 622, 624, 639, 649, 676, 698, 706, 708, 713, 722,
+    724, 725, 726, 732, 733, 738, 751, 767, 776, 807, 808, 811, 822, 823, 840, 841, 846, 854, 861, 865, 872,
+    873, 874, 875, 894, 897, 898, 899, 915, 916, 919, 936, 952, 961, 964, 965, 973, 977, 985, 986, 988, 989,
+    1012, 1048, 1124, 1188, 1431, 1438, 1441, 1442, 1457, 1461, 1465, 1466, 1477, 1489, 1492, 1526, 1604,
+    1605, 1611, 1617, 1618, 1619, 1624, 1635, 1637, 1639, 1645, 1646, 1650, 1655, 1656, 1691, 1699, 1729,
+    1732, 1734, 1735, 1736, 1744, 1762, 1768, 1769, 1770, 1771, 1773, 1784, 1791, 1805, 1839, 1851, 1858,
+    1895, 1912, 1929, 2001, 2026, 2031, 2045, 2051, 2208, 4561, 4562, 4583, 4679, 4773, 4775, 4860, 4993,
+    5012, 5021, 5032, 5033, 5071, 5074, 5097, 5119, 5120, 5121, 5123, 5124, 5169, 5178, 5179, 5181, 5182,
+    5183, 5190, 5192, 5322, 5328, 5340, 5435, 5439, 5441, 5442, 5465, 5476, 6808, 6843, 6844, 6856, 6864,
+    10705, 10949, 10951, 10963, 10964, 10966, 10967, 10969, 11145, 11146, 11147, 11148, 11149, 11153, 11166,
+    11167, 11168, 11169, 11170, 11171, 11172, 11173, 11645, 11650, 11661, 11662, 11663, 11668, 11688, 11701,
+    11804, 11968, 12059, 12060, 12062, 12074, 12075, 12076, 12077, 12770, 12773, 12774, 12775, 12778, 12780,
+    12782, 13421, 13422, 13429, 13430, 13431, 13432, 14085, 14086, 14087, 14088, 14089, 14096, 14097, 14625,
+    14626, 14627, 14722, 14778, 14841, 14842, 14843, 14844, 14852, 14902, 14903, 15110, 15111, 15199, 15200,
+    15202, 15203, 15204, 15397, 15419, 15420, 15476, 15497, 15505, 15633, 15634, 15707, 15708, 15763, 15764,
+    15771, 15775, 15776, 15777, 15779, 15783, 16548, 16574, 16576, 16577, 16578, 16579, 16580, 16616, 16644,
+    16645, 16716, 16734, 16744, 16766, 16773, 17241, 17242, 17245, 17246, 17247, 17250, 17251, 17356, 17357,
+    18062, 18063, 18064, 18065, 18066, 18069, 18070, 18071, 18082, 18083, 18085, 18105, 18107, 18109, 18111,
+    18117, 18118, 18119, 18120, 18121, 18123, 18125, 18127, 18128, 18139, 18140, 18141, 18142, 18144, 18145,
+    18146, 18147, 18148, 18149, 18151, 18153, 18154, 18157, 18158, 18161, 18162, 18165, 18169, 18172, 18181,
+    18185, 18189, 18193, 18195, 18200, 18202, 18206, 18211, 18213, 18223, 18225, 20337, 20339, 20354, 20377,
+    20803, 20804, 20805, 20819, 20821, 20823, 20826, 20827, 20857, 20877, 20879, 20915, 21221, 21222, 21223,
+    21224, 21225, 21226, 21228, 21229, 21230, 21231, 21232, 21234, 21236, 21238, 21241, 21242, 21243, 21244,
+    21245, 21246, 21247, 21260, 21261, 21262, 21264, 21268, 21269, 27558, 27589, 29977, 32090, 32091, 32191,
+    32556, 32560, 32561, 32562, 32563, 32564, 32565, 33209, 33210, 33211, 33212, 33284, 33300, 35423, 35424,
+    35425, 35426, 35428, 35429, 35438, 35439, 35441, 35453, 35466, 35482, 35505, 42693, 42694, 42695, 42696,
+    42697, 42698, 47247, 47283, 47318, 47319, 47320, 47321, 47322, 47323, 47324, 47325, 47326, 47327, 47328,
+    47329, 47330, 47331, 47332, 47333, 47334, 47335, 47336, 47337, 47338, 47339, 47340, 47341, 47342, 47343,
+    47344, 47345, 47346, 47348, 47349, 47351, 47352, 47353, 47354, 47355, 47356, 47358, 47359, 47360, 47361,
+    47363, 47366, 47367, 47368, 47369, 47371, 47372, 47373, 47375, 47379, 47380, 47381, 47382, 47383, 47384,
+    47385, 47387, 47390, 47391, 47392, 47393, 47394, 47395, 47396, 47397, 47398, 47400, 47401, 47403, 47404,
+    47405, 47406, 47407, 47408, 47409, 47410, 47412, 47414, 47415, 47417, 47418, 47419, 47420, 47421, 47422,
+    47423, 47424, 47425, 47426, 47427, 47428, 47429, 47430, 47431, 47432, 47433, 47434, 47435, 47436, 47437,
+    47439, 47441, 47442, 47443, 47446, 47448, 47453, 47461, 47462, 47463, 47464, 47466, 47467, 47469, 47470,
+    47471, 47472, 47473, 47505, 47506, 47507, 47508, 47509, 47510, 47511, 47512, 47513, 47516, 47517, 47518,
+    47519, 47520, 47521, 47522, 47523, 47524, 47525, 47526, 47527, 47528, 47529, 47530, 47531, 47533, 47534,
+    47535, 47536, 47537, 47538, 47539, 47540, 47541, 47543, 47544, 47545, 47546, 47618, 47619, 47620, 47621,
+    47622, 47623, 47624, 48059, 48060, 48061, 48062, 48063, 48064, 48065, 48066, 48067, 48525, 48539, 48541,
+    48556, 48638, 48646, 48647, 48648, 48650, 48658, 48663, 48667, 49315, 49380, 49393, 49394, 49395, 49900,
+    49901, 49902, 49903, 49904, 49905, 49906, 49907, 49908, 49909, 49910, 49911, 49912, 49913, 49914, 49915,
+    49916, 50259, 50260, 50261, 50262, 50263, 50264, 50265, 50266, 50267, 50268, 50269, 50270, 50271, 50272,
+    50273, 50274, 50275, 50276, 50277, 50278, 50279, 50280, 50281, 50282, 50283, 50284, 50285, 50286, 50287,
+    50288, 50289, 50290, 50291, 50292, 50293, 50294, 50295, 50296, 50297, 50299, 50300, 50303, 50304, 50305,
+    50306, 50307, 50308, 50309, 50310, 50311, 50312, 50313, 50314, 50315, 50316, 50317, 50318, 50319, 50320,
+    50321, 50322, 50323, 50324, 50325, 50326, 50327, 50328, 50329, 50330, 50331, 50332, 50333, 50334, 50335,
+    50336, 50337, 50339, 50340, 50341, 50342, 50343, 50344, 50345, 50346, 50473, 50474, 64512, 64513, 64514,
+    64515, 64516, 64517, 64518, 64616, 64617, 64618, 64619, 64620, 64621, 64622, 64623, 64624, 64625, 64626,
+    64682, 64683, 64684, 64685, 64686, 64687, 64736, 64737, 64738, 64739, 64740, 64753, 64754, 64755, 64756,
+    64757, 64758, 64759, 64760, 64761, 64794, 64795, 64796, 64797, 64798, 64799, 64811, 64827, 64837, 64839,
+    64843, 64859, 99900, 99998, 100089, 241010, 241011, 241012, 241013, 241014, 241015, 268645, 268646, 268871
+);
+
+-- Vanilla quests opening at tier 4; every existing alternative keeps its own conditions.
+INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
+SELECT DISTINCT 19, 0, q.`ID`, 0, COALESCE(c.`ElseGroup`, 0), 8, 0, 66004, 0, 0, 0, 0, 0, '', 'Era content: Vanilla quest'
+FROM `quest_template` q
+LEFT JOIN `conditions` c ON c.`SourceTypeOrReferenceId` = 19 AND c.`SourceGroup` = 0 AND c.`SourceEntry` = q.`ID` AND c.`SourceId` = 0
+WHERE q.`ID` IN (
+    8460, 8461, 8462, 8464, 8465, 8466, 8467, 8469, 8470, 8471, 8481, 8484, 8485, 8496, 8497, 8498, 8501,
+    8502, 8534, 8535, 8536, 8537, 8538, 8539, 8540, 8541, 8544, 8551, 8552, 8553, 8554, 8559, 8560, 8561,
+    8562, 8592, 8593, 8594, 8595, 8596, 8599, 8602, 8603, 8621, 8622, 8623, 8624, 8625, 8626, 8627, 8628,
+    8629, 8630, 8631, 8632, 8633, 8634, 8637, 8638, 8639, 8640, 8641, 8655, 8656, 8657, 8658, 8659, 8660,
+    8661, 8662, 8663, 8664, 8665, 8666, 8667, 8668, 8669, 8687, 8737, 8738, 8739, 8740, 8747, 8748, 8749,
+    8750, 8751, 8752, 8753, 8754, 8755, 8756, 8757, 8758, 8759, 8760, 8761, 8764, 8765, 8766, 8770, 8771,
+    8772, 8773, 8774, 8775, 8776, 8777, 8778, 8779, 8780, 8781, 8782, 8783, 8784, 8785, 8786, 8787, 8789,
+    8790, 8798, 8801, 8802, 8804, 8805, 8806, 8807, 8808, 8809, 8810, 8812, 8813, 8814, 8815, 8816, 8818,
+    8820, 8821, 8822, 8823, 8824, 8825, 8826, 8829, 8842, 8893
+);
+
+-- Vanilla items opening at tier 4, sold by vendors that are visible earlier.
+INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
+SELECT DISTINCT 23, v.`entry`, v.`item`, 0, 0, 8, 0, 66004, 0, 0, 0, 0, 0, '', 'Era content: Vanilla vendor item'
+FROM `npc_vendor` v
+WHERE (v.`entry` = 1318 AND v.`item` IN (20752, 20753, 20758))
+   OR (v.`entry` = 1325 AND v.`item` IN (20844))
+   OR (v.`entry` = 1326 AND v.`item` IN (20844))
+   OR (v.`entry` = 1457 AND v.`item` IN (20844))
+   OR (v.`entry` = 1678 AND v.`item` IN (21552))
+   OR (v.`entry` = 1684 AND v.`item` IN (21552))
+   OR (v.`entry` = 2303 AND v.`item` IN (21030, 21031, 21033))
+   OR (v.`entry` = 2381 AND v.`item` IN (21099, 21219))
+   OR (v.`entry` = 2397 AND v.`item` IN (21099, 21219))
+   OR (v.`entry` = 2622 AND v.`item` IN (20844))
+   OR (v.`entry` = 2664 AND v.`item` IN (21099, 21219))
+   OR (v.`entry` = 2842 AND v.`item` IN (21552))
+   OR (v.`entry` = 3012 AND v.`item` IN (20752, 20753, 20758))
+   OR (v.`entry` = 3027 AND v.`item` IN (21099, 21219))
+   OR (v.`entry` = 3085 AND v.`item` IN (21099, 21219))
+   OR (v.`entry` = 3086 AND v.`item` IN (21552))
+   OR (v.`entry` = 3090 AND v.`item` IN (20844))
+   OR (v.`entry` = 3135 AND v.`item` IN (20844))
+   OR (v.`entry` = 3178 AND v.`item` IN (21552))
+   OR (v.`entry` = 3334 AND v.`item` IN (20844))
+   OR (v.`entry` = 3346 AND v.`item` IN (20752, 20753, 20758))
+   OR (v.`entry` = 3400 AND v.`item` IN (21099, 21219))
+   OR (v.`entry` = 3490 AND v.`item` IN (20844))
+   OR (v.`entry` = 3497 AND v.`item` IN (21552))
+   OR (v.`entry` = 3540 AND v.`item` IN (21552))
+   OR (v.`entry` = 3542 AND v.`item` IN (20844))
+   OR (v.`entry` = 3551 AND v.`item` IN (20844))
+   OR (v.`entry` = 3561 AND v.`item` IN (20844))
+   OR (v.`entry` = 3961 AND v.`item` IN (21030, 21031, 21033))
+   OR (v.`entry` = 3969 AND v.`item` IN (20844))
+   OR (v.`entry` = 4167 AND v.`item` IN (21030, 21031, 21033))
+   OR (v.`entry` = 4181 AND v.`item` IN (21030, 21031, 21033))
+   OR (v.`entry` = 4191 AND v.`item` IN (21030, 21031, 21033))
+   OR (v.`entry` = 4195 AND v.`item` IN (21030, 21031, 21033))
+   OR (v.`entry` = 4200 AND v.`item` IN (21552))
+   OR (v.`entry` = 4221 AND v.`item` IN (21552))
+   OR (v.`entry` = 4223 AND v.`item` IN (21099, 21219))
+   OR (v.`entry` = 4228 AND v.`item` IN (20752, 20753, 20758))
+   OR (v.`entry` = 4265 AND v.`item` IN (21099, 21219))
+   OR (v.`entry` = 4266 AND v.`item` IN (21030, 21031, 21033))
+   OR (v.`entry` = 4305 AND v.`item` IN (21552))
+   OR (v.`entry` = 4307 AND v.`item` IN (21552))
+   OR (v.`entry` = 4553 AND v.`item` IN (21099, 21219))
+   OR (v.`entry` = 4585 AND v.`item` IN (20844))
+   OR (v.`entry` = 4617 AND v.`item` IN (20752, 20753, 20758))
+   OR (v.`entry` = 5158 AND v.`item` IN (20752, 20753, 20758))
+   OR (v.`entry` = 5160 AND v.`item` IN (21099, 21219))
+   OR (v.`entry` = 5169 AND v.`item` IN (20844))
+   OR (v.`entry` = 5483 AND v.`item` IN (21099, 21219))
+   OR (v.`entry` = 5757 AND v.`item` IN (20752, 20753, 20758))
+   OR (v.`entry` = 5758 AND v.`item` IN (20752, 20753, 20758))
+   OR (v.`entry` = 5814 AND v.`item` IN (21552))
+   OR (v.`entry` = 6091 AND v.`item` IN (21030, 21031, 21033))
+   OR (v.`entry` = 6568 AND v.`item` IN (21358))
+   OR (v.`entry` = 6727 AND v.`item` IN (21552))
+   OR (v.`entry` = 6779 AND v.`item` IN (20844))
+   OR (v.`entry` = 6791 AND v.`item` IN (21552))
+   OR (v.`entry` = 6807 AND v.`item` IN (21552))
+   OR (v.`entry` = 7941 AND v.`item` IN (21030, 21031, 21033))
+   OR (v.`entry` = 7943 AND v.`item` IN (21552))
+   OR (v.`entry` = 8137 AND v.`item` IN (21552))
+   OR (v.`entry` = 8307 AND v.`item` IN (21099, 21219))
+   OR (v.`entry` = 8931 AND v.`item` IN (21552))
+   OR (v.`entry` = 11187 AND v.`item` IN (21552))
+   OR (v.`entry` = 12019 AND v.`item` IN (21030, 21031, 21033))
+   OR (v.`entry` = 12026 AND v.`item` IN (21030, 21031, 21033))
+   OR (v.`entry` = 12033 AND v.`item` IN (21099, 21219))
+   OR (v.`entry` = 12962 AND v.`item` IN (21552))
+   OR (v.`entry` = 14731 AND v.`item` IN (21552))
+   OR (v.`entry` = 14738 AND v.`item` IN (21099, 21219))
+   OR (v.`entry` = 14921 AND v.`item` IN (20756, 20757))
+   OR (v.`entry` = 15175 AND v.`item` IN (20844))
+   OR (v.`entry` = 24834 AND v.`item` IN (21552))
+   OR (v.`entry` = 24993 AND v.`item` IN (21552))
+   OR (v.`entry` = 25020 AND v.`item` IN (21552))
+   OR (v.`entry` = 25089 AND v.`item` IN (21552));
+
+-- Vanilla creatures opening at tier 6.
+INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
+SELECT 30, 0, `id`, `guid`, 0, 8, 0, 66006, 0, 0, 0, 0, 0, '', 'Era content: Vanilla creature'
+FROM `creature` WHERE `id` IN (
+    10583, 11704, 16030, 16227, 16399, 16416, 16417, 16418, 16458, 17074, 17090, 17249, 17598, 18199
+) AND `guid` IN (
+    554, 565, 13551, 14323, 21821, 23723, 29239, 41519, 42745, 43179, 43223, 53738, 92885, 108869, 108870,
+    108871
+);
+
+-- Vanilla gameobjects opening at tier 6.
+INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
+SELECT 30, 1, `id`, `guid`, 0, 8, 0, 66006, 0, 0, 0, 0, 0, '', 'Era content: Vanilla gameobject'
+FROM `gameobject` WHERE `id` IN (
+    180712, 180750, 180751, 180752, 181134, 181135, 181598, 181633, 181634, 181635, 181639, 182075, 182076,
+    182077, 182078, 182079, 182080, 182081, 182106
+) AND `guid` IN (
+    11689, 11700, 11703, 11986, 12053, 17466, 17467, 17468, 17469, 17470, 17891, 18067, 18084, 18086, 18122,
+    18227, 18232, 18279, 18282, 18284, 18293, 18629, 18631, 30712, 33285, 42097, 45608, 45610, 45693, 45694,
+    45695, 45696, 45722, 45723, 45724, 45725, 45726, 45727, 45728, 45729, 45753, 45754, 45755, 45756, 47474,
+    47475, 47476, 47477, 47478, 47479, 47547, 47548, 47549, 47550, 47551, 47593, 48230, 48231, 48232, 48233,
+    48451, 49336, 49337, 49338, 49339, 49340, 49341, 49342, 49343, 49344, 49345, 49346, 49347, 49348, 49349,
+    49350, 49351, 49377, 49379, 49381, 50178, 50179, 50180, 50181, 50182, 50183, 50184, 50298, 50301, 50302,
+    64627, 64628
+);
+
+-- Vanilla quests opening at tier 6; every existing alternative keeps its own conditions.
+INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
+SELECT DISTINCT 19, 0, q.`ID`, 0, COALESCE(c.`ElseGroup`, 0), 8, 0, 66006, 0, 0, 0, 0, 0, '', 'Era content: Vanilla quest'
+FROM `quest_template` q
+LEFT JOIN `conditions` c ON c.`SourceTypeOrReferenceId` = 19 AND c.`SourceGroup` = 0 AND c.`SourceEntry` = q.`ID` AND c.`SourceId` = 0
+WHERE q.`ID` IN (
+    9120, 9178, 9179, 9181, 9182, 9183, 9184, 9185, 9186, 9187, 9188, 9190, 9191, 9194, 9195, 9196, 9197,
+    9198, 9200, 9201, 9202, 9203, 9204, 9205, 9206, 9208, 9209, 9210, 9233, 9247, 9250, 9251, 9257, 9259,
+    9266, 9267, 9268, 9269, 9270, 9271, 9272, 9295, 9299, 9300, 9301, 9302, 9304, 9362, 9364
+);
+
+-- Vanilla items opening at tier 6, sold by vendors that are visible earlier.
+INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
+SELECT DISTINCT 23, v.`entry`, v.`item`, 0, 0, 8, 0, 66006, 0, 0, 0, 0, 0, '', 'Era content: Vanilla vendor item'
+FROM `npc_vendor` v
+WHERE (v.`entry` = 15179 AND v.`item` IN (22683, 22772, 22773, 22774));
+
+-- TBC creatures opening at tier 8.
 INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
 SELECT 30, 0, `id`, `guid`, 0, 8, 0, 66008, 0, 0, 0, 0, 0, '', 'Era content: TBC creature'
 FROM `creature` WHERE `id` IN (
     16287, 16288, 17092, 17093, 17094, 17095, 17097, 17098, 17099, 17100, 17103, 17104, 17105, 17106, 17109,
     17111, 17112, 17113, 17119, 17127, 17178, 17218, 17223, 17238, 17287, 17291, 17303, 17310, 17355, 17406,
-    17409, 17412, 17531, 17541, 18165, 18221, 18241, 19855, 19905, 19906, 19907, 19908, 19910, 19914, 19918,
-    19932, 19933, 19935, 20025, 20055, 20131, 20142, 20406, 21045, 21448, 22834, 22916, 22931, 22935, 22936,
-    22985, 23050, 23090, 23103, 23128, 23131, 23536, 23566, 23567, 23568, 23569, 23570, 23571, 23572, 23573,
-    23579, 23600, 23601, 23602, 23612, 23616, 23618, 23635, 23636, 23704, 23713, 23720, 23723, 23797, 23835,
-    23843, 23892, 23896, 23905, 23942, 23949, 23950, 23969, 23979, 23995, 24025, 24208, 24366, 24729, 24734,
-    25058, 25109, 26081, 27703, 27704, 27705, 28126, 29093, 29095
+    17409, 17412, 17531, 17541, 18165, 18241, 19855, 19905, 19906, 19907, 19908, 19910, 19914, 19918, 19932,
+    19933, 19935, 20025, 20055, 20131, 20142, 20406, 21045, 21448, 22834, 22916, 22931, 22935, 22936, 22985,
+    23050, 23090, 23103, 23128, 23131, 23536, 23566, 23567, 23568, 23569, 23570, 23571, 23572, 23573, 23579,
+    23600, 23601, 23602, 23612, 23616, 23618, 23635, 23636, 23704, 23713, 23720, 23723, 23797, 23835, 23843,
+    23892, 23896, 23905, 23942, 23949, 23950, 23969, 23979, 23995, 24025, 24208, 24366, 24729, 24734, 25058,
+    25109, 26081, 27703, 27704, 27705, 28126, 29093, 29095
 ) AND `guid` IN (
     563, 564, 720, 1846, 3466, 4200, 6501, 6502, 6503, 6506, 6867, 8470, 8503, 8504, 8505, 8506, 8507, 8508,
     8509, 8510, 10496, 11215, 11271, 12600, 12603, 12813, 15318, 15540, 15938, 16571, 16596, 16599, 17284,
@@ -37,12 +383,12 @@ FROM `creature` WHERE `id` IN (
     31572, 31639, 31641, 31645, 31666, 31667, 31668, 31671, 31723, 31725, 31726, 31733, 31805, 31937, 31941,
     31942, 31943, 32035, 32054, 32055, 32066, 32101, 32102, 32107, 32325, 32327, 32789, 32809, 32859, 32911,
     32912, 32915, 32936, 32937, 33316, 33392, 33393, 33394, 33682, 33684, 33691, 33788, 33789, 33790, 33886,
-    33900, 33924, 33926, 33927, 34007, 34141, 34142, 34182, 35095, 35096, 37032, 37033, 37036, 37038, 37039,
-    39104, 41829, 42360, 42408, 43438, 44180, 44251, 45246, 47640, 49590, 49591, 79736, 80305, 83207, 83208,
-    88299, 92983, 94505, 94506, 120784, 120801, 200150, 200151, 200152, 1975960
+    33900, 33924, 33926, 33927, 34007, 34141, 34182, 35095, 35096, 37032, 37033, 37036, 37038, 37039, 39104,
+    41829, 42360, 42408, 43438, 44180, 44251, 45246, 47640, 49590, 49591, 79736, 80305, 83207, 83208, 88299,
+    92983, 94505, 94506, 120784, 120801, 200150, 200151, 200152, 1975960
 );
 
--- TBC gameobjects on the old-world continents.
+-- TBC gameobjects opening at tier 8.
 INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
 SELECT 30, 1, `id`, `guid`, 0, 8, 0, 66008, 0, 0, 0, 0, 0, '', 'Era content: TBC gameobject'
 FROM `gameobject` WHERE `id` IN (
@@ -76,7 +422,7 @@ FROM `gameobject` WHERE `id` IN (
     50356, 50357, 61893, 99849, 99855, 99858, 99859, 99860, 99867, 99922, 99923, 268872, 268881
 );
 
--- TBC quests reachable earlier; every existing alternative keeps its own conditions.
+-- TBC quests opening at tier 8; every existing alternative keeps its own conditions.
 INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
 SELECT DISTINCT 19, 0, q.`ID`, 0, COALESCE(c.`ElseGroup`, 0), 8, 0, 66008, 0, 0, 0, 0, 0, '', 'Era content: TBC quest'
 FROM `quest_template` q
@@ -94,7 +440,7 @@ WHERE q.`ID` IN (
     11217, 11222, 11223, 11225, 11531, 12513
 );
 
--- TBC items sold by vendors that are visible earlier.
+-- TBC items opening at tier 8, sold by vendors that are visible earlier.
 INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
 SELECT DISTINCT 23, v.`entry`, v.`item`, 0, 0, 8, 0, 66008, 0, 0, 0, 0, 0, '', 'Era content: TBC vendor item'
 FROM `npc_vendor` v
@@ -201,7 +547,74 @@ WHERE (v.`entry` = 151 AND v.`item` IN (28979))
    OR (v.`entry` = 25020 AND v.`item` IN (30817))
    OR (v.`entry` = 25089 AND v.`item` IN (30817));
 
--- Wrath creatures on the old-world continents and Outland.
+-- TBC creatures opening at tier 9.
+INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
+SELECT 30, 0, `id`, `guid`, 0, 8, 0, 66009, 0, 0, 0, 0, 0, '', 'Era content: TBC creature'
+FROM `creature` WHERE `id` IN (
+    20613, 20616
+) AND `guid` IN (
+    72880, 72884
+);
+
+-- TBC creatures opening at tier 10.
+INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
+SELECT 30, 0, `id`, `guid`, 0, 8, 0, 66010, 0, 0, 0, 0, 0, '', 'Era content: TBC creature'
+FROM `creature` WHERE `id` IN (
+    21905, 21906, 22987, 23449
+) AND `guid` IN (
+    76643, 76644, 79011, 79033
+);
+
+-- TBC gameobjects opening at tier 10.
+INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
+SELECT 30, 1, `id`, `guid`, 0, 8, 0, 66010, 0, 0, 0, 0, 0, '', 'Era content: TBC gameobject'
+FROM `gameobject` WHERE `id` IN (
+    185877, 185881, 185915
+) AND `guid` IN (
+    104615, 104616, 104617, 104618, 104619, 104620, 104621, 104622, 104623, 104624, 104625, 104626, 104627,
+    104628, 104629, 104630, 104631, 104632, 104633, 104634, 104635, 104636, 104637, 104638, 104639, 104640,
+    104641, 104642, 104643, 104644, 104645, 104646, 104647, 104648, 104649, 104650, 104651, 104652, 104653,
+    104654, 104655, 104656, 104657, 104658, 104659, 104660, 104661, 104662, 104663, 104664, 104665, 104666,
+    104667, 104668, 104669, 104670, 104671, 104672, 104673, 104674, 104675, 104676, 104677, 104678, 104679,
+    104680, 104681, 104682, 104683, 104684, 104685, 104686, 104687, 104688, 104689, 104690, 104691, 104692,
+    104693, 104694, 104695, 104696, 104697, 104698, 104699, 104700, 104701, 104702, 104703, 104704, 104705,
+    104706, 104707, 104708, 104709, 104710, 104711, 104712, 104713, 104714, 104715, 104716, 104717, 104718,
+    104719, 104720, 104721, 104722, 104723, 104724, 104725, 104726, 104727, 104728, 104729, 104730, 104731,
+    104732, 104733, 104734, 104735, 104736, 104737, 104738, 104739, 104740, 104741, 104742, 104743, 104744,
+    104745, 104746, 104747, 104748, 104749, 104750, 104751, 104752, 104753, 104754, 104755, 104756, 104757,
+    104758, 104759, 104760, 104761, 104762, 104763, 104764, 104765, 104766, 104767, 104768, 104769, 104770,
+    104771, 104772, 104773, 104774, 104775, 104776, 104777, 104778, 104779, 104780, 104781, 104782, 104783,
+    104784, 104785, 104786, 104787, 104788, 104789, 104790, 104791, 104792, 104793, 104794, 104795, 104796,
+    104797, 104798, 104799, 104800, 104801, 104802, 104803, 104804, 104805, 104806, 104807, 104808, 104809,
+    104810, 104811, 104812, 104813, 104814, 104815, 104816, 104817, 104818, 104819, 104820, 104821, 104822,
+    104823, 104824, 104825, 104826, 104827, 104828, 104829, 104830, 104831, 104832, 104833, 104834, 104835,
+    104836, 104837, 104838, 104839, 104840, 104841, 104842, 104843, 104844, 104845, 104846, 104847, 104848,
+    104849, 104850, 104851, 104852
+);
+
+-- TBC quests opening at tier 10; every existing alternative keeps its own conditions.
+INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
+SELECT DISTINCT 19, 0, q.`ID`, 0, COALESCE(c.`ElseGroup`, 0), 8, 0, 66010, 0, 0, 0, 0, 0, '', 'Era content: TBC quest'
+FROM `quest_template` q
+LEFT JOIN `conditions` c ON c.`SourceTypeOrReferenceId` = 19 AND c.`SourceGroup` = 0 AND c.`SourceEntry` = q.`ID` AND c.`SourceId` = 0
+WHERE q.`ID` IN (
+    10944, 11004, 11005, 11006, 11008, 11009, 11010, 11012, 11013, 11015, 11016, 11017, 11018, 11020, 11021,
+    11023, 11024, 11025, 11026, 11027, 11028, 11029, 11030, 11035, 11041, 11049, 11050, 11051, 11053, 11054,
+    11055, 11056, 11058, 11059, 11060, 11061, 11062, 11064, 11065, 11066, 11067, 11068, 11069, 11070, 11071,
+    11073, 11074, 11075, 11076, 11077, 11078, 11079, 11080, 11081, 11082, 11083, 11084, 11085, 11086, 11089,
+    11090, 11091, 11092, 11093, 11094, 11096, 11097, 11098, 11099, 11101, 11102, 11107, 11108, 11119, 11885
+);
+
+-- TBC quests opening at tier 12; every existing alternative keeps its own conditions.
+INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
+SELECT DISTINCT 19, 0, q.`ID`, 0, COALESCE(c.`ElseGroup`, 0), 8, 0, 66012, 0, 0, 0, 0, 0, '', 'Era content: TBC quest'
+FROM `quest_template` q
+LEFT JOIN `conditions` c ON c.`SourceTypeOrReferenceId` = 19 AND c.`SourceGroup` = 0 AND c.`SourceEntry` = q.`ID` AND c.`SourceId` = 0
+WHERE q.`ID` IN (
+    11178, 11195
+);
+
+-- Wrath creatures opening at tier 13.
 INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
 SELECT 30, 0, `id`, `guid`, 0, 8, 0, 66013, 0, 0, 0, 0, 0, '', 'Era content: Wrath creature'
 FROM `creature` WHERE `id` IN (
@@ -244,7 +657,7 @@ FROM `creature` WHERE `id` IN (
     207199, 207200, 207201, 207202, 207203, 207204, 207205, 207206, 207207, 207208, 207209, 1976212
 );
 
--- Wrath gameobjects on the old-world continents and Outland.
+-- Wrath gameobjects opening at tier 13.
 INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
 SELECT 30, 1, `id`, `guid`, 0, 8, 0, 66013, 0, 0, 0, 0, 0, '', 'Era content: Wrath gameobject'
 FROM `gameobject` WHERE `id` IN (
@@ -272,7 +685,7 @@ FROM `gameobject` WHERE `id` IN (
     151254, 151255, 151271, 151272, 151273, 151274, 151275, 151276, 151277, 151888, 268683, 2133395
 );
 
--- Wrath quests reachable earlier; every existing alternative keeps its own conditions.
+-- Wrath quests opening at tier 13; every existing alternative keeps its own conditions.
 INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
 SELECT DISTINCT 19, 0, q.`ID`, 0, COALESCE(c.`ElseGroup`, 0), 8, 0, 66013, 0, 0, 0, 0, 0, '', 'Era content: Wrath quest'
 FROM `quest_template` q
@@ -283,7 +696,7 @@ WHERE q.`ID` IN (
     25500
 );
 
--- Wrath items sold by vendors that are visible earlier.
+-- Wrath items opening at tier 13, sold by vendors that are visible earlier.
 INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
 SELECT DISTINCT 23, v.`entry`, v.`item`, 0, 0, 8, 0, 66013, 0, 0, 0, 0, 0, '', 'Era content: Wrath vendor item'
 FROM `npc_vendor` v
@@ -436,3 +849,21 @@ WHERE (v.`entry` = 66 AND v.`item` IN (39354))
    OR (v.`entry` = 25051 AND v.`item` IN (37201))
    OR (v.`entry` = 25082 AND v.`item` IN (37201))
    OR (v.`entry` = 27711 AND v.`item` IN (39684, 40533));
+
+-- Wrath quests opening at tier 15; every existing alternative keeps its own conditions.
+INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
+SELECT DISTINCT 19, 0, q.`ID`, 0, COALESCE(c.`ElseGroup`, 0), 8, 0, 66015, 0, 0, 0, 0, 0, '', 'Era content: Wrath quest'
+FROM `quest_template` q
+LEFT JOIN `conditions` c ON c.`SourceTypeOrReferenceId` = 19 AND c.`SourceGroup` = 0 AND c.`SourceEntry` = q.`ID` AND c.`SourceId` = 0
+WHERE q.`ID` IN (
+    24589
+);
+
+-- Wrath quests opening at tier 17; every existing alternative keeps its own conditions.
+INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
+SELECT DISTINCT 19, 0, q.`ID`, 0, COALESCE(c.`ElseGroup`, 0), 8, 0, 66017, 0, 0, 0, 0, 0, '', 'Era content: Wrath quest'
+FROM `quest_template` q
+LEFT JOIN `conditions` c ON c.`SourceTypeOrReferenceId` = 19 AND c.`SourceGroup` = 0 AND c.`SourceEntry` = q.`ID` AND c.`SourceId` = 0
+WHERE q.`ID` IN (
+    26013
+);
