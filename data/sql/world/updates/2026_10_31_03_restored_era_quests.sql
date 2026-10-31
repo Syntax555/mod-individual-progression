@@ -43,10 +43,9 @@ FROM `quest_template` q
 LEFT JOIN `conditions` c ON c.`SourceTypeOrReferenceId` = 19 AND c.`SourceGroup` = 0 AND c.`SourceEntry` = q.`ID` AND c.`SourceId` = 0
 WHERE q.`ID` IN (7788, 7789, 7871, 7872, 7873, 7874, 7875, 7876, 8080, 8123, 8154, 8155, 8156, 8160, 8161, 8162, 8291, 8294, 8297, 8299);
 
--- Heeding the Call starts the druid's Bear Form quests with Kal in Darnassus and Gennia
--- Runetotem in Mulgore, as in every historical database through Wrath.
+-- Kal and Gennia Runetotem already offer Heeding the Call as 5923 and 5926, so their historical
+-- 5925 and 5928 would only repeat the breadcrumb; an earlier version of this update added them.
 DELETE FROM `creature_queststarter` WHERE (`id` = 3602 AND `quest` = 5925) OR (`id` = 3064 AND `quest` = 5928);
-INSERT INTO `creature_queststarter` (`id`, `quest`) VALUES (3602, 5925), (3064, 5928);
 
 -- Patch 1.11's Guard Didier gives the Argent Dawn's Writ of Safe Passage at Light's Hope Chapel,
 -- beside Dispatch Commander Metz who takes it; TBC's Seer Nakha has her vision in Garadar.
