@@ -8,6 +8,9 @@
 -- with tier 6. ChromieCraft's progression brackets (9235693) date TBC and Wrath phases:
 -- 2.1 with tier 10, 2.3 and 2.4 with 12, 3.1 with 14, 3.2 with 15, 3.3 with 16, 3.3.5 with 17.
 --
+-- A quest only awareness-scripted givers offer opens and closes with their fixed stage
+-- rule, so a shared quest, and Questie's map through the Questie bridge, follow the giver.
+--
 -- Spawns on the old-world continents, and a later tier's in Outland or Northrend, get
 -- visibility conditions, which keep their AI and scripts; a hidden creature does not
 -- perceive the character either, so it neither shows nor engages. Quests and vendor
@@ -109,11 +112,19 @@ LEFT JOIN `conditions` c ON c.`SourceTypeOrReferenceId` = 19 AND c.`SourceGroup`
 WHERE q.`ID` IN (
     8151, 8153, 8183, 8184, 8185, 8186, 8187, 8188, 8189, 8190, 8191, 8192, 8196, 8227, 8231, 8232, 8233,
     8234, 8235, 8236, 8241, 8242, 8243, 8246, 8249, 8250, 8251, 8252, 8253, 8254, 8255, 8256, 8257, 8258,
-    8273, 8307, 8308, 8309, 8310, 8313, 8314, 8317, 8365, 8366, 8410, 8411, 8412, 8413, 8414, 8415, 8416,
-    8417, 8418, 8419, 8420, 8421, 8422, 8423, 8424, 8425, 8446, 8447, 8921, 8924, 8925, 8928, 8945, 8946,
-    8947, 8948, 8949, 8950, 8951, 8952, 8953, 8954, 8955, 8956, 8957, 8958, 8959, 8961, 8962, 8963, 8964,
-    8965, 8966, 8967, 8968, 8969, 8970, 8977, 8978, 8985, 8986, 8987, 8988, 8989, 8990, 8991, 8992, 8994,
-    8995, 8997, 8998, 9015, 9016, 9017, 9018, 9019, 9020, 9021, 9022, 9051, 9052, 9053, 9063
+    8273, 8275, 8276, 8277, 8278, 8279, 8280, 8281, 8282, 8283, 8284, 8285, 8286, 8287, 8288, 8301, 8302,
+    8303, 8304, 8306, 8307, 8308, 8309, 8310, 8313, 8314, 8315, 8316, 8317, 8318, 8319, 8323, 8324, 8348,
+    8352, 8361, 8362, 8363, 8364, 8365, 8366, 8376, 8377, 8378, 8379, 8380, 8381, 8382, 8410, 8411, 8412,
+    8413, 8414, 8415, 8416, 8417, 8418, 8419, 8420, 8421, 8422, 8423, 8424, 8425, 8446, 8447, 8492, 8493,
+    8494, 8495, 8499, 8500, 8503, 8504, 8505, 8506, 8509, 8510, 8511, 8512, 8513, 8514, 8515, 8516, 8517,
+    8518, 8520, 8521, 8522, 8523, 8524, 8525, 8526, 8527, 8528, 8529, 8532, 8533, 8542, 8543, 8545, 8546,
+    8548, 8549, 8550, 8572, 8573, 8574, 8580, 8581, 8582, 8583, 8588, 8589, 8590, 8591, 8600, 8601, 8604,
+    8605, 8607, 8608, 8609, 8610, 8611, 8612, 8613, 8614, 8615, 8616, 8732, 8745, 8792, 8795, 8846, 8847,
+    8848, 8849, 8850, 8851, 8852, 8853, 8854, 8855, 8921, 8924, 8925, 8928, 8945, 8946, 8947, 8948, 8949,
+    8950, 8951, 8952, 8953, 8954, 8955, 8956, 8957, 8958, 8959, 8961, 8962, 8963, 8964, 8965, 8966, 8967,
+    8968, 8969, 8970, 8977, 8978, 8985, 8986, 8987, 8988, 8989, 8990, 8991, 8992, 8994, 8995, 8997, 8998,
+    9015, 9016, 9017, 9018, 9019, 9020, 9021, 9022, 9051, 9052, 9053, 9063, 108744, 108745, 108746, 108747,
+    108850, 108855
 );
 
 -- Vanilla items opening at tier 3, sold by vendors that are visible earlier.
@@ -232,7 +243,7 @@ WHERE q.`ID` IN (
     8749, 8750, 8751, 8752, 8753, 8754, 8755, 8756, 8757, 8758, 8759, 8760, 8761, 8764, 8765, 8766, 8770,
     8771, 8772, 8773, 8774, 8775, 8776, 8777, 8778, 8779, 8780, 8781, 8782, 8783, 8784, 8785, 8786, 8787,
     8789, 8790, 8798, 8801, 8802, 8804, 8805, 8806, 8807, 8808, 8809, 8810, 8812, 8813, 8814, 8815, 8816,
-    8818, 8820, 8821, 8822, 8823, 8824, 8825, 8826, 8829, 8842, 8893
+    8818, 8820, 8821, 8822, 8823, 8824, 8825, 8826, 8829, 8842, 8857, 8858, 8859, 8893
 );
 
 -- Vanilla items opening at tier 4, sold by vendors that are visible earlier.
@@ -316,6 +327,16 @@ WHERE (v.`entry` = 1318 AND v.`item` IN (20752, 20753, 20758))
    OR (v.`entry` = 25020 AND v.`item` IN (21552))
    OR (v.`entry` = 25089 AND v.`item` IN (21552));
 
+-- Vanilla quests opening at tier 5; every existing alternative keeps its own conditions.
+INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
+SELECT DISTINCT 19, 0, q.`ID`, 0, COALESCE(c.`ElseGroup`, 0), 8, 0, 66005, 0, 0, 0, 0, 0, '', 'Era content: Vanilla quest'
+FROM `quest_template` q
+LEFT JOIN `conditions` c ON c.`SourceTypeOrReferenceId` = 19 AND c.`SourceGroup` = 0 AND c.`SourceEntry` = q.`ID` AND c.`SourceId` = 0
+WHERE q.`ID` IN (
+    8507, 8556, 8557, 8558, 8689, 8690, 8691, 8692, 8693, 8694, 8695, 8696, 8697, 8698, 8699, 8700, 8701,
+    8702, 8703, 8704, 8705, 8706, 8707, 8708, 8709, 8710, 8711, 8712, 8731, 8800, 9023, 9338
+);
+
 -- Vanilla creatures opening at tier 6.
 INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
 SELECT 30, 0, `id`, `guid`, 0, 8, 0, 66006, 0, 0, 0, 0, 0, '', 'Era content: Vanilla creature'
@@ -348,9 +369,17 @@ SELECT DISTINCT 19, 0, q.`ID`, 0, COALESCE(c.`ElseGroup`, 0), 8, 0, 66006, 0, 0,
 FROM `quest_template` q
 LEFT JOIN `conditions` c ON c.`SourceTypeOrReferenceId` = 19 AND c.`SourceGroup` = 0 AND c.`SourceEntry` = q.`ID` AND c.`SourceId` = 0
 WHERE q.`ID` IN (
-    9120, 9178, 9179, 9181, 9182, 9183, 9184, 9185, 9186, 9187, 9188, 9190, 9191, 9194, 9195, 9196, 9197,
-    9198, 9200, 9201, 9202, 9203, 9204, 9205, 9206, 9208, 9209, 9210, 9233, 9247, 9250, 9251, 9257, 9259,
-    9266, 9267, 9268, 9269, 9270, 9271, 9272, 9295, 9299, 9300, 9301, 9302, 9304, 9362, 9364
+    9033, 9034, 9036, 9037, 9038, 9039, 9040, 9041, 9042, 9043, 9044, 9045, 9046, 9047, 9048, 9049, 9050,
+    9054, 9055, 9056, 9057, 9058, 9059, 9060, 9061, 9068, 9069, 9070, 9071, 9072, 9073, 9074, 9075, 9077,
+    9078, 9079, 9080, 9081, 9082, 9083, 9084, 9086, 9087, 9088, 9089, 9090, 9091, 9092, 9093, 9094, 9095,
+    9096, 9097, 9098, 9099, 9100, 9101, 9102, 9103, 9104, 9105, 9106, 9107, 9108, 9109, 9110, 9111, 9112,
+    9113, 9114, 9115, 9116, 9117, 9118, 9120, 9121, 9122, 9123, 9124, 9125, 9126, 9127, 9128, 9129, 9131,
+    9132, 9136, 9137, 9141, 9142, 9154, 9178, 9179, 9181, 9182, 9183, 9184, 9185, 9186, 9187, 9188, 9190,
+    9191, 9194, 9195, 9196, 9197, 9198, 9200, 9201, 9202, 9203, 9204, 9205, 9206, 9208, 9209, 9210, 9211,
+    9213, 9229, 9230, 9232, 9233, 9234, 9235, 9236, 9237, 9238, 9239, 9240, 9241, 9242, 9243, 9244, 9245,
+    9246, 9247, 9250, 9251, 9257, 9259, 9266, 9267, 9268, 9269, 9270, 9271, 9272, 9295, 9299, 9300, 9301,
+    9302, 9304, 9317, 9318, 9320, 9321, 9333, 9334, 9335, 9336, 9337, 9341, 9343, 9362, 9364, 9664, 9665,
+    10693, 10698, 10699, 10700
 );
 
 -- Vanilla items opening at tier 6, sold by vendors that are visible earlier.
@@ -444,16 +473,19 @@ SELECT DISTINCT 19, 0, q.`ID`, 0, COALESCE(c.`ElseGroup`, 0), 8, 0, 66008, 0, 0,
 FROM `quest_template` q
 LEFT JOIN `conditions` c ON c.`SourceTypeOrReferenceId` = 19 AND c.`SourceGroup` = 0 AND c.`SourceEntry` = q.`ID` AND c.`SourceId` = 0
 WHERE q.`ID` IN (
-    9400, 9405, 9431, 9433, 9434, 9435, 9436, 9437, 9438, 9439, 9440, 9441, 9443, 9444, 9446, 9448, 9457,
-    9469, 9470, 9471, 9474, 9475, 9476, 9495, 9516, 9517, 9518, 9519, 9520, 9521, 9522, 9526, 9533, 9534,
-    9535, 9536, 9601, 9609, 9813, 9829, 10121, 10136, 10212, 10279, 10390, 10391, 10392, 10460, 10461, 10462,
-    10463, 10464, 10465, 10466, 10467, 10468, 10469, 10470, 10471, 10472, 10473, 10474, 10475, 10590, 10592,
-    10593, 10752, 10756, 10789, 10790, 10876, 10891, 10892, 10955, 10965, 11103, 11104, 11105, 11106, 11123,
-    11124, 11126, 11128, 11129, 11133, 11134, 11136, 11137, 11138, 11139, 11140, 11141, 11142, 11143, 11144,
-    11145, 11146, 11147, 11148, 11149, 11150, 11151, 11152, 11156, 11158, 11159, 11160, 11161, 11162, 11169,
-    11172, 11173, 11174, 11177, 11180, 11181, 11183, 11184, 11185, 11186, 11191, 11192, 11193, 11194, 11198,
-    11200, 11201, 11203, 11204, 11205, 11206, 11207, 11208, 11209, 11210, 11211, 11212, 11213, 11214, 11215,
-    11217, 11222, 11223, 11225, 11531, 12513
+    8367, 8371, 8385, 8388, 9400, 9405, 9407, 9431, 9433, 9434, 9435, 9436, 9437, 9438, 9439, 9440, 9441,
+    9443, 9444, 9446, 9448, 9457, 9469, 9470, 9471, 9474, 9475, 9476, 9495, 9516, 9517, 9518, 9519, 9520,
+    9521, 9522, 9526, 9533, 9534, 9535, 9536, 9601, 9609, 9630, 9631, 9680, 9813, 9824, 9825, 9826, 9829,
+    9840, 9844, 9860, 10119, 10121, 10136, 10212, 10277, 10279, 10282, 10296, 10390, 10391, 10392, 10460,
+    10461, 10462, 10463, 10464, 10465, 10466, 10467, 10468, 10469, 10470, 10471, 10472, 10473, 10474, 10475,
+    10590, 10592, 10593, 10725, 10726, 10727, 10728, 10729, 10730, 10731, 10732, 10733, 10734, 10735, 10736,
+    10738, 10739, 10740, 10741, 10752, 10756, 10789, 10790, 10876, 10891, 10892, 10955, 10965, 10978, 11031,
+    11032, 11033, 11034, 11103, 11104, 11105, 11106, 11123, 11124, 11126, 11128, 11129, 11133, 11134, 11136,
+    11137, 11138, 11139, 11140, 11141, 11142, 11143, 11144, 11145, 11146, 11147, 11148, 11149, 11150, 11151,
+    11152, 11156, 11158, 11159, 11160, 11161, 11162, 11169, 11172, 11173, 11174, 11177, 11180, 11181, 11183,
+    11184, 11185, 11186, 11191, 11192, 11193, 11194, 11198, 11200, 11201, 11203, 11204, 11205, 11206, 11207,
+    11208, 11209, 11210, 11211, 11212, 11213, 11214, 11215, 11217, 11222, 11223, 11225, 11336, 11339, 11341,
+    11342, 11531, 12513
 );
 
 -- TBC items opening at tier 8, sold by vendors that are visible earlier.
@@ -878,6 +910,15 @@ WHERE q.`ID` IN (
     24589
 );
 
+-- Wrath quests opening at tier 16; every existing alternative keeps its own conditions.
+INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
+SELECT DISTINCT 19, 0, q.`ID`, 0, COALESCE(c.`ElseGroup`, 0), 8, 0, 66016, 0, 0, 0, 0, 0, '', 'Era content: Wrath quest'
+FROM `quest_template` q
+LEFT JOIN `conditions` c ON c.`SourceTypeOrReferenceId` = 19 AND c.`SourceGroup` = 0 AND c.`SourceEntry` = q.`ID` AND c.`SourceId` = 0
+WHERE q.`ID` IN (
+    24506, 24510
+);
+
 -- Wrath quests opening at tier 17; every existing alternative keeps its own conditions.
 INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
 SELECT DISTINCT 19, 0, q.`ID`, 0, COALESCE(c.`ElseGroup`, 0), 8, 0, 66017, 0, 0, 0, 0, 0, '', 'Era content: Wrath quest'
@@ -885,4 +926,56 @@ FROM `quest_template` q
 LEFT JOIN `conditions` c ON c.`SourceTypeOrReferenceId` = 19 AND c.`SourceGroup` = 0 AND c.`SourceEntry` = q.`ID` AND c.`SourceId` = 0
 WHERE q.`ID` IN (
     26013
+);
+
+-- Vanilla quests closing at tier 4 with their awareness-scripted givers.
+INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
+SELECT DISTINCT 19, 0, q.`ID`, 0, COALESCE(c.`ElseGroup`, 0), 8, 0, 66004, 0, 0, 1, 0, 0, '', 'Era content: Vanilla quest'
+FROM `quest_template` q
+LEFT JOIN `conditions` c ON c.`SourceTypeOrReferenceId` = 19 AND c.`SourceGroup` = 0 AND c.`SourceEntry` = q.`ID` AND c.`SourceId` = 0
+WHERE q.`ID` IN (
+    8492, 8493, 8494, 8495, 8499, 8500, 8503, 8504, 8505, 8506, 8509, 8510, 8511, 8512, 8513, 8514, 8515,
+    8516, 8517, 8518, 8520, 8521, 8522, 8523, 8524, 8525, 8526, 8527, 8528, 8529, 8532, 8533, 8542, 8543,
+    8545, 8546, 8549, 8550, 8580, 8581, 8582, 8583, 8588, 8589, 8590, 8591, 8600, 8601, 8604, 8605, 8607,
+    8608, 8609, 8610, 8611, 8612, 8613, 8614, 8615, 8616, 8792, 8795, 8846, 8847, 8848, 8849, 8850, 8851,
+    8852, 8853, 8854, 8855, 108850, 108855
+);
+
+-- Vanilla quests closing at tier 5 with their awareness-scripted givers.
+INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
+SELECT DISTINCT 19, 0, q.`ID`, 0, COALESCE(c.`ElseGroup`, 0), 8, 0, 66005, 0, 0, 1, 0, 0, '', 'Era content: Vanilla quest'
+FROM `quest_template` q
+LEFT JOIN `conditions` c ON c.`SourceTypeOrReferenceId` = 19 AND c.`SourceGroup` = 0 AND c.`SourceEntry` = q.`ID` AND c.`SourceId` = 0
+WHERE q.`ID` IN (
+    8745, 8857, 8858, 8859, 108744, 108745, 108746, 108747
+);
+
+-- Vanilla quests closing at tier 7 with their awareness-scripted givers.
+INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
+SELECT DISTINCT 19, 0, q.`ID`, 0, COALESCE(c.`ElseGroup`, 0), 8, 0, 66007, 0, 0, 1, 0, 0, '', 'Era content: Vanilla quest'
+FROM `quest_template` q
+LEFT JOIN `conditions` c ON c.`SourceTypeOrReferenceId` = 19 AND c.`SourceGroup` = 0 AND c.`SourceEntry` = q.`ID` AND c.`SourceId` = 0
+WHERE q.`ID` IN (
+    9094, 9154, 9317, 9318, 9320, 9321, 9333, 9334, 9335, 9336, 9337, 9341, 9343
+);
+
+-- Vanilla quests closing at tier 8 with their awareness-scripted givers.
+INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
+SELECT DISTINCT 19, 0, q.`ID`, 0, COALESCE(c.`ElseGroup`, 0), 8, 0, 66008, 0, 0, 1, 0, 0, '', 'Era content: Vanilla quest'
+FROM `quest_template` q
+LEFT JOIN `conditions` c ON c.`SourceTypeOrReferenceId` = 19 AND c.`SourceGroup` = 0 AND c.`SourceEntry` = q.`ID` AND c.`SourceId` = 0
+WHERE q.`ID` IN (
+    8368, 8369, 8370, 8372, 8374, 8375, 8383, 8384, 8386, 8387, 8389, 8390, 8391, 8392, 8393, 8394, 8395,
+    8396, 8397, 8398, 8399, 8400, 8401, 8402, 8403, 8404, 8405, 8406, 8407, 8408, 8426, 8427, 8428, 8429,
+    8430, 8431, 8432, 8433, 8434, 8435, 8436, 8437, 8438, 8439, 8440, 8441, 8442, 8443, 13475, 13476, 13477,
+    13478
+);
+
+-- TBC quests closing at tier 13 with their awareness-scripted givers.
+INSERT IGNORE INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`)
+SELECT DISTINCT 19, 0, q.`ID`, 0, COALESCE(c.`ElseGroup`, 0), 8, 0, 66013, 0, 0, 1, 0, 0, '', 'Era content: TBC quest'
+FROM `quest_template` q
+LEFT JOIN `conditions` c ON c.`SourceTypeOrReferenceId` = 19 AND c.`SourceGroup` = 0 AND c.`SourceEntry` = q.`ID` AND c.`SourceId` = 0
+WHERE q.`ID` IN (
+    8367, 8371, 8385, 8388, 11336, 11339, 11341, 11342
 );
