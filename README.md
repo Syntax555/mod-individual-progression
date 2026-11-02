@@ -61,10 +61,10 @@ Read [AGENTS.md](AGENTS.md) and the assembly's
 Make validated changes on `master`, then update the assembly pin. Preserve
 progression guards, characters, databases, configuration and pinned history.
 
-Imported from [Grimfeather/mod-individual-progression at `5041dbed4642`](https://github.com/Grimfeather/mod-individual-progression/commit/5041dbed46425f376e87b6fcfb26938c1c81fbd7),
+Imported from [Grimfeather/mod-individual-progression at `e2c2ed050898`](https://github.com/Grimfeather/mod-individual-progression/commit/e2c2ed0508986f9a138cf5694101e65d2809a366),
 which continues [ZhengPeiRu21/mod-individual-progression](https://github.com/ZhengPeiRu21/mod-individual-progression)
 and requires the matching core changes supplied by the assembly's core fork.
-The [original README](https://github.com/Grimfeather/mod-individual-progression/blob/5041dbed46425f376e87b6fcfb26938c1c81fbd7/README.md)
+The [original README](https://github.com/Grimfeather/mod-individual-progression/blob/e2c2ed0508986f9a138cf5694101e65d2809a366/README.md)
 and [upstream wiki](https://github.com/ZhengPeiRu21/mod-individual-progression/wiki)
 remain general references; use the assembly guides for its installed policy.
 
