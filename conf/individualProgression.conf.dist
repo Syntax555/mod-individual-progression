@@ -305,6 +305,42 @@ IndividualProgression.MaxMonsterSight = 1
 #
 IndividualProgression.QuestMoneyAtLevelCap = 1
 
+# IndividualProgression.ProfessionTierCap
+#
+#        Description: Limits new profession, First Aid, Cooking and Fishing ranks to the character's tier:
+#                     Artisan (300) before progression 8, Master (375) before progression 13, otherwise
+#                     Grand Master (450), as on 1.12, 2.4.3 and 3.3.5a. Trainers show the higher ranks as
+#                     unavailable, which also stops bot maintenance, books that teach them cannot be used,
+#                     and .learn refuses them.
+#                     Existing ranks, skill values, achievements and titles are preserved at login.
+#                     Applies to new learning by players and bots alike. Accounts of GM level 2 or higher,
+#                     with their altbots, have no cap; a changed GM level counts after .reload config.
+#                     Excluded accounts are exempt only outside strict earned progression.
+#
+#        Default:     1 - Enabled
+#                     0 - Disabled
+#
+IndividualProgression.ProfessionTierCap = 1
+
+# IndividualProgression.LockLaterExpansionGear
+#
+#        Description: Characters cannot equip weapons and armor from an expansion they have not
+#                     reached. Before progression 8: item id 23728 or higher that requires level
+#                     57 or has item level above 92, except the vanilla rank gear 29594-29617.
+#                     Before progression 13: item id 35570 or higher that requires level 67 or has
+#                     item level above 164, except the TBC gear with those ids.
+#                     Outside strict progression, bot accounts use BotAccountsMaxLevel instead of
+#                     progression, locked at 60 or lower and at 70 or lower; the default of 80 has no lock.
+#                     Outside strict earned progression, excluded accounts and characters above their
+#                     limit are not locked. Heirlooms and other gear below both the level and the
+#                     item level above are not locked. Gear worn at login
+#                     stays on, but it cannot go back on once it is taken off.
+#
+#        Default:     0 - Disabled
+#                     1 - Enabled
+#
+IndividualProgression.LockLaterExpansionGear = 0
+
 # IndividualProgression.RepeatableVanillaQuestsXP
 #
 #        Description: Some repeatable quests in Vanilla gave XP every time they were turned in.

@@ -40,6 +40,12 @@ standalone defaults; cloning it alone does not install the portable profile.
 See [character progression and realm ceilings](https://github.com/Syntax555/mod-playerbots-portable/blob/main/docs/changing-expansions.md)
 for milestone tiers, optional realm modes and preserving existing realms.
 
+Profession rank learning follows each character's earned era: Artisan in Vanilla,
+Master in TBC and Grand Master in Wrath. Existing ranks, skill values,
+achievements and titles remain stored. The optional
+`IndividualProgression.LockLaterExpansionGear` setting refuses new later-era
+equipment without removing gear worn at login.
+
 The server and client remain Wrath-based. Historical changes cover selected
 systems rather than an exact original Vanilla/TBC simulation; historical TBC
 talents use TBC Classic data. Existing characters, inventories and gold are
@@ -55,10 +61,10 @@ Read [AGENTS.md](AGENTS.md) and the assembly's
 Make validated changes on `master`, then update the assembly pin. Preserve
 progression guards, characters, databases, configuration and pinned history.
 
-Imported from [Grimfeather/mod-individual-progression at `09dcdb3ff5ee`](https://github.com/Grimfeather/mod-individual-progression/commit/09dcdb3ff5eec7685cf7d039220452354301d96e),
+Imported from [Grimfeather/mod-individual-progression at `5041dbed4642`](https://github.com/Grimfeather/mod-individual-progression/commit/5041dbed46425f376e87b6fcfb26938c1c81fbd7),
 which continues [ZhengPeiRu21/mod-individual-progression](https://github.com/ZhengPeiRu21/mod-individual-progression)
 and requires the matching core changes supplied by the assembly's core fork.
-The [original README](https://github.com/Grimfeather/mod-individual-progression/blob/09dcdb3ff5eec7685cf7d039220452354301d96e/README.md)
+The [original README](https://github.com/Grimfeather/mod-individual-progression/blob/5041dbed46425f376e87b6fcfb26938c1c81fbd7/README.md)
 and [upstream wiki](https://github.com/ZhengPeiRu21/mod-individual-progression/wiki)
 remain general references; use the assembly guides for its installed policy.
 
