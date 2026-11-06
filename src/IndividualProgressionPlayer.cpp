@@ -295,10 +295,10 @@ public:
                 }
             }
         }
+        // The checks below require the attunement; strict progression also requires the Stratholme entrance.
         if (mapid == MAP_NAXXRAMAS && sIndividualProgression->IsStrictDefaultProgression() &&
-            player->GetDifficulty(true) == RAID_DIFFICULTY_10MAN_HEROIC &&
-            (!sIndividualProgression->isAttuned(player) ||
-             (sIndividualProgression->requireNaxxStrath && player->GetQuestStatus(NAXX40_ENTRANCE_FLAG) != QUEST_STATUS_REWARDED)))
+            player->GetDifficulty(true) == RAID_DIFFICULTY_10MAN_HEROIC && sIndividualProgression->requireNaxxStrath &&
+            player->GetQuestStatus(NAXX40_ENTRANCE_FLAG) != QUEST_STATUS_REWARDED)
             return false;
 
         if (mapid == MAP_ZUL_GURUB)
