@@ -277,22 +277,13 @@ public:
                 if (player->GetLevel() < 80) // level 71-79
                     return false;
 
-                if (player->GetLevel() == 80)
-                {
-                    if (!sIndividualProgression->AllowVanillaRaidAccess)
-                    {
-                        if (!sIndividualProgression->hasPassedProgression(player, PROGRESSION_WOTLK_TIER_5))
-                            return false;
-
-                        if (player->GetDifficulty(true) == RAID_DIFFICULTY_10MAN_HEROIC)
-                            return false;
-                    }
-                    else
-                    {
-                        if (player->GetDifficulty(true) == RAID_DIFFICULTY_10MAN_HEROIC && !player->HasItemCount(ITEM_DRAKEFIRE_AMULET))
-                            return false;
-                    }
-                }
+                // Wrath's Onyxia stays open; the 40-player version needs progression 18 or the vanilla
+                // raid option, and the character's own amulet.
+                if (player->GetDifficulty(true) == RAID_DIFFICULTY_10MAN_HEROIC &&
+                    ((!sIndividualProgression->AllowVanillaRaidAccess &&
+                      !sIndividualProgression->hasPassedProgression(player, PROGRESSION_WOTLK_TIER_5)) ||
+                     !player->HasItemCount(ITEM_DRAKEFIRE_AMULET)))
+                    return false;
             }
         }
         // The checks below require the attunement; strict progression also requires the Stratholme entrance.
@@ -518,22 +509,13 @@ public:
                     if (player->GetLevel() < 80) // level 71-79
                         return false;
 
-                    if (player->GetLevel() == 80)
-                    {
-                        if (!sIndividualProgression->AllowVanillaRaidAccess)
-                        {
-                            if (!sIndividualProgression->hasPassedProgression(player, PROGRESSION_WOTLK_TIER_5))
-                                return false;
-
-                            if (player->GetDifficulty(true) == RAID_DIFFICULTY_10MAN_HEROIC)
-                                return false;
-                        }
-                        else
-                        {
-                            if (player->GetDifficulty(true) == RAID_DIFFICULTY_10MAN_HEROIC && !sIndividualProgression->isAttuned(player))
-                                return false;
-                        }
-                    }
+                    // Wrath's Naxxramas stays open; the 40-player version needs progression 18 or the
+                    // vanilla raid option, and the character's own attunement.
+                    if (player->GetDifficulty(true) == RAID_DIFFICULTY_10MAN_HEROIC &&
+                        ((!sIndividualProgression->AllowVanillaRaidAccess &&
+                          !sIndividualProgression->hasPassedProgression(player, PROGRESSION_WOTLK_TIER_5)) ||
+                         !sIndividualProgression->isAttuned(player)))
+                        return false;
                 }
             }
         }
