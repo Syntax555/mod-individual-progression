@@ -140,6 +140,14 @@ public:
                         allowed = true;
                 }
 
+                // The 40-player raid keeps its own attunement and Stratholme entrance at level 80.
+                if (allowed && !player->IsGameMaster() && (!sIndividualProgression->isAttuned(player) ||
+                    (sIndividualProgression->requireNaxxStrath && player->GetQuestStatus(NAXX40_ENTRANCE_FLAG) != QUEST_STATUS_REWARDED)))
+                {
+                    handler.PSendSysMessage("You are not attuned to Naxxramas or have not entered it through Stratholme.");
+                    return false;
+                }
+
                 if (allowed)
                 {
                     player->SetRaidDifficulty(RAID_DIFFICULTY_10MAN_HEROIC);
