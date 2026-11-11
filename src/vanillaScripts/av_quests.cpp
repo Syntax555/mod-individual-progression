@@ -236,11 +236,10 @@ namespace
             ChatHandler(player->GetSession()).PSendSysMessage("We have gathered enough hides from the rams. Soon, the cavalry will be ready to ride! Speak to me again when we have stabled enough wolves.");
 
 
+        // The reward hook also runs away from the commander, such as for a GM's .quest reward.
         uint32 npcEntryQuest = team == TEAM_ALLIANCE ? NPC_CAV_CMDR_A : NPC_CAV_CMDR_H;
-        Creature* npcQuest = player->FindNearestCreature(npcEntryQuest, 50.0f);
-
-        npcQuest->RemoveNpcFlag(UNIT_NPC_FLAG_QUESTGIVER);
-
+        if (Creature* npcQuest = player->FindNearestCreature(npcEntryQuest, 50.0f))
+            npcQuest->RemoveNpcFlag(UNIT_NPC_FLAG_QUESTGIVER);
     }
 
     // Estimate for the supplies gossip option, using existing broadcast texts as examples
@@ -261,7 +260,7 @@ namespace
             return "I barely have any supplies for upgrades.";
         if (remaining * 4 >= interval * 2)  // under halfway
             return "I need many more supplies in order to upgrade our units.";
-        if (remaining * 4 <= interval * 2 && remaining * 4 >= interval * 3) // over halfway and under three-quarters
+        if (remaining * 4 >= interval) // over halfway and under three-quarters
             return "I have about half the supplies needed to upgrade our units.";
         return "I almost have enough supplies for the next upgrade!"; // over three-quarters done
     }
